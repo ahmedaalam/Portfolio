@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
     <!-------- Header -------->
@@ -48,10 +49,55 @@
       </section>
 
       <!------------- About  ------------>
-      <section id="about">
+      <section id=" about">
         <p class="section-heading">About Me</p>
+        <div class="about-layout">
+          <div class="container1">
+            <p class="section-text">
+              I’m Ahmed, a MERN Stack Developer based in Karachi. I focus on
+              building modern and user-friendly web applications with clean and
+              intuitive interfaces. I enjoy turning ideas into real products and
+              continuously improving my skills as a developer. Currently, I’m
+              working on strengthening my backend knowledge and growing as a
+              full-stack engineer.
+            </p>
+          </div>
+          <div class="container2">
+            <div class="card">
+              <i data-lucide="graduation-cap" class="icons"></i>
+              <div class="card-text">
+                <p class="card-title">Software Engineering</p>
+                <p class="card-subtitle">Sir Syed University</p>
+              </div>
+            </div>
+            <div class="card">
+              <i data-lucide="code" class="icons"></i>
+              <div class="card-text">
+                <p class="card-title">MERN Stack Developer</p>
+                <p class="card-subtitle">Modern web apps</p>
+              </div>
+            </div>
+            <div class="card">
+              <i data-lucide="building-2" class="icons"></i>
+              <div class="card-text">
+                <p class="card-title">Frontend Developer Intern</p>
+                <p class="card-subtitle">Bidec Solutions</p>
+              </div>
+            </div>
+            <div class="card">
+              <i data-lucide="map-pin" class="icons"></i>
+              <div class="card-text">
+                <p class="card-title">Based in Karachi</p>
+                <p class="card-subtitle">Pakistan</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
+    <script>
+      lucide.createIcons();
+    </script>
     <script src="./js/script.js"></script>
   </body>
 </html>

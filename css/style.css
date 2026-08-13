@@ -51,10 +51,13 @@ ul {
 }
 
 /* Main */
+section {
+  padding: 80px 10%;
+}
 
 /* Hero Section */
 .hero {
-  height: 90vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,7 +67,7 @@ ul {
 
 .main-text {
   font-family: "Inter", sans-serif;
-  font-size: 60px;
+  font-size: 3.75rem;
   font-weight: 800;
   letter-spacing: -1px;
   color: #121317;
@@ -77,6 +80,8 @@ ul {
 
 .buttons {
   margin-top: 20px;
+  display: flex;
+  gap: 16px;
 }
 
 .btn {
@@ -103,11 +108,99 @@ ul {
 
 /* About Section */
 #about {
-  background-color: aqua;
-  height: 100vh;
+}
+
+.about-layout {
+  margin-top: 1rem;
 }
 
 .section-heading {
-  font-size: 40px;
+  color: #121317;
+  font-size: 3rem;
   font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.section-text {
+  color: #45474d;
+}
+
+.about-layout {
+  margin-top: 1rem;
+  display: flex;
+  gap: 3rem;
+}
+
+.section-heading {
+  color: #121317;
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.section-text {
+  color: #45474d;
+  margin-top: 1rem;
+}
+
+.container1 {
+  max-width: 32rem;
+  line-height: 1.6;
+}
+
+.container2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.card {
+  padding: 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: default;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid #e0e2e8;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card:hover .icons {
+  transform: scale(1.1);
+  transition: transform 0.25s ease;
+}
+
+/* icon */
+.icons {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+  margin-top: 3px;
+  color: #121317;
+}
+
+/* text wrapper */
+.card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* title */
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #121317;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* subtitle */
+.card-subtitle {
+  font-size: 0.875rem;
+  color: #6b6e76;
+  margin-top: 4px;
 }
