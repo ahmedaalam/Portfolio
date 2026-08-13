@@ -62,7 +62,7 @@ ul {
   gap: 20px;
 }
 
-h1 {
+.main-text {
   font-family: "Inter", sans-serif;
   font-size: 60px;
   font-weight: 800;
@@ -102,3 +102,12 @@ h1 {
 }
 
 /* About Section */
+#about {
+  background-color: aqua;
+  height: 100vh;
+}
+
+.section-heading {
+  font-size: 40px;
+  font-weight: 800;
+}
