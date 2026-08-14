@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ahmed | MERN Stack Developer</title>
-    <meta name="description" content="Portfolio of Ahmed, a MERN Stack Developer building modern, high-performance web applications with React, Node.js, MongoDB, and Next.js." />
+    <meta
+      name="description"
+      content="Portfolio of Ahmed, a MERN Stack Developer building modern, high-performance web applications with React, Node.js, MongoDB, and Next.js."
+    />
     <link rel="stylesheet" href="./css/style.css" />
 
     <link
@@ -21,7 +24,9 @@
     <header id="header">
       <nav class="nav-container">
         <div class="nav-logo">
-          <a href="#home"><h3>Portfolio<span>.</span></h3></a>
+          <a href="#home"
+            ><h3>Portfolio<span>.</span></h3></a
+          >
         </div>
 
         <div class="nav-links" id="navLinks">
@@ -34,7 +39,11 @@
           </ul>
         </div>
 
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu">
+        <button
+          class="mobile-toggle"
+          id="mobileToggle"
+          aria-label="Toggle navigation menu"
+        >
           <i data-lucide="menu" id="menuIcon"></i>
         </button>
       </nav>
@@ -54,7 +63,7 @@
 
           <p class="second-text">
             Crafting modern and interactive web experiences with cutting-edge
-            <br class="desktop-only" />technology and creative vision.
+            technology and creative vision.
           </p>
 
           <div class="buttons">
@@ -76,75 +85,73 @@
         </div>
       </section>
 
-      <!------------- About  ------------>
+      <!------------- About Section  ------------>
       <section id="about">
         <div class="section-header reveal reveal-up">
           <span class="section-tag">Overview</span>
           <h2 class="section-heading">About Me</h2>
         </div>
 
-        <div class="about-layout">
-          <div class="container1 reveal reveal-left">
-            <p class="section-text">
-              I’m <strong>Ahmed</strong>, a MERN Stack Developer based in Karachi with a background in Software Engineering from Sir Syed University.
-            </p>
-            <p class="section-text">
-              I have hands-on experience as a Frontend Developer Intern at Bidec Solutions, where I worked on real-world applications and collaborated in a professional environment.
-            </p>
-            <p class="section-text">
-              I focus on building modern, intuitive web experiences with clean interfaces and smooth user interactions. Currently, I’m focused on strengthening my backend skills and building scalable applications to grow as a full-stack engineer.
+        <div class="about-grid">
+          <!-- Main Bio Card -->
+          <div class="about-bio-card reveal reveal-left">
+            <div class="bio-header">
+              <h3 class="bio-title">I'm Ahmed — MERN Stack Developer</h3>
+            </div>
+
+            <p class="bio-text">
+              With a degree in Software Engineering from Sir Syed University
+              (SSUET) and hands-on industry experience as a Frontend Intern at
+              Bidec Solutions, I specialize in building responsive, scalable,
+              and visually intuitive web applications.
             </p>
 
-            <div class="about-highlights">
-              <div class="highlight-item">
-                <span class="highlight-num">SSUET</span>
-                <span class="highlight-label">Software Engineering</span>
-              </div>
-              <div class="highlight-item">
-                <span class="highlight-num">MERN</span>
-                <span class="highlight-label">Full Stack Focus</span>
-              </div>
-            </div>
+            <p class="bio-text">
+              I thrive on turning complex problems into elegant user interfaces
+              with React and Next.js, while crafting robust backends using
+              Node.js, Express, and MongoDB.
+            </p>
           </div>
 
-          <div class="container2 reveal reveal-right">
-            <div class="card">
-              <div class="card-icon-wrap">
-                <i data-lucide="graduation-cap" class="icons"></i>
+          <!-- Feature Cards Column -->
+          <div class="about-cards-col reveal reveal-right">
+            <div class="info-card">
+              <div class="info-card-icon">
+                <i data-lucide="graduation-cap"></i>
               </div>
-              <div class="card-text">
-                <p class="card-title">Software Engineering</p>
-                <p class="card-subtitle">Sir Syed University</p>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-icon-wrap">
-                <i data-lucide="code" class="icons"></i>
-              </div>
-              <div class="card-text">
-                <p class="card-title">MERN Developer</p>
-                <p class="card-subtitle">Modern web apps</p>
+              <div class="info-card-details">
+                <h4>Software Engineering</h4>
+                <p>Sir Syed University (SSUET)</p>
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-icon-wrap">
-                <i data-lucide="building-2" class="icons"></i>
+            <div class="info-card">
+              <div class="info-card-icon">
+                <i data-lucide="code-2"></i>
               </div>
-              <div class="card-text">
-                <p class="card-title">Frontend Intern</p>
-                <p class="card-subtitle">Bidec Solutions</p>
+              <div class="info-card-details">
+                <h4>Full Stack Engineering</h4>
+                <p>MERN Stack & Next.js Ecosystem</p>
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-icon-wrap">
-                <i data-lucide="map-pin" class="icons"></i>
+            <div class="info-card">
+              <div class="info-card-icon">
+                <i data-lucide="briefcase"></i>
               </div>
-              <div class="card-text">
-                <p class="card-title">Based in Karachi</p>
-                <p class="card-subtitle">Pakistan <span class="ping-dot"></span></p>
+              <div class="info-card-details">
+                <h4>Frontend Intern Experience</h4>
+                <p>Bidec Solutions — Real-world apps</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-card-icon">
+                <i data-lucide="map-pin"></i>
+              </div>
+              <div class="info-card-details">
+                <h4>Based in Karachi</h4>
+                <p>Pakistan <span class="pulse-status-dot"></span></p>
               </div>
             </div>
           </div>
@@ -160,82 +167,146 @@
 
         <div class="skills-grid reveal reveal-up">
           <div class="skill" data-tooltip="HTML5">
-            <img src="https://cdn.simpleicons.org/html5" alt="HTML5" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/html5"
+              alt="HTML5"
+              loading="lazy"
+            />
             <p>HTML</p>
           </div>
 
           <div class="skill" data-tooltip="CSS3">
-            <img src="https://cdn.simpleicons.org/css" alt="CSS3" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/css"
+              alt="CSS3"
+              loading="lazy"
+            />
             <p>CSS</p>
           </div>
 
           <div class="skill" data-tooltip="JavaScript ES6+">
-            <img src="https://cdn.simpleicons.org/javascript" alt="JavaScript" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/javascript"
+              alt="JavaScript"
+              loading="lazy"
+            />
             <p>JavaScript</p>
           </div>
 
           <div class="skill" data-tooltip="React.js">
-            <img src="https://cdn.simpleicons.org/react" alt="React" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/react"
+              alt="React"
+              loading="lazy"
+            />
             <p>React</p>
           </div>
 
           <div class="skill" data-tooltip="Next.js">
-            <img src="https://cdn.simpleicons.org/nextdotjs" alt="Next.js" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/nextdotjs"
+              alt="Next.js"
+              loading="lazy"
+            />
             <p>Next.js</p>
           </div>
 
           <div class="skill" data-tooltip="Node.js">
-            <img src="https://cdn.simpleicons.org/nodedotjs" alt="Node.js" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/nodedotjs"
+              alt="Node.js"
+              loading="lazy"
+            />
             <p>Node.js</p>
           </div>
 
           <div class="skill" data-tooltip="Express.js">
-            <img src="https://cdn.simpleicons.org/express" alt="Express" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/express"
+              alt="Express"
+              loading="lazy"
+            />
             <p>Express</p>
           </div>
 
           <div class="skill" data-tooltip="MongoDB">
-            <img src="https://cdn.simpleicons.org/mongodb" alt="MongoDB" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/mongodb"
+              alt="MongoDB"
+              loading="lazy"
+            />
             <p>MongoDB</p>
           </div>
 
           <div class="skill" data-tooltip="Git VCS">
-            <img src="https://cdn.simpleicons.org/git" alt="Git" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/git"
+              alt="Git"
+              loading="lazy"
+            />
             <p>Git</p>
           </div>
 
           <div class="skill" data-tooltip="GitHub">
-            <img src="https://cdn.simpleicons.org/github" alt="GitHub" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/github"
+              alt="GitHub"
+              loading="lazy"
+            />
             <p>GitHub</p>
           </div>
 
           <div class="skill" data-tooltip="Figma UI/UX">
-            <img src="https://cdn.simpleicons.org/figma" alt="Figma" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/figma"
+              alt="Figma"
+              loading="lazy"
+            />
             <p>Figma</p>
           </div>
 
           <div class="skill" data-tooltip="Postman API">
-            <img src="https://cdn.simpleicons.org/postman" alt="Postman" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/postman"
+              alt="Postman"
+              loading="lazy"
+            />
             <p>Postman</p>
           </div>
 
           <div class="skill" data-tooltip="Tailwind CSS">
-            <img src="https://cdn.simpleicons.org/tailwindcss" alt="Tailwind" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/tailwindcss"
+              alt="Tailwind"
+              loading="lazy"
+            />
             <p>Tailwind</p>
           </div>
 
           <div class="skill" data-tooltip="Redux Toolkit">
-            <img src="https://cdn.simpleicons.org/redux" alt="Redux" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/redux"
+              alt="Redux"
+              loading="lazy"
+            />
             <p>Redux</p>
           </div>
 
           <div class="skill" data-tooltip="Socket.IO">
-            <img src="https://cdn.simpleicons.org/socketdotio" alt="Socket.IO" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/socketdotio"
+              alt="Socket.IO"
+              loading="lazy"
+            />
             <p>Socket.IO</p>
           </div>
 
           <div class="skill" data-tooltip="Vercel Deployment">
-            <img src="https://cdn.simpleicons.org/vercel" alt="Vercel" loading="lazy" />
+            <img
+              src="https://cdn.simpleicons.org/vercel"
+              alt="Vercel"
+              loading="lazy"
+            />
             <p>Vercel</p>
           </div>
         </div>
@@ -252,14 +323,20 @@
           <!-- Project 1 -->
           <div class="project-card reveal reveal-up">
             <div class="project-image">
-              <img src="./assets/loopchat.png" alt="LoopChat Real-Time Chat App" loading="lazy" />
+              <img
+                src="./assets/loopchat.png"
+                alt="LoopChat Real-Time Chat App"
+                loading="lazy"
+              />
               <div class="project-image-overlay"></div>
             </div>
 
             <div class="project-content">
               <h3 class="project-title">LoopChat</h3>
               <p class="project-desc">
-                Real-time chat application featuring direct messaging, voice/video calls, and a sleek modern UI built using the MERN stack and Socket.IO.
+                Real-time chat application featuring direct messaging,
+                voice/video calls, and a sleek modern UI built using the MERN
+                stack and Socket.IO.
               </p>
 
               <div class="project-tech">
@@ -271,10 +348,20 @@
               </div>
 
               <div class="project-links">
-                <a href="#" class="project-link-btn primary" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="#"
+                  class="project-link-btn primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i data-lucide="external-link"></i> Live Demo
                 </a>
-                <a href="#" class="project-link-btn secondary" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="#"
+                  class="project-link-btn secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i data-lucide="github"></i> Code Repository
                 </a>
               </div>
@@ -282,16 +369,25 @@
           </div>
 
           <!-- Project 2 -->
-          <div class="project-card reveal reveal-up" style="transition-delay: 0.15s;">
+          <div
+            class="project-card reveal reveal-up"
+            style="transition-delay: 0.15s"
+          >
             <div class="project-image">
-              <img src="./assets/cineva.png" alt="Cineva Movie Browsing Platform" loading="lazy" />
+              <img
+                src="./assets/cineva.png"
+                alt="Cineva Movie Browsing Platform"
+                loading="lazy"
+              />
               <div class="project-image-overlay"></div>
             </div>
 
             <div class="project-content">
               <h3 class="project-title">Cineva</h3>
               <p class="project-desc">
-                Movie browsing and discovery platform integrated with TMDB API, featuring responsive layouts, filtering, and fluid micro-animations.
+                Movie browsing and discovery platform integrated with TMDB API,
+                featuring responsive layouts, filtering, and fluid
+                micro-animations.
               </p>
 
               <div class="project-tech">
@@ -302,10 +398,20 @@
               </div>
 
               <div class="project-links">
-                <a href="#" class="project-link-btn primary" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="#"
+                  class="project-link-btn primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i data-lucide="external-link"></i> Live Demo
                 </a>
-                <a href="#" class="project-link-btn secondary" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="#"
+                  class="project-link-btn secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i data-lucide="github"></i> Code Repository
                 </a>
               </div>
@@ -321,44 +427,91 @@
           <h2 class="section-heading">Contact</h2>
         </div>
 
-        <div class="contact-container reveal reveal-up">
-          <!-- Left -->
-          <div class="contact-text">
-            <p>
-              I’m currently open to full-time engineering roles, freelance work, and innovative collaborations. If you have a project in mind or want to talk tech, drop me a line!
+        <div class="contact-card-box reveal reveal-up">
+          <!-- Left Info Box -->
+          <div class="contact-info-col">
+            <h3 class="contact-headline">
+              Let's build something awesome together.
+            </h3>
+            <p class="contact-subtext">
+              I’m currently open to full-time software engineering roles,
+              freelance opportunities, and interesting collaborations. Feel free
+              to reach out directly or connect with me on social platforms!
             </p>
 
-            <div class="contact-info">
-              <div class="info-item">
-                <i data-lucide="mail"></i>
-                <span>Email: <a href="mailto:ahmed@email.com" class="email-link">ahmed@email.com</a></span>
+            <div class="contact-details-list">
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <i data-lucide="mail"></i>
+                </div>
+                <div>
+                  <span class="detail-label">Email Me</span>
+                  <a href="mailto:ahmed@email.com" class="detail-value"
+                    >ahmed@email.com</a
+                  >
+                </div>
               </div>
-              <div class="info-item">
-                <i data-lucide="map-pin"></i>
-                <span>Location: Karachi, Pakistan</span>
+
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <i data-lucide="map-pin"></i>
+                </div>
+                <div>
+                  <span class="detail-label">Location</span>
+                  <span class="detail-value">Karachi, Pakistan</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Right -->
-          <div class="contact-actions">
+          <!-- Right Action Box -->
+          <div class="contact-actions-col">
             <div class="contact-btn-group">
-              <a href="mailto:ahmed@email.com" class="contact-btn">
-                <i data-lucide="send"></i> Send Message
+              <a
+                href="mailto:ahmed@email.com"
+                class="contact-action-btn primary-btn"
+              >
+                <i data-lucide="send"></i>
+                <span>Send Message</span>
               </a>
-              <button class="copy-email-btn" id="copyEmailBtn" data-email="ahmed@email.com">
-                <i data-lucide="copy"></i> Copy Email
+
+              <button
+                class="contact-action-btn secondary-btn"
+                id="copyEmailBtn"
+                data-email="ahmed@email.com"
+              >
+                <i data-lucide="copy"></i>
+                <span>Copy Email</span>
               </button>
             </div>
 
-            <div class="socials-wrap">
-              <span class="socials-title">Follow / Connect</span>
-              <div class="socials">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                  <i data-lucide="github"></i> GitHub
+            <div class="socials-container">
+              <span class="socials-label">Connect with me</span>
+              <div class="social-pills">
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-pill"
+                >
+                  <svg class="social-brand-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+                  </svg>
+                  <span>GitHub</span>
+                  <i data-lucide="arrow-up-right" class="pill-arrow"></i>
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                  <i data-lucide="linkedin"></i> LinkedIn
+
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-pill"
+                >
+                  <svg class="social-brand-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                  <i data-lucide="arrow-up-right" class="pill-arrow"></i>
                 </a>
               </div>
             </div>
@@ -367,13 +520,32 @@
       </section>
     </main>
 
-    <!---------- Footer ---------->
+    <!---------- Compact Modern Footer ---------->
     <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; <span id="year"></span> Ahmed. Built with HTML, CSS & JS.</p>
-        <a href="#home" class="back-to-top" aria-label="Back to top">
-          <i data-lucide="arrow-up"></i>
-        </a>
+      <div class="footer-compact-container">
+        <div class="footer-left">
+          <a href="#home" class="footer-logo">Portfolio<span>.</span></a>
+          <p class="footer-copyright">&copy; <span id="year"></span> Ahmed. Built with HTML, CSS & JS.</p>
+        </div>
+
+        <div class="footer-right">
+          <div class="footer-quick-socials">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+              </svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/>
+              </svg>
+            </a>
+          </div>
+
+          <a href="#home" class="back-to-top" aria-label="Back to top">
+            <i data-lucide="arrow-up"></i>
+          </a>
+        </div>
       </div>
     </footer>
 
@@ -386,4 +558,3 @@
     <script src="./js/script.js"></script>
   </body>
 </html>
-
