@@ -130,7 +130,7 @@ section {
 /* paragraph */
 .section-text {
   color: #45474d;
-  font-size: 1.1rem;
+
   line-height: 1.75;
   margin-top: 16px;
 }
@@ -243,4 +243,80 @@ section {
 .skill:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* Project Section */
+.projects-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+.project-card {
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.project-image {
+  height: 180px;
+  background: #f0f1f5;
+}
+
+.project-content {
+  padding: 16px;
+}
+
+.project-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #121317;
+}
+
+.project-desc {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #6b6e76;
+  line-height: 1.6;
+}
+
+.project-tech {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.project-tech span {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+}
+
+.project-links {
+  margin-top: 14px;
+  display: flex;
+  gap: 16px;
+}
+
+.project-links a {
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: #121317;
+  border-bottom: 1px solid transparent;
+  transition: border 0.2s ease;
+}
+
+.project-links a:hover {
+  border-bottom: 1px solid #121317;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
