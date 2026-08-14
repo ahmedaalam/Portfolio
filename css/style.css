@@ -320,3 +320,100 @@ section {
   transform: translateY(-6px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
+
+/* =========================
+   CONTACT SECTION
+========================= */
+
+#contact {
+  padding: 100px 10%;
+}
+
+/* Layout */
+.contact-container {
+  margin-top: 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+/* LEFT SIDE */
+.contact-text {
+  flex: 1;
+  max-width: 32rem;
+}
+
+.contact-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #45474d;
+}
+
+/* Info (email + location) */
+.contact-info {
+  margin-top: 24px;
+}
+
+.contact-info p {
+  font-size: 0.9rem;
+  color: #6b6e76;
+}
+
+/* RIGHT SIDE */
+.contact-actions {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* BUTTON */
+.contact-btn {
+  display: inline-block;
+
+  padding: 12px 20px;
+  border-radius: 999px;
+
+  background: #121317;
+  color: #ffffff;
+
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.contact-btn:hover {
+  background: #1f2126;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* SOCIAL LINKS */
+.socials {
+  display: flex;
+  gap: 16px;
+}
+
+.socials a {
+  font-size: 0.9rem;
+  color: #121317;
+  text-decoration: none;
+
+  border-bottom: 1px solid transparent;
+  transition:
+    border 0.2s ease,
+    color 0.2s ease;
+}
+
+.socials a:hover {
+  border-bottom: 1px solid #121317;
+}
