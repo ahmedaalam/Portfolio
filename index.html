@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
+    <title>Ahmed | MERN Stack Developer</title>
+    <meta name="description" content="Portfolio of Ahmed, a MERN Stack Developer building modern, high-performance web applications with React, Node.js, MongoDB, and Next.js." />
     <link rel="stylesheet" href="./css/style.css" />
 
     <link
@@ -13,85 +14,137 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Top Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <!-------- Header -------->
-    <header>
-      <nav>
+    <header id="header">
+      <nav class="nav-container">
         <div class="nav-logo">
-          <h3>Portfolio</h3>
+          <a href="#home"><h3>Portfolio<span>.</span></h3></a>
         </div>
-        <div class="nav-links">
+
+        <div class="nav-links" id="navLinks">
           <ul>
-            <li><a href="">Home</a></li>
-            <li><a href="">About</a></li>
-            <li><a href="">Skills</a></li>
-            <li><a href="">Projects</a></li>
-            <li><a href="">Contact</a></li>
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
           </ul>
         </div>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" id="menuIcon"></i>
+        </button>
       </nav>
     </header>
 
     <!---------------- Main ------------------>
     <main>
       <!---------- Hero ---------->
-      <section class="hero">
-        <p class="main-text">MERN Stack Developer</p>
+      <section class="hero" id="home">
+        <div class="hero-content reveal reveal-up">
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            <span>Available for new projects</span>
+          </div>
 
-        <p class="second-text">
-          Crafting modern and interactive web experiences with cutting-edge
-          <br />technology and creative vision
-        </p>
+          <h1 class="main-text">MERN Stack Developer</h1>
 
-        <div class="buttons">
-          <a class="btn project" href="">View My Work</a>
-          <a class="btn contact" href="">Get in Touch</a>
+          <p class="second-text">
+            Crafting modern and interactive web experiences with cutting-edge
+            <br class="desktop-only" />technology and creative vision.
+          </p>
+
+          <div class="buttons">
+            <a class="btn project" href="#projects">
+              <span>View My Work</span>
+              <i data-lucide="arrow-down-right" class="btn-icon"></i>
+            </a>
+            <a class="btn contact" href="#contact">
+              <span>Get in Touch</span>
+              <i data-lucide="mail" class="btn-icon"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="scroll-down-hint">
+          <a href="#about" aria-label="Scroll to About section">
+            <i data-lucide="chevron-down"></i>
+          </a>
         </div>
       </section>
 
       <!------------- About  ------------>
       <section id="about">
-        <h2 class="section-heading">About Me</h2>
+        <div class="section-header reveal reveal-up">
+          <span class="section-tag">Overview</span>
+          <h2 class="section-heading">About Me</h2>
+        </div>
+
         <div class="about-layout">
-          <div class="container1">
+          <div class="container1 reveal reveal-left">
             <p class="section-text">
-              I’m Ahmed, a MERN Stack Developer based in Karachi, with a
-              background in Software Engineering from Sir Syed University. I
-              have hands-on experience as a Frontend Developer Intern at Bidec
-              Solutions, where I worked on real-world applications and
-              collaborated in a professional environment. I focus on building
-              modern, intuitive web experiences with clean interfaces and smooth
-              user interactions. Currently, I’m focused on strengthening my
-              backend skills and building scalable applications to grow as a
-              full-stack engineer.
+              I’m <strong>Ahmed</strong>, a MERN Stack Developer based in Karachi with a background in Software Engineering from Sir Syed University.
             </p>
+            <p class="section-text">
+              I have hands-on experience as a Frontend Developer Intern at Bidec Solutions, where I worked on real-world applications and collaborated in a professional environment.
+            </p>
+            <p class="section-text">
+              I focus on building modern, intuitive web experiences with clean interfaces and smooth user interactions. Currently, I’m focused on strengthening my backend skills and building scalable applications to grow as a full-stack engineer.
+            </p>
+
+            <div class="about-highlights">
+              <div class="highlight-item">
+                <span class="highlight-num">SSUET</span>
+                <span class="highlight-label">Software Engineering</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-num">MERN</span>
+                <span class="highlight-label">Full Stack Focus</span>
+              </div>
+            </div>
           </div>
-          <div class="container2">
+
+          <div class="container2 reveal reveal-right">
             <div class="card">
-              <i data-lucide="graduation-cap" class="icons"></i>
+              <div class="card-icon-wrap">
+                <i data-lucide="graduation-cap" class="icons"></i>
+              </div>
               <div class="card-text">
                 <p class="card-title">Software Engineering</p>
                 <p class="card-subtitle">Sir Syed University</p>
               </div>
             </div>
+
             <div class="card">
-              <i data-lucide="code" class="icons"></i>
+              <div class="card-icon-wrap">
+                <i data-lucide="code" class="icons"></i>
+              </div>
               <div class="card-text">
                 <p class="card-title">MERN Developer</p>
                 <p class="card-subtitle">Modern web apps</p>
               </div>
             </div>
+
             <div class="card">
-              <i data-lucide="building-2" class="icons"></i>
+              <div class="card-icon-wrap">
+                <i data-lucide="building-2" class="icons"></i>
+              </div>
               <div class="card-text">
                 <p class="card-title">Frontend Intern</p>
                 <p class="card-subtitle">Bidec Solutions</p>
               </div>
             </div>
+
             <div class="card">
-              <i data-lucide="map-pin" class="icons"></i>
+              <div class="card-icon-wrap">
+                <i data-lucide="map-pin" class="icons"></i>
+              </div>
               <div class="card-text">
                 <p class="card-title">Based in Karachi</p>
-                <p class="card-subtitle">Pakistan</p>
+                <p class="card-subtitle">Pakistan <span class="ping-dot"></span></p>
               </div>
             </div>
           </div>
@@ -100,86 +153,89 @@
 
       <!----------- Skill ------------>
       <section id="skills">
-        <h2 class="section-heading">Skills</h2>
+        <div class="section-header reveal reveal-up">
+          <span class="section-tag">Tech Stack</span>
+          <h2 class="section-heading">Skills & Tools</h2>
+        </div>
 
-        <div class="skills-grid">
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/html5" />
+        <div class="skills-grid reveal reveal-up">
+          <div class="skill" data-tooltip="HTML5">
+            <img src="https://cdn.simpleicons.org/html5" alt="HTML5" loading="lazy" />
             <p>HTML</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/css" />
+          <div class="skill" data-tooltip="CSS3">
+            <img src="https://cdn.simpleicons.org/css" alt="CSS3" loading="lazy" />
             <p>CSS</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/javascript" />
+          <div class="skill" data-tooltip="JavaScript ES6+">
+            <img src="https://cdn.simpleicons.org/javascript" alt="JavaScript" loading="lazy" />
             <p>JavaScript</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/react" />
+          <div class="skill" data-tooltip="React.js">
+            <img src="https://cdn.simpleicons.org/react" alt="React" loading="lazy" />
             <p>React</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/nextdotjs" />
+          <div class="skill" data-tooltip="Next.js">
+            <img src="https://cdn.simpleicons.org/nextdotjs" alt="Next.js" loading="lazy" />
             <p>Next.js</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/nodedotjs" />
+          <div class="skill" data-tooltip="Node.js">
+            <img src="https://cdn.simpleicons.org/nodedotjs" alt="Node.js" loading="lazy" />
             <p>Node.js</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/express" />
+          <div class="skill" data-tooltip="Express.js">
+            <img src="https://cdn.simpleicons.org/express" alt="Express" loading="lazy" />
             <p>Express</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/mongodb" />
+          <div class="skill" data-tooltip="MongoDB">
+            <img src="https://cdn.simpleicons.org/mongodb" alt="MongoDB" loading="lazy" />
             <p>MongoDB</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/git" />
+          <div class="skill" data-tooltip="Git VCS">
+            <img src="https://cdn.simpleicons.org/git" alt="Git" loading="lazy" />
             <p>Git</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/github" />
+          <div class="skill" data-tooltip="GitHub">
+            <img src="https://cdn.simpleicons.org/github" alt="GitHub" loading="lazy" />
             <p>GitHub</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/figma" />
+          <div class="skill" data-tooltip="Figma UI/UX">
+            <img src="https://cdn.simpleicons.org/figma" alt="Figma" loading="lazy" />
             <p>Figma</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/postman" />
+          <div class="skill" data-tooltip="Postman API">
+            <img src="https://cdn.simpleicons.org/postman" alt="Postman" loading="lazy" />
             <p>Postman</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/tailwindcss" />
+          <div class="skill" data-tooltip="Tailwind CSS">
+            <img src="https://cdn.simpleicons.org/tailwindcss" alt="Tailwind" loading="lazy" />
             <p>Tailwind</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/redux" />
+          <div class="skill" data-tooltip="Redux Toolkit">
+            <img src="https://cdn.simpleicons.org/redux" alt="Redux" loading="lazy" />
             <p>Redux</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/socketdotio" />
+          <div class="skill" data-tooltip="Socket.IO">
+            <img src="https://cdn.simpleicons.org/socketdotio" alt="Socket.IO" loading="lazy" />
             <p>Socket.IO</p>
           </div>
 
-          <div class="skill">
-            <img src="https://cdn.simpleicons.org/vercel" />
+          <div class="skill" data-tooltip="Vercel Deployment">
+            <img src="https://cdn.simpleicons.org/vercel" alt="Vercel" loading="lazy" />
             <p>Vercel</p>
           </div>
         </div>
@@ -187,53 +243,71 @@
 
       <!---------- Project  ---------->
       <section id="projects">
-        <h2 class="section-heading">Projects</h2>
+        <div class="section-header reveal reveal-up">
+          <span class="section-tag">Featured Work</span>
+          <h2 class="section-heading">Projects</h2>
+        </div>
 
         <div class="projects-grid">
           <!-- Project 1 -->
-          <div class="project-card">
-            <div class="project-image"></div>
+          <div class="project-card reveal reveal-up">
+            <div class="project-image">
+              <img src="./assets/loopchat.png" alt="LoopChat Real-Time Chat App" loading="lazy" />
+              <div class="project-image-overlay"></div>
+            </div>
 
             <div class="project-content">
               <h3 class="project-title">LoopChat</h3>
               <p class="project-desc">
-                Real-time chat application with messaging, calls, and modern UI
-                built using MERN stack.
+                Real-time chat application featuring direct messaging, voice/video calls, and a sleek modern UI built using the MERN stack and Socket.IO.
               </p>
 
               <div class="project-tech">
                 <span>React</span>
-                <span>Node</span>
+                <span>Node.js</span>
+                <span>Express</span>
                 <span>MongoDB</span>
+                <span>Socket.IO</span>
               </div>
 
               <div class="project-links">
-                <a href="#">Live</a>
-                <a href="#">GitHub</a>
+                <a href="#" class="project-link-btn primary" target="_blank" rel="noopener noreferrer">
+                  <i data-lucide="external-link"></i> Live Demo
+                </a>
+                <a href="#" class="project-link-btn secondary" target="_blank" rel="noopener noreferrer">
+                  <i data-lucide="github"></i> Code Repository
+                </a>
               </div>
             </div>
           </div>
 
           <!-- Project 2 -->
-          <div class="project-card">
-            <div class="project-image"></div>
+          <div class="project-card reveal reveal-up" style="transition-delay: 0.15s;">
+            <div class="project-image">
+              <img src="./assets/cineva.png" alt="Cineva Movie Browsing Platform" loading="lazy" />
+              <div class="project-image-overlay"></div>
+            </div>
 
             <div class="project-content">
               <h3 class="project-title">Cineva</h3>
               <p class="project-desc">
-                Movie browsing platform using TMDB API with responsive UI and
-                smooth animations.
+                Movie browsing and discovery platform integrated with TMDB API, featuring responsive layouts, filtering, and fluid micro-animations.
               </p>
 
               <div class="project-tech">
                 <span>React</span>
-                <span>API</span>
+                <span>TMDB API</span>
                 <span>Tailwind</span>
+                <span>JavaScript</span>
               </div>
 
               <div class="project-links">
-                <a href="#">Live</a>
-                <a href="#">GitHub</a>
+                <a href="#" class="project-link-btn primary" target="_blank" rel="noopener noreferrer">
+                  <i data-lucide="external-link"></i> Live Demo
+                </a>
+                <a href="#" class="project-link-btn secondary" target="_blank" rel="noopener noreferrer">
+                  <i data-lucide="github"></i> Code Repository
+                </a>
               </div>
             </div>
           </div>
@@ -242,40 +316,74 @@
 
       <!---------- Contact Section ---------->
       <section id="contact">
-        <h2 class="section-heading">Contact</h2>
+        <div class="section-header reveal reveal-up">
+          <span class="section-tag">Let's Connect</span>
+          <h2 class="section-heading">Contact</h2>
+        </div>
 
-        <div class="contact-container">
+        <div class="contact-container reveal reveal-up">
           <!-- Left -->
           <div class="contact-text">
             <p>
-              I’m currently open to opportunities and collaborations. If you
-              have a project in mind or just want to connect, feel free to reach
-              out.
+              I’m currently open to full-time engineering roles, freelance work, and innovative collaborations. If you have a project in mind or want to talk tech, drop me a line!
             </p>
 
             <div class="contact-info">
-              <p>Email: ahmed@email.com</p>
-              <p>Location: Karachi, Pakistan</p>
+              <div class="info-item">
+                <i data-lucide="mail"></i>
+                <span>Email: <a href="mailto:ahmed@email.com" class="email-link">ahmed@email.com</a></span>
+              </div>
+              <div class="info-item">
+                <i data-lucide="map-pin"></i>
+                <span>Location: Karachi, Pakistan</span>
+              </div>
             </div>
           </div>
 
           <!-- Right -->
           <div class="contact-actions">
-            <a href="mailto:ahmed@email.com" class="contact-btn"
-              >Get in touch</a
-            >
+            <div class="contact-btn-group">
+              <a href="mailto:ahmed@email.com" class="contact-btn">
+                <i data-lucide="send"></i> Send Message
+              </a>
+              <button class="copy-email-btn" id="copyEmailBtn" data-email="ahmed@email.com">
+                <i data-lucide="copy"></i> Copy Email
+              </button>
+            </div>
 
-            <div class="socials">
-              <a href="#">GitHub</a>
-              <a href="#">LinkedIn</a>
+            <div class="socials-wrap">
+              <span class="socials-title">Follow / Connect</span>
+              <div class="socials">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                  <i data-lucide="github"></i> GitHub
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                  <i data-lucide="linkedin"></i> LinkedIn
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </main>
+
+    <!---------- Footer ---------->
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; <span id="year"></span> Ahmed. Built with HTML, CSS & JS.</p>
+        <a href="#home" class="back-to-top" aria-label="Back to top">
+          <i data-lucide="arrow-up"></i>
+        </a>
+      </div>
+    </footer>
+
+    <!-- Toast Notification for Copy -->
+    <div id="toast" class="toast">Email copied to clipboard!</div>
+
     <script>
       lucide.createIcons();
     </script>
     <script src="./js/script.js"></script>
   </body>
 </html>
+
