@@ -85,73 +85,80 @@
         </div>
       </section>
 
-      <!------------- About Section  ------------>
+      <!------------- About Section (Two-Column Split Layout) ------------>
       <section id="about">
         <div class="section-header reveal reveal-up">
-          <span class="section-tag">Overview</span>
+          <span class="section-tag">Overview & Background</span>
           <h2 class="section-heading">About Me</h2>
         </div>
 
-        <div class="about-grid">
-          <!-- Main Bio Card -->
-          <div class="about-bio-card reveal reveal-left">
-            <div class="bio-header">
-              <h3 class="bio-title">I'm Ahmed — MERN Stack Developer</h3>
+        <div class="about-split-container">
+          <!-- Left Column: Typography Narrative -->
+          <div class="about-split-left reveal reveal-left">
+            <h3 class="about-headline">
+              Building scalable web applications with modern architecture &
+              creative precision.
+            </h3>
+
+            <div class="about-story-paragraphs">
+              <p>
+                Holding a degree in Software Engineering from Sir Syed
+                University of Engineering and Technology (SSUET) and hands-on
+                industry experience as a Frontend Intern at Bidec Solutions, I
+                specialize in building responsive, fast, and accessible web
+                solutions.
+              </p>
+              <p>
+                I focus on crafting intuitive user interfaces using React and
+                Next.js, while developing robust, maintainable backends using
+                Node.js, Express, and MongoDB.
+              </p>
             </div>
-
-            <p class="bio-text">
-              With a degree in Software Engineering from Sir Syed University
-              (SSUET) and hands-on industry experience as a Frontend Intern at
-              Bidec Solutions, I specialize in building responsive, scalable,
-              and visually intuitive web applications.
-            </p>
-
-            <p class="bio-text">
-              I thrive on turning complex problems into elegant user interfaces
-              with React and Next.js, while crafting robust backends using
-              Node.js, Express, and MongoDB.
-            </p>
           </div>
 
-          <!-- Feature Cards Column -->
-          <div class="about-cards-col reveal reveal-right">
-            <div class="info-card">
-              <div class="info-card-icon">
-                <i data-lucide="graduation-cap"></i>
+          <!-- Right Column: Minimal Vertical Timeline -->
+          <div class="about-split-right reveal reveal-right">
+            <div class="timeline-container">
+              <!-- Item 1: Education -->
+              <div class="timeline-item">
+                <div class="timeline-node">
+                  <i data-lucide="graduation-cap"></i>
+                </div>
+                <div class="timeline-content">
+                  <span class="timeline-tag">Degree</span>
+                  <h4>BS Software Engineering</h4>
+                  <p>Sir Syed University of Engineering & Technology (SSUET)</p>
+                </div>
               </div>
-              <div class="info-card-details">
-                <h4>Software Engineering</h4>
-                <p>Sir Syed University (SSUET)</p>
-              </div>
-            </div>
 
-            <div class="info-card">
-              <div class="info-card-icon">
-                <i data-lucide="code-2"></i>
+              <!-- Item 2: Experience -->
+              <div class="timeline-item">
+                <div class="timeline-node">
+                  <i data-lucide="briefcase"></i>
+                </div>
+                <div class="timeline-content">
+                  <span class="timeline-tag">Industry Experience</span>
+                  <h4>Frontend Engineer Intern</h4>
+                  <p>
+                    Bidec Solutions — Real-world web applications & UI
+                    components
+                  </p>
+                </div>
               </div>
-              <div class="info-card-details">
-                <h4>Full Stack Engineering</h4>
-                <p>MERN Stack & Next.js Ecosystem</p>
-              </div>
-            </div>
 
-            <div class="info-card">
-              <div class="info-card-icon">
-                <i data-lucide="briefcase"></i>
-              </div>
-              <div class="info-card-details">
-                <h4>Frontend Intern Experience</h4>
-                <p>Bidec Solutions — Real-world apps</p>
-              </div>
-            </div>
-
-            <div class="info-card">
-              <div class="info-card-icon">
-                <i data-lucide="map-pin"></i>
-              </div>
-              <div class="info-card-details">
-                <h4>Based in Karachi</h4>
-                <p>Pakistan <span class="pulse-status-dot"></span></p>
+              <!-- Item 4: Location -->
+              <div class="timeline-item">
+                <div class="timeline-node">
+                  <i data-lucide="map-pin"></i>
+                </div>
+                <div class="timeline-content">
+                  <span class="timeline-tag">Location & Status</span>
+                  <h4>Karachi, Pakistan <span class="pulse-online"></span></h4>
+                  <p>
+                    Available for onsite & remote software engineering
+                    opportunities
+                  </p>
+                </div>
               </div>
             </div>
           </div>
