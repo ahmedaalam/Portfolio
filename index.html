@@ -63,21 +63,28 @@
     <main>
       <!---------- Hero ---------->
       <section class="hero" id="home">
-        <div class="hero-content reveal reveal-up">
-          <h1 class="main-text">
-            <div class="hero-line">
-              <span class="hero-name">Ahmed Alam</span>
-            </div>
-            <div class="hero-line">
-              <span class="hero-role">MERN Stack Developer</span>
-            </div>
+        <div class="hero-content">
+
+          <div class="hero-eyebrow reveal reveal-fade">
+            <span class="hero-eyebrow-dot"></span>
+            <span>Full Stack Developer</span>
+          </div>
+
+          <h1 class="main-text reveal reveal-up">
+            <span class="hero-name">Ahmed Alam</span>
           </h1>
 
-          <p class="second-text">
-            Crafting modern, scalable, and high-performance web applications with cutting-edge technologies and clean code.
-          </p>
+          <div class="hero-typewriter reveal reveal-up" style="transition-delay:0.15s">
+            <div class="typewriter-line">
+              <span id="typewriterLine1"></span>
+            </div>
+            <div class="typewriter-line">
+              <span id="typewriterLine2"></span>
+              <span class="hero-typewriter-cursor" id="typewriterCursor" aria-hidden="true"></span>
+            </div>
+          </div>
 
-          <div class="buttons">
+          <div class="buttons hero-delayed-element">
             <a class="btn project" href="#projects">
               <span>View My Work</span>
               <i data-lucide="arrow-down-right" class="btn-icon"></i>
@@ -87,9 +94,10 @@
               <i data-lucide="mail" class="btn-icon"></i>
             </a>
           </div>
+
         </div>
 
-        <div class="scroll-down-hint">
+        <div class="scroll-down-hint hero-delayed-element">
           <a href="#about" aria-label="Scroll to About section">
             <i data-lucide="chevron-down"></i>
           </a>

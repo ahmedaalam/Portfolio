@@ -6,7 +6,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Check reduced motion setting
   const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
 
   initYear();
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initActiveNavTracking();
   initMobileMenu();
   initCopyEmailWidget();
+  initTypewriter();
 
   if (!prefersReducedMotion) {
     initProjectCursorPill();
@@ -47,7 +48,8 @@ function initNavbarScroll() {
   window.addEventListener("scroll", () => {
     if (!ticking) {
       window.requestAnimationFrame(() => {
-        const totalScroll = window.scrollY || document.documentElement.scrollTop;
+        const totalScroll =
+          window.scrollY || document.documentElement.scrollTop;
         const windowHeight =
           document.documentElement.scrollHeight -
           document.documentElement.clientHeight;
@@ -94,7 +96,7 @@ function initRevealAnimations() {
         root: null,
         threshold: 0.12,
         rootMargin: "0px 0px -40px 0px",
-      }
+      },
     );
 
     revealElements.forEach((el) => revealObserver.observe(el));
@@ -316,4 +318,64 @@ function initProjectCursorPill() {
   });
 
   document.addEventListener("mouseleave", resetPill);
+}
+
+/** 11. Two-Line Sequential Hero Typewriter Animation */
+function initTypewriter() {
+  const line1El = document.getElementById("typewriterLine1");
+  const line2El = document.getElementById("typewriterLine2");
+  const cursor = document.getElementById("typewriterCursor");
+  const delayedElements = document.querySelectorAll(".hero-delayed-element");
+
+  if (!line1El || !line2El) return;
+
+  // Position cursor next to line 1 initially
+  if (cursor && line1El.parentNode) {
+    line1El.parentNode.appendChild(cursor);
+  }
+
+  const line1Text = "Crafting modern web experiences through clean code";
+  const line2Text = "and thoughtful design.";
+
+  let index1 = 0;
+  let index2 = 0;
+  const TYPE_SPEED = 28;
+
+  function typeLine1() {
+    if (index1 < line1Text.length) {
+      index1++;
+      line1El.textContent = line1Text.slice(0, index1);
+      setTimeout(typeLine1, TYPE_SPEED);
+    } else {
+      // Move cursor to line 2 container and type line 2
+      if (cursor && line2El.parentNode) {
+        line2El.parentNode.appendChild(cursor);
+      }
+      setTimeout(typeLine2, 100);
+    }
+  }
+
+  function typeLine2() {
+    if (index2 < line2Text.length) {
+      index2++;
+      line2El.textContent = line2Text.slice(0, index2);
+      setTimeout(typeLine2, TYPE_SPEED);
+    } else {
+      // Typing completed! Reveal delayed CTA buttons & scroll hint
+      delayedElements.forEach((element) => {
+        element.classList.add("active");
+      });
+
+      // Fade out cursor gracefully after 1s
+      setTimeout(() => {
+        if (cursor) {
+          cursor.style.transition = "opacity 0.6s ease";
+          cursor.style.opacity = "0";
+        }
+      }, 1000);
+    }
+  }
+
+  // Start typing Line 1 after reveal animation (350ms)
+  setTimeout(typeLine1, 350);
 }
