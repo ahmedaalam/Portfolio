@@ -17,9 +17,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <!-- Custom Cursor (Desktop Only) -->
-    <div class="custom-cursor-dot" id="cursorDot"></div>
-    <div class="custom-cursor-ring" id="cursorRing"></div>
+    <!-- Floating Project Cursor Pill (Project Cards Only) -->
+    <div class="project-cursor-pill" id="projectCursorPill">
+      <span>View Project</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+      </svg>
+    </div>
 
     <!-- Top Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
@@ -380,11 +384,26 @@
 
         <div class="projects-split-container">
           <!-- Project 1 -->
-          <div class="project-split-card reveal reveal-up">
+          <div
+            class="project-split-card reveal reveal-up"
+            data-url="https://loopchat-web.vercel.app/"
+          >
             <div class="project-split-header">
-              <div class="project-split-badge">
-                <span class="project-num-tag">01</span>
-                <span class="project-cat-tag">Full Stack MERN</span>
+              <div class="project-split-top-bar">
+                <div class="project-split-badge">
+                  <span class="project-num-tag">01</span>
+                  <span class="project-cat-tag">Full Stack MERN</span>
+                </div>
+                <a
+                  href="https://github.com/ahmedaalam/loopchat"
+                  class="project-repo-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View LoopChat repository on GitHub"
+                >
+                  <img src="./assets/icons/github.svg" alt="GitHub" />
+                  <span>Repository</span>
+                </a>
               </div>
               <h3 class="project-split-title">LoopChat</h3>
             </div>
@@ -402,38 +421,30 @@
               <span>MongoDB</span>
               <span>Socket.IO</span>
             </div>
-
-            <div class="project-split-actions">
-              <a
-                href="https://loopchat-web.vercel.app/"
-                class="project-btn primary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>Live Demo</span>
-                <i data-lucide="arrow-up-right"></i>
-              </a>
-              <a
-                href="https://github.com/ahmedaalam/loopchat"
-                class="project-btn secondary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="./assets/icons/github.svg" alt="GitHub" />
-                <span>Repository</span>
-              </a>
-            </div>
           </div>
 
           <!-- Project 2 -->
           <div
             class="project-split-card reveal reveal-up"
             style="transition-delay: 0.1s"
+            data-url="https://cineva-six.vercel.app/"
           >
             <div class="project-split-header">
-              <div class="project-split-badge">
-                <span class="project-num-tag">02</span>
-                <span class="project-cat-tag">Frontend & API</span>
+              <div class="project-split-top-bar">
+                <div class="project-split-badge">
+                  <span class="project-num-tag">02</span>
+                  <span class="project-cat-tag">Frontend & API</span>
+                </div>
+                <a
+                  href="https://github.com/ahmedaalam/cineva-frontend"
+                  class="project-repo-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View Cineva repository on GitHub"
+                >
+                  <img src="./assets/icons/github.svg" alt="GitHub" />
+                  <span>Repository</span>
+                </a>
               </div>
               <h3 class="project-split-title">Cineva</h3>
             </div>
@@ -450,27 +461,7 @@
               <span>CSS3</span>
               <span>JavaScript</span>
             </div>
-
-            <div class="project-split-actions">
-              <a
-                href="https://cineva-six.vercel.app/"
-                class="project-btn primary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>Live Demo</span>
-                <i data-lucide="arrow-up-right"></i>
-              </a>
-              <a
-                href="https://github.com/ahmedaalam/cineva-frontend"
-                class="project-btn secondary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="./assets/icons/github.svg" alt="GitHub" />
-                <span>Repository</span>
-              </a>
-            </div>
+          </div>
           </div>
         </div>
       </section>

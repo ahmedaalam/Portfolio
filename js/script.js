@@ -18,8 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCopyEmailWidget();
 
   if (!prefersReducedMotion) {
-    initCustomCursor();
-    initParallaxProjectCards();
+    initProjectCursorPill();
   }
 });
 
@@ -199,12 +198,29 @@ function initCopyEmailWidget() {
   }
 }
 
-/** 8. Subtle Accessible Custom Cursor (Desktop Only) */
-function initCustomCursor() {
-  const cursorDot = document.getElementById("cursorDot");
-  const cursorRing = document.getElementById("cursorRing");
+/** 10. Project Card Mouse-Follow "View Project" Pill & Click Handler */
+function initProjectCursorPill() {
+  const pill = document.getElementById("projectCursorPill");
+  const cards = document.querySelectorAll(".project-split-card");
 
-  if (!cursorDot || !cursorRing) return;
+  if (cards.length === 0) return;
+
+  // Add click navigation listener to each project card
+  cards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      // If user clicked the top-right Repository link, let the link handle itself
+      if (e.target.closest(".project-repo-link")) {
+        return;
+      }
+
+      const url = card.getAttribute("data-url");
+      if (url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+    });
+  });
+
+  if (!pill) return;
 
   const isTouchDevice =
     "ontouchstart" in window ||
@@ -215,92 +231,89 @@ function initCustomCursor() {
 
   let mouseX = -100;
   let mouseY = -100;
-  let ringX = -100;
-  let ringY = -100;
-  let isVisible = false;
+  let pillX = -100;
+  let pillY = -100;
+  let activeCard = null;
+  let rafId = null;
 
-  window.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-
-    if (!isVisible) {
-      cursorDot.style.opacity = "1";
-      cursorRing.style.opacity = "1";
-      isVisible = true;
+  function resetPill() {
+    if (activeCard) {
+      activeCard.classList.remove("has-custom-cursor");
+      activeCard = null;
     }
-
-    cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-  });
-
-  function renderCursor() {
-    ringX += (mouseX - ringX) * 0.18;
-    ringY += (mouseY - ringY) * 0.18;
-
-    cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
-
-    requestAnimationFrame(renderCursor);
+    pill.classList.remove("visible");
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
   }
-  requestAnimationFrame(renderCursor);
 
-  const interactiveTargets = document.querySelectorAll(
-    "a, button, .project-split-card, .marquee-pill, .social-pill, .timeline-item"
-  );
+  function updatePillPosition() {
+    if (activeCard) {
+      pillX += (mouseX - pillX) * 0.16;
+      pillY += (mouseY - pillY) * 0.16;
 
-  interactiveTargets.forEach((target) => {
-    target.addEventListener("mouseenter", () => {
-      cursorRing.classList.add("active");
-    });
-    target.addEventListener("mouseleave", () => {
-      cursorRing.classList.remove("active");
-    });
-  });
+      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%) scale(1)`;
+      rafId = requestAnimationFrame(updatePillPosition);
+    }
+  }
 
-  document.addEventListener("mouseleave", () => {
-    cursorDot.style.opacity = "0";
-    cursorRing.style.opacity = "0";
-    isVisible = false;
-  });
-}
+  function checkScrollBounds() {
+    if (!activeCard) return;
+    const rect = activeCard.getBoundingClientRect();
+    if (
+      mouseX < rect.left ||
+      mouseX > rect.right ||
+      mouseY < rect.top ||
+      mouseY > rect.bottom
+    ) {
+      resetPill();
+    }
+  }
 
-/** 9. Subtle 3D Tilt Parallax on Project Cards (60fps RAF) */
-function initParallaxProjectCards() {
-  const cards = document.querySelectorAll(".project-split-card");
-
-  const isTouchDevice =
-    "ontouchstart" in window ||
-    navigator.maxTouchPoints > 0 ||
-    window.matchMedia("(hover: none)").matches;
-
-  if (isTouchDevice) return;
+  // Recalculate pointer position relative to active card during page scroll
+  window.addEventListener("scroll", checkScrollBounds, { passive: true });
 
   cards.forEach((card) => {
-    let rafId = null;
+    card.addEventListener("mouseenter", (e) => {
+      activeCard = card;
+      card.classList.add("has-custom-cursor");
+
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      pillX = mouseX;
+      pillY = mouseY;
+
+      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%) scale(1)`;
+      pill.classList.add("visible");
+
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updatePillPosition);
+    });
 
     card.addEventListener("mousemove", (e) => {
-      if (rafId) cancelAnimationFrame(rafId);
+      mouseX = e.clientX;
+      mouseY = e.clientY;
 
-      rafId = requestAnimationFrame(() => {
+      if (activeCard === card) {
         const rect = card.getBoundingClientRect();
-        const cardWidth = rect.width;
-        const cardHeight = rect.height;
-
-        const centerX = rect.left + cardWidth / 2;
-        const centerY = rect.top + cardHeight / 2;
-
-        const percentX = (e.clientX - centerX) / (cardWidth / 2);
-        const percentY = (e.clientY - centerY) / (cardHeight / 2);
-
-        const rotateY = percentX * 1.5;
-        const rotateX = -percentY * 1.5;
-        const translateY = -5;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(${translateY}px)`;
-      });
+        if (
+          mouseX < rect.left ||
+          mouseX > rect.right ||
+          mouseY < rect.top ||
+          mouseY > rect.bottom
+        ) {
+          resetPill();
+        }
+      }
     });
 
     card.addEventListener("mouseleave", () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      card.style.transform = "";
+      if (activeCard === card) {
+        resetPill();
+      }
     });
   });
+
+  document.addEventListener("mouseleave", resetPill);
 }
