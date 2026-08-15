@@ -223,7 +223,7 @@ section {
 }
 
 /* ==========================================================================
-   HERO SECTION (CLEAN BALANCED WRAPPING)
+   HERO SECTION (CENTERED MODERN MINIMALIST)
    ========================================================================== */
 .hero {
   min-height: calc(100vh - 70px);
@@ -257,7 +257,6 @@ section {
   font-size: 0.825rem;
   font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 4px;
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-fast);
 }
@@ -302,13 +301,13 @@ section {
 }
 
 .main-text {
-  font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+  font-size: clamp(2.6rem, 5.8vw, 4.6rem);
   font-weight: 900;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   color: var(--text-primary);
   line-height: 1.15;
   max-width: 850px;
-  margin: 0 auto 18px auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -331,16 +330,13 @@ section {
   text-align: center;
   color: var(--text-muted);
   font-size: clamp(1rem, 1.8vw, 1.15rem);
-  line-height: 1.6;
+  line-height: 1.65;
   max-width: 620px;
   margin: 0 auto;
-  text-wrap: balance;
-  word-break: normal;
-  overflow-wrap: break-word;
 }
 
 .buttons {
-  margin-top: 12px;
+  margin-top: 10px;
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
