@@ -250,10 +250,10 @@ function initProjectCursorPill() {
 
   function updatePillPosition() {
     if (activeCard) {
-      pillX += (mouseX - pillX) * 0.16;
-      pillY += (mouseY - pillY) * 0.16;
+      pillX += (mouseX - pillX) * 0.2;
+      pillY += (mouseY - pillY) * 0.2;
 
-      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%) scale(1)`;
+      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%)`;
       rafId = requestAnimationFrame(updatePillPosition);
     }
   }
@@ -284,7 +284,7 @@ function initProjectCursorPill() {
       pillX = mouseX;
       pillY = mouseY;
 
-      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%) scale(1)`;
+      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%)`;
       pill.classList.add("visible");
 
       if (rafId) cancelAnimationFrame(rafId);
