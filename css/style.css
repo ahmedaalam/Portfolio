@@ -162,6 +162,52 @@ header.scrolled {
 }
 
 /* ==========================================================================
+   CUSTOM CURSOR (DESKTOP ONLY & ACCESSIBLE)
+   ========================================================================== */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background-color: var(--text-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--text-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, width 0.25s ease, height 0.25s ease;
+  opacity: 0;
+}
+
+.custom-cursor-ring.active {
+  transform: translate(-50%, -50%) scale(1.5);
+  background-color: rgba(18, 19, 23, 0.05);
+  border-color: var(--text-primary);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
    SECTIONS GENERAL & REVEAL ANIMATIONS
    ========================================================================== */
 main {
@@ -172,6 +218,7 @@ section {
   padding: 100px 10%;
   max-width: 1280px;
   margin: 0 auto;
+  scroll-margin-top: 80px;
 }
 
 .section-header {
@@ -200,13 +247,17 @@ section {
 .reveal {
   opacity: 0;
   transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
 .reveal-up {
-  transform: translateY(30px);
+  transform: translateY(35px);
+}
+
+.reveal-fade {
+  transform: none;
 }
 
 .reveal-left {
@@ -223,7 +274,7 @@ section {
 }
 
 /* ==========================================================================
-   HERO SECTION (CENTERED MODERN MINIMALIST)
+   HERO SECTION (EDITORIAL MOTION ENHANCEMENT)
    ========================================================================== */
 .hero {
   min-height: calc(100vh - 70px);
@@ -234,6 +285,53 @@ section {
   text-align: center;
   position: relative;
   padding: 60px 24px;
+}
+
+/* Editorial Hero Text Line Clip Reveal */
+.hero-line {
+  overflow: hidden;
+  display: block;
+}
+
+.hero-line span {
+  display: inline-block;
+  transform: translateY(115%);
+  opacity: 0;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-content.active .hero-line:nth-child(1) span {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.1s;
+}
+
+.hero-content.active .hero-line:nth-child(2) span {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.25s;
+}
+
+.hero-content.reveal .second-text {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+}
+
+.hero-content.active .second-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-content.reveal .buttons {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.55s;
+}
+
+.hero-content.active .buttons {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero-content {
@@ -1430,5 +1528,45 @@ section {
     flex-direction: column;
     gap: 16px;
     text-align: center;
+  }
+}
+
+/* ==========================================================================
+   PREFERS REDUCED MOTION (ACCESSIBILITY OVERRIDES)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-up,
+  .reveal-left,
+  .reveal-right,
+  .reveal-fade,
+  .hero-line span,
+  .second-text,
+  .buttons {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+
+  .marquee-track {
+    animation-play-state: paused !important;
   }
 }

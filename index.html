@@ -17,6 +17,10 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Custom Cursor (Desktop Only) -->
+    <div class="custom-cursor-dot" id="cursorDot"></div>
+    <div class="custom-cursor-ring" id="cursorRing"></div>
+
     <!-- Top Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -55,8 +59,12 @@
       <section class="hero" id="home">
         <div class="hero-content reveal reveal-up">
           <h1 class="main-text">
-            <span class="hero-name">Ahmed Alam</span>
-            <span class="hero-role">MERN Stack Developer</span>
+            <div class="hero-line">
+              <span class="hero-name">Ahmed Alam</span>
+            </div>
+            <div class="hero-line">
+              <span class="hero-role">MERN Stack Developer</span>
+            </div>
           </h1>
 
           <p class="second-text">
