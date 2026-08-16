@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initTypewriter();
   initProjectsCarousel();
 
+  initProjectCardClicks();
   if (!prefersReducedMotion) {
-    initProjectCursorPill();
     initTrailingCircleCursor();
   }
 });
@@ -291,15 +291,10 @@ function initCopyEmailWidget() {
   });
 }
 
-/** 10. Project Card Mouse-Follow "View Project" Pill & Click Handler */
-function initProjectCursorPill() {
-  const pill = document.getElementById("projectCursorPill");
-  const container = document.getElementById("projectsContainer");
+/** 10. Project Card Click Handler */
+function initProjectCardClicks() {
   const cards = document.querySelectorAll(".project-split-card");
 
-  if (cards.length === 0) return;
-
-  // Add click navigation listener to each project card
   cards.forEach((card) => {
     card.addEventListener("click", () => {
       const url = card.getAttribute("data-url");
@@ -308,111 +303,6 @@ function initProjectCursorPill() {
       }
     });
   });
-
-  if (!pill) return;
-
-  const isTouchDevice =
-    "ontouchstart" in window ||
-    navigator.maxTouchPoints > 0 ||
-    window.matchMedia("(hover: none), (pointer: coarse)").matches;
-
-  if (isTouchDevice) return;
-
-  let mouseX = -100;
-  let mouseY = -100;
-  let pillX = -100;
-  let pillY = -100;
-  let activeCard = null;
-  let rafId = null;
-
-  function resetPill() {
-    cards.forEach((c) => c.classList.remove("has-custom-cursor"));
-    activeCard = null;
-    pill.classList.remove("visible");
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-  }
-
-  function updatePillPosition() {
-    if (activeCard && pill.classList.contains("visible")) {
-      pillX += (mouseX - pillX) * 0.22;
-      pillY += (mouseY - pillY) * 0.22;
-
-      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%)`;
-      rafId = requestAnimationFrame(updatePillPosition);
-    }
-  }
-
-  function evaluateMouseTarget(x, y) {
-    if (x < 0 || y < 0 || x > window.innerWidth || y > window.innerHeight) {
-      resetPill();
-      return;
-    }
-
-    const elementUnderMouse = document.elementFromPoint(x, y);
-    if (!elementUnderMouse) {
-      resetPill();
-      return;
-    }
-
-    // Check if mouse is hovering over a project card
-    const cardUnderMouse = elementUnderMouse.closest(".project-split-card");
-
-    if (cardUnderMouse) {
-      if (activeCard !== cardUnderMouse) {
-        cards.forEach((c) => c.classList.remove("has-custom-cursor"));
-        activeCard = cardUnderMouse;
-        activeCard.classList.add("has-custom-cursor");
-
-        if (!pill.classList.contains("visible")) {
-          pillX = x;
-          pillY = y;
-          pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%)`;
-          pill.classList.add("visible");
-        }
-
-        if (!rafId) {
-          rafId = requestAnimationFrame(updatePillPosition);
-        }
-      }
-    } else {
-      resetPill();
-    }
-  }
-
-  // Update mouse coordinates and re-evaluate hover state
-  window.addEventListener(
-    "mousemove",
-    (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      evaluateMouseTarget(mouseX, mouseY);
-    },
-    { passive: true },
-  );
-
-  // Re-evaluate hover target during page or carousel scroll (arrow keys / drag / wheel)
-  window.addEventListener(
-    "scroll",
-    () => {
-      evaluateMouseTarget(mouseX, mouseY);
-    },
-    { passive: true },
-  );
-
-  if (container) {
-    container.addEventListener(
-      "scroll",
-      () => {
-        evaluateMouseTarget(mouseX, mouseY);
-      },
-      { passive: true },
-    );
-  }
-
-  document.addEventListener("mouseleave", resetPill);
 }
 
 /** 11. Two-Line Sequential Hero Typewriter Animation */
