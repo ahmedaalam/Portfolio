@@ -12,6 +12,10 @@
   --btn-dark-hover: #2a2d33;
   --btn-light-hover: #e4e3ea;
 
+  --header-bg: rgba(255, 255, 255, 0.82);
+  --header-scrolled-bg: rgba(255, 255, 255, 0.94);
+  --nav-hover-bg: rgba(255, 255, 255, 0.6);
+
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -24,6 +28,27 @@
   --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Dark Theme Overrides (Strict Website Color Palette Alignment - #121317 Main BG) */
+[data-theme="dark"] {
+  --bg-primary: #121317;
+  --bg-secondary: #1a1c23;
+  --text-primary: #ffffff;
+  --text-muted: #a0a5b1;
+  --text-subtle: #717682;
+  --border-color: #262933;
+  --border-hover: rgba(255, 255, 255, 0.25);
+  --btn-dark-hover: #e4e3ea;
+  --btn-light-hover: #2a2d33;
+
+  --header-bg: rgba(18, 19, 23, 0.85);
+  --header-scrolled-bg: rgba(18, 19, 23, 0.95);
+  --nav-hover-bg: rgba(255, 255, 255, 0.1);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -75,15 +100,15 @@ header {
   top: 0;
   z-index: 1000;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.82);
+  background-color: var(--header-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+  border-bottom: 1px solid var(--border-color);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 header.scrolled {
-  background-color: rgba(255, 255, 255, 0.94);
+  background-color: var(--header-scrolled-bg);
   border-bottom-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
@@ -141,7 +166,7 @@ header.scrolled {
 
 .nav-links ul li a:hover {
   color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: var(--nav-hover-bg);
 }
 
 .nav-links ul li a.active {
@@ -149,6 +174,48 @@ header.scrolled {
   color: var(--text-primary);
   font-weight: 600;
   box-shadow: var(--shadow-sm);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-bounce),
+    box-shadow var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-primary);
+  transform: scale(1.08);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle:hover svg {
+  transform: rotate(18deg) scale(1.1);
 }
 
 .mobile-toggle {
@@ -940,7 +1007,6 @@ section {
 
 .deck-card.is-active {
   background-color: var(--bg-primary);
-  border-color: var(--border-hover);
   box-shadow: var(--shadow-lg);
   cursor: default;
 }

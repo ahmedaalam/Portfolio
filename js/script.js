@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initYear();
   initLucideIcons();
+  initThemeToggle();
   initNavbarScroll();
   initRevealAnimations();
   initActiveNavTracking();
@@ -679,4 +680,37 @@ function initTrailingCircleCursor() {
   }
 
   requestAnimationFrame(animateCircles);
+}
+
+/** 14. Dark Theme Toggle System */
+function initThemeToggle() {
+  const themeToggleBtn = document.getElementById("themeToggle");
+  const themeIcon = document.getElementById("themeIcon");
+  if (!themeToggleBtn) return;
+
+  const savedTheme = localStorage.getItem("portfolio_theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
+
+  function applyTheme(theme) {
+    if (theme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+      themeToggleBtn.innerHTML = `<i data-lucide="sun" id="themeIcon"></i>`;
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+      themeToggleBtn.innerHTML = `<i data-lucide="moon" id="themeIcon"></i>`;
+    }
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+    localStorage.setItem("portfolio_theme", theme);
+  }
+
+  applyTheme(initialTheme);
+
+  themeToggleBtn.addEventListener("click", () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+  });
 }
