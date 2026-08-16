@@ -17,9 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileMenu();
   initCopyEmailWidget();
   initTypewriter();
-  initProjectsCarousel();
+  init3DCardDeck();
 
-  initProjectCardClicks();
   if (!prefersReducedMotion) {
     initTrailingCircleCursor();
   }
@@ -291,20 +290,6 @@ function initCopyEmailWidget() {
   });
 }
 
-/** 10. Project Card Click Handler */
-function initProjectCardClicks() {
-  const cards = document.querySelectorAll(".project-split-card");
-
-  cards.forEach((card) => {
-    card.addEventListener("click", () => {
-      const url = card.getAttribute("data-url");
-      if (url) {
-        window.open(url, "_blank", "noopener,noreferrer");
-      }
-    });
-  });
-}
-
 /** 11. Two-Line Sequential Hero Typewriter Animation */
 function initTypewriter() {
   const line1El = document.getElementById("typewriterLine1");
@@ -314,7 +299,6 @@ function initTypewriter() {
 
   if (!line1El || !line2El) return;
 
-  // Position cursor next to line 1 initially
   if (cursor && line1El.parentNode) {
     line1El.parentNode.appendChild(cursor);
   }
@@ -332,7 +316,6 @@ function initTypewriter() {
       line1El.textContent = line1Text.slice(0, index1);
       setTimeout(typeLine1, TYPE_SPEED);
     } else {
-      // Move cursor to line 2 container and type line 2
       if (cursor && line2El.parentNode) {
         line2El.parentNode.appendChild(cursor);
       }
@@ -346,73 +329,252 @@ function initTypewriter() {
       line2El.textContent = line2Text.slice(0, index2);
       setTimeout(typeLine2, TYPE_SPEED);
     } else {
-      // Typing completed! Reveal delayed CTA buttons & scroll hint
       delayedElements.forEach((element) => {
         element.classList.add("active");
       });
 
-      // Remove cursor caret immediately after typing completes
       if (cursor) {
         cursor.remove();
       }
     }
   }
 
-  // Start typing Line 1 after reveal animation (350ms)
   setTimeout(typeLine1, 350);
 }
 
-/** 12. Horizontally Scrollable Projects Carousel & Keyboard Controller */
-function initProjectsCarousel() {
-  const container = document.getElementById("projectsContainer");
-  const prevBtn = document.getElementById("prevProjectBtn");
-  const nextBtn = document.getElementById("nextProjectBtn");
+/** 12. Self-Contained 3D Project Card Deck Component */
+function init3DCardDeck() {
+  const container = document.getElementById("deckContainer");
+  const dotsContainer = document.getElementById("deckDotsContainer");
 
-  if (!container || !prevBtn || !nextBtn) return;
+  if (!container) return;
 
-  const cards = container.querySelectorAll(".project-split-card");
-  if (cards.length === 0) return;
+  // Data-driven projects array
+  const projectsData = [
+    {
+      indexTag: "01 / 2025",
+      kicker: "Full Stack MERN",
+      title: "LoopChat",
+      description:
+        "Real-time chat application featuring direct messaging, voice/video calls, and a sleek modern UI built using the MERN stack and Socket.IO.",
+      tags: ["React", "Node.js", "Express", "MongoDB", "Socket.IO"],
+      href: "https://loopchat-web.vercel.app/",
+      repoHref: "https://github.com/ahmedaalam/loopchat",
+    },
+    {
+      indexTag: "02 / 2025",
+      kicker: "Frontend & API",
+      title: "Cineva",
+      description:
+        "Movie browsing and discovery platform integrated with TMDB API, featuring responsive layouts, filtering, and fluid micro-animations.",
+      tags: ["React", "TMDB API", "CSS3", "JavaScript"],
+      href: "https://cineva-six.vercel.app/",
+      repoHref: "https://github.com/ahmedaalam/cineva",
+    },
+    {
+      indexTag: "03 / 2024",
+      kicker: "Full Stack Web",
+      title: "DevFlow",
+      description:
+        "Developer Q&A and knowledge sharing platform featuring rich text editing, upvoting, tag filtering, and user reputation analytics.",
+      tags: ["React", "Node.js", "Express", "MongoDB", "Tailwind"],
+      href: "https://github.com/ahmedaalam",
+      repoHref: "https://github.com/ahmedaalam/devflow",
+    },
+    {
+      indexTag: "04 / 2024",
+      kicker: "Frontend & AI",
+      title: "AI Canvas",
+      description:
+        "Interactive AI-powered graphics studio for generating, editing, and transforming images with custom prompt presets and canvas export tools.",
+      tags: ["React", "OpenAI API", "Canvas API", "Zustand"],
+      href: "https://github.com/ahmedaalam",
+      repoHref: "https://github.com/ahmedaalam/ai-canvas",
+    },
+  ];
 
-  function updateButtonState() {
-    const scrollLeft = container.scrollLeft;
-    const maxScroll = container.scrollWidth - container.clientWidth;
-    prevBtn.disabled = scrollLeft <= 4;
-    nextBtn.disabled = scrollLeft >= maxScroll - 4;
+  let activeIndex = 0;
+  const numCards = projectsData.length;
+
+  // 1. Render Cards
+  container.innerHTML = "";
+  const cardElements = [];
+
+  projectsData.forEach((project, index) => {
+    const card = document.createElement("div");
+    card.className = "deck-card";
+    card.setAttribute("role", "group");
+    card.setAttribute(
+      "aria-label",
+      `Project ${index + 1} of ${numCards}: ${project.title}`,
+    );
+
+    const tagsHTML = project.tags
+      .map((tag) => `<span class="deck-card-tag">${tag}</span>`)
+      .join("");
+
+    card.innerHTML = `
+      <div class="deck-card-top">
+        <span class="deck-card-kicker">${project.kicker}</span>
+      </div>
+      <div class="deck-card-body">
+        <h3 class="deck-card-title">${project.title}</h3>
+        <p class="deck-card-desc">${project.description}</p>
+        <div class="deck-card-tags">${tagsHTML}</div>
+      </div>
+      <div class="deck-card-footer">
+        <a
+          href="${project.href}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="deck-card-link deck-card-link-demo"
+          aria-label="View ${project.title} live demo"
+        >
+          <span>View project</span>
+          <i data-lucide="arrow-up-right"></i>
+        </a>
+        <a
+          href="${project.repoHref}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="deck-card-link deck-card-link-repo"
+          aria-label="View ${project.title} repository"
+        >
+          <span>Repository</span>
+          <img src="assets/icons/github.svg" alt="" class="deck-card-repo-icon" />
+        </a>
+      </div>
+    `;
+
+    // Click on side card makes it active
+    card.addEventListener("click", (e) => {
+      if (index !== activeIndex) {
+        e.preventDefault();
+        setActive(index);
+      }
+    });
+
+    // Keyboard activate on Enter or Space for side cards
+    card.addEventListener("keydown", (e) => {
+      if (index !== activeIndex && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        setActive(index);
+      }
+    });
+
+    container.appendChild(card);
+    cardElements.push(card);
+  });
+
+  // Re-render Lucide icons inside cards
+  if (window.lucide) {
+    window.lucide.createIcons();
   }
 
-  function scrollByCard(direction) {
-    const cardWidth = cards[0].offsetWidth + 24;
-    const targetScroll = container.scrollLeft + direction * cardWidth;
-
-    // Fast instant JS scroll (no CSS smooth — much faster response)
-    const start = container.scrollLeft;
-    const distance = targetScroll - start;
-    const duration = 280; // ms — fast but not jarring
-    let startTime = null;
-
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
-
-    function step(timestamp) {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      container.scrollLeft = start + distance * easeOutCubic(progress);
-      if (progress < 1) requestAnimationFrame(step);
-      else updateButtonState();
-    }
-
-    requestAnimationFrame(step);
+  // 2. Render Indicator Dots
+  const dotElements = [];
+  if (dotsContainer) {
+    dotsContainer.innerHTML = "";
+    projectsData.forEach((project, index) => {
+      const dot = document.createElement("button");
+      dot.className = "deck-dot";
+      dot.setAttribute(
+        "aria-label",
+        `Go to project ${index + 1}: ${project.title}`,
+      );
+      dot.addEventListener("click", () => setActive(index));
+      dotsContainer.appendChild(dot);
+      dotElements.push(dot);
+    });
   }
 
-  prevBtn.addEventListener("click", () => scrollByCard(-1));
-  nextBtn.addEventListener("click", () => scrollByCard(1));
+  // 3. Update 3D Positions & States
+  // Layout: [ LEFT ] ... [ ACTIVE ] ... [ RIGHT ]
+  // Side cards are flat (no rotation), just offset, dimmed & scaled down
+  function updateDeckState() {
+    const isMobile = window.innerWidth <= 640;
 
-  container.addEventListener("scroll", updateButtonState, { passive: true });
-  window.addEventListener("resize", updateButtonState, { passive: true });
+    cardElements.forEach((card, index) => {
+      // Calculate circular distance offset from activeIndex
+      let diff = (((index - activeIndex) % numCards) + numCards) % numCards;
+      if (diff > numCards / 2) diff -= numCards;
 
-  // Keyboard navigation — ArrowLeft / ArrowRight when Projects section is visible
+      const isActive = diff === 0;
+      const isLeft = diff === -1;
+      const isRight = diff === 1;
+
+      let translateX, translateZ, rotateY, scale, opacity, brightness, zIndex;
+
+      if (isActive) {
+        translateX = 0;
+        translateZ = 0;
+        rotateY = 0;
+        scale = 1;
+        opacity = 1;
+        brightness = 1;
+        zIndex = 100;
+      } else if (isLeft) {
+        translateX = isMobile ? -220 : -290;
+        translateZ = -80; // pushed behind active card
+        rotateY = 12; // gentle inward bend (faces right toward center)
+        scale = 0.86;
+        opacity = 0.78;
+        brightness = 0.88;
+        zIndex = 80;
+      } else if (isRight) {
+        translateX = isMobile ? 220 : 290;
+        translateZ = -80; // pushed behind active card
+        rotateY = -12; // gentle inward bend (faces left toward center)
+        scale = 0.86;
+        opacity = 0.78;
+        brightness = 0.88;
+        zIndex = 80;
+      } else {
+        // All other cards: hidden but ready to transition in
+        translateX = diff > 0 ? 520 : -520;
+        translateZ = -120;
+        rotateY = diff > 0 ? -20 : 20;
+        scale = 0.75;
+        opacity = 0;
+        brightness = 0.4;
+        zIndex = 10;
+      }
+
+      card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+      card.style.opacity = opacity;
+      card.style.filter = `brightness(${brightness})`;
+      card.style.zIndex = zIndex;
+
+      if (isActive) {
+        card.classList.add("is-active");
+        card.setAttribute("tabindex", "0");
+        card.removeAttribute("aria-hidden");
+      } else {
+        card.classList.remove("is-active");
+        const isVisible = isLeft || isRight;
+        card.setAttribute("tabindex", isVisible ? "0" : "-1");
+        card.setAttribute("aria-hidden", isVisible ? "false" : "true");
+      }
+    });
+
+    // Update Dots
+    dotElements.forEach((dot, index) => {
+      if (index === activeIndex) {
+        dot.classList.add("active");
+        dot.setAttribute("aria-current", "true");
+      } else {
+        dot.classList.remove("active");
+        dot.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function setActive(newIndex) {
+    activeIndex = ((newIndex % numCards) + numCards) % numCards;
+    updateDeckState();
+  }
+
+  // Keyboard navigation (ArrowLeft / ArrowRight) when Projects section is visible
   window.addEventListener("keydown", (e) => {
     if (
       e.target.tagName === "INPUT" ||
@@ -430,15 +592,44 @@ function initProjectsCarousel() {
     if (isVisible) {
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        scrollByCard(-1);
+        setActive(activeIndex - 1);
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        scrollByCard(1);
+        setActive(activeIndex + 1);
       }
     }
   });
 
-  updateButtonState();
+  // Touch Swipe Gesture Support
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  container.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    },
+    { passive: true },
+  );
+
+  container.addEventListener(
+    "touchend",
+    (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const deltaX = touchEndX - touchStartX;
+      if (deltaX < -40) {
+        setActive(activeIndex + 1);
+      } else if (deltaX > 40) {
+        setActive(activeIndex - 1);
+      }
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("resize", updateDeckState, { passive: true });
+
+  // Initial state setup
+  updateDeckState();
 }
 
 /** 13. Trailing Circle Cursor Animation System */
@@ -466,7 +657,7 @@ function initTrailingCircleCursor() {
       coords.x = e.clientX;
       coords.y = e.clientY;
     },
-    { passive: true }
+    { passive: true },
   );
 
   function animateCircles() {

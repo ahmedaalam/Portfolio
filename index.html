@@ -387,148 +387,21 @@
           <h2 class="section-heading">Projects</h2>
         </div>
 
-        <!-- Horizontally Scrollable Projects Track -->
-        <div class="projects-carousel-wrapper">
-          <div class="projects-split-container" id="projectsContainer">
-            <!-- Project 1 -->
-            <div
-              class="project-split-card reveal reveal-up"
-              data-url="https://loopchat-web.vercel.app/"
-            >
-              <div class="project-split-header">
-                <div class="project-split-top-bar">
-                  <div class="project-split-badge">
-                    <span class="project-num-tag">01</span>
-                    <span class="project-cat-tag">Full Stack MERN</span>
-                  </div>
-                </div>
-                <h3 class="project-split-title">LoopChat</h3>
-              </div>
-
-              <p class="project-split-desc">
-                Real-time chat application featuring direct messaging,
-                voice/video calls, and a sleek modern UI built using the MERN
-                stack and Socket.IO.
-              </p>
-
-              <div class="project-tech">
-                <span>React</span>
-                <span>Node.js</span>
-                <span>Express</span>
-                <span>MongoDB</span>
-                <span>Socket.IO</span>
-              </div>
-            </div>
-
-            <!-- Project 2 -->
-            <div
-              class="project-split-card reveal reveal-up"
-              style="transition-delay: 0.1s"
-              data-url="https://cineva-six.vercel.app/"
-            >
-              <div class="project-split-header">
-                <div class="project-split-top-bar">
-                  <div class="project-split-badge">
-                    <span class="project-num-tag">02</span>
-                    <span class="project-cat-tag">Frontend & API</span>
-                  </div>
-                </div>
-                <h3 class="project-split-title">Cineva</h3>
-              </div>
-
-              <p class="project-split-desc">
-                Movie browsing and discovery platform integrated with TMDB API,
-                featuring responsive layouts, filtering, and fluid
-                micro-animations.
-              </p>
-
-              <div class="project-tech">
-                <span>React</span>
-                <span>TMDB API</span>
-                <span>CSS3</span>
-                <span>JavaScript</span>
-              </div>
-            </div>
-
-            <!-- Project 3 -->
-            <div
-              class="project-split-card reveal reveal-up"
-              style="transition-delay: 0.15s"
-              data-url="https://github.com/ahmedaalam"
-            >
-              <div class="project-split-header">
-                <div class="project-split-top-bar">
-                  <div class="project-split-badge">
-                    <span class="project-num-tag">03</span>
-                    <span class="project-cat-tag">Full Stack Web</span>
-                  </div>
-                </div>
-                <h3 class="project-split-title">DevFlow</h3>
-              </div>
-
-              <p class="project-split-desc">
-                Developer Q&A and knowledge sharing platform featuring rich text
-                editing, upvoting, tag filtering, and user reputation analytics.
-              </p>
-
-              <div class="project-tech">
-                <span>React</span>
-                <span>Node.js</span>
-                <span>Express</span>
-                <span>MongoDB</span>
-                <span>Tailwind</span>
-              </div>
-            </div>
-
-            <!-- Project 4 -->
-            <div
-              class="project-split-card reveal reveal-up"
-              style="transition-delay: 0.2s"
-              data-url="https://github.com/ahmedaalam"
-            >
-              <div class="project-split-header">
-                <div class="project-split-top-bar">
-                  <div class="project-split-badge">
-                    <span class="project-num-tag">04</span>
-                    <span class="project-cat-tag">Frontend & AI</span>
-                  </div>
-                </div>
-                <h3 class="project-split-title">AI Canvas</h3>
-              </div>
-
-              <p class="project-split-desc">
-                Interactive AI-powered graphics studio for generating, editing,
-                and transforming images with custom prompt presets and canvas
-                export tools.
-              </p>
-
-              <div class="project-tech">
-                <span>React</span>
-                <span>OpenAI API</span>
-                <span>Canvas API</span>
-                <span>Zustand</span>
-              </div>
-            </div>
+        <!-- 3D Card Deck Projects Container -->
+        <div class="deck-perspective-wrapper reveal reveal-up">
+          <div class="deck-container" id="deckContainer">
+            <!-- Dynamic 3D Cards rendered via JS -->
           </div>
         </div>
 
-        <!-- Carousel Navigation Control Pill -->
-        <div class="projects-control-pill-wrapper reveal reveal-fade">
-          <div class="projects-control-pill">
-            <button
-              class="project-nav-btn prev"
-              id="prevProjectBtn"
-              aria-label="Previous project (Left Arrow Key)"
-            >
-              <i data-lucide="chevron-left"></i>
-            </button>
-            <button
-              class="project-nav-btn next"
-              id="nextProjectBtn"
-              aria-label="Next project (Right Arrow Key)"
-            >
-              <i data-lucide="chevron-right"></i>
-            </button>
+        <!-- 3D Deck Controls (Dot Indicators Only) -->
+        <div class="deck-controls-wrapper reveal reveal-fade">
+          <div
+            class="deck-dots-container"
+            id="deckDotsContainer"
+            aria-label="Select project"
+          >
+            <!-- Dynamic Dots rendered via JS -->
           </div>
         </div>
       </section>
