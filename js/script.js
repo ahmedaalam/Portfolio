@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!prefersReducedMotion) {
     initProjectCursorPill();
+    initTrailingCircleCursor();
   }
 });
 
@@ -216,7 +217,7 @@ function initActiveNavTracking() {
         ticking = true;
       }
     },
-    { passive: true }
+    { passive: true },
   );
 }
 
@@ -389,7 +390,7 @@ function initProjectCursorPill() {
       mouseY = e.clientY;
       evaluateMouseTarget(mouseX, mouseY);
     },
-    { passive: true }
+    { passive: true },
   );
 
   // Re-evaluate hover target during page or carousel scroll (arrow keys / drag / wheel)
@@ -398,7 +399,7 @@ function initProjectCursorPill() {
     () => {
       evaluateMouseTarget(mouseX, mouseY);
     },
-    { passive: true }
+    { passive: true },
   );
 
   if (container) {
@@ -407,7 +408,7 @@ function initProjectCursorPill() {
       () => {
         evaluateMouseTarget(mouseX, mouseY);
       },
-      { passive: true }
+      { passive: true },
     );
   }
 
@@ -527,7 +528,8 @@ function initProjectsCarousel() {
       e.target.tagName === "INPUT" ||
       e.target.tagName === "TEXTAREA" ||
       e.target.isContentEditable
-    ) return;
+    )
+      return;
 
     const projectsSection = document.getElementById("projects");
     if (!projectsSection) return;
@@ -547,4 +549,55 @@ function initProjectsCarousel() {
   });
 
   updateButtonState();
+}
+
+/** 13. Trailing Circle Cursor Animation System */
+function initTrailingCircleCursor() {
+  const circles = document.querySelectorAll(".circle");
+  if (circles.length === 0) return;
+
+  const isTouchDevice =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
+  if (isTouchDevice) return;
+
+  const coords = { x: -100, y: -100 };
+
+  circles.forEach((circle) => {
+    circle.x = -100;
+    circle.y = -100;
+  });
+
+  window.addEventListener(
+    "mousemove",
+    (e) => {
+      coords.x = e.clientX;
+      coords.y = e.clientY;
+    },
+    { passive: true }
+  );
+
+  function animateCircles() {
+    let x = coords.x;
+    let y = coords.y;
+
+    circles.forEach((circle, index) => {
+      circle.style.left = x - 12 + "px";
+      circle.style.top = y - 12 + "px";
+      circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
+
+      circle.x = x;
+      circle.y = y;
+
+      const nextCircle = circles[index + 1] || circles[0];
+      x += (nextCircle.x - x) * 0.3;
+      y += (nextCircle.y - y) * 0.3;
+    });
+
+    requestAnimationFrame(animateCircles);
+  }
+
+  requestAnimationFrame(animateCircles);
 }

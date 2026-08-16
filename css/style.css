@@ -933,7 +933,10 @@ section {
   flex-direction: column;
   justify-content: space-between;
   gap: 24px;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
@@ -1817,5 +1820,42 @@ section {
 
   .marquee-track {
     animation-play-state: paused !important;
+  }
+
+  .cursor,
+  .circle {
+    display: none !important;
+  }
+}
+
+/* Trailing Circle Cursor Animation */
+.cursor {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  mix-blend-mode: difference;
+}
+
+.circle {
+  position: fixed;
+  pointer-events: none;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  transition: opacity 0.3s ease;
+  will-change: transform, left, top;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor,
+  .circle {
+    display: none !important;
   }
 }
