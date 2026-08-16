@@ -249,29 +249,45 @@ function initMobileMenu() {
   }
 }
 
-/** 7. Copy Email Widget & Toast Notification */
+/** 7. Copy Email Widget — Spring Micro-Animation State Machine */
 function initCopyEmailWidget() {
   const copyEmailBtn = document.getElementById("copyEmailBtn");
   const toast = document.getElementById("toast");
 
-  if (copyEmailBtn && toast) {
-    copyEmailBtn.addEventListener("click", () => {
-      const email =
-        copyEmailBtn.getAttribute("data-email") || "ahmedaalam.dev@gmail.com";
+  if (!copyEmailBtn) return;
 
-      navigator.clipboard
-        .writeText(email)
-        .then(() => {
-          toast.classList.add("show");
+  // Re-render Lucide icons inside the button after DOM update
+  let resetTimer = null;
+
+  copyEmailBtn.addEventListener("click", () => {
+    // Prevent re-triggering during animation
+    if (copyEmailBtn.classList.contains("copied")) return;
+
+    const email =
+      copyEmailBtn.getAttribute("data-email") || "ahmedalam.dev@gmail.com";
+
+    navigator.clipboard
+      .writeText(email)
+      .then(() => {
+        // Trigger copied state — CSS handles all the spring animations
+        copyEmailBtn.classList.add("copied");
+
+        // Reset after 2.5s with a smooth spring-back transition
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          copyEmailBtn.classList.add("resetting");
+          copyEmailBtn.classList.remove("copied");
+
+          // Clean up resetting class after transition completes
           setTimeout(() => {
-            toast.classList.remove("show");
-          }, 2800);
-        })
-        .catch((err) => {
-          console.error("Failed to copy email:", err);
-        });
-    });
-  }
+            copyEmailBtn.classList.remove("resetting");
+          }, 500);
+        }, 2500);
+      })
+      .catch((err) => {
+        console.error("Failed to copy email:", err);
+      });
+  });
 }
 
 /** 10. Project Card Mouse-Follow "View Project" Pill & Click Handler */
