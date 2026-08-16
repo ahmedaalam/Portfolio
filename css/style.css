@@ -172,7 +172,7 @@ section {
   padding: 100px 10%;
   max-width: 1280px;
   margin: 0 auto;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 85px;
 }
 
 .section-header {
@@ -886,13 +886,32 @@ section {
 /* ==========================================================================
    PROJECTS SECTION (SPLIT EDITORIAL CARDS)
    ========================================================================== */
+/* Projects Carousel Track & Layout */
+.projects-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
 .projects-split-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 28px;
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 6px 4px 16px 4px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.projects-split-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .project-split-card {
+  flex: 0 0 calc(50% - 12px);
+  min-width: 320px;
+  scroll-snap-align: start;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
   background: var(--bg-primary);
@@ -905,6 +924,74 @@ section {
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .project-split-card {
+    flex: 0 0 85vw;
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-split-card {
+    flex: 0 0 90vw;
+  }
+}
+
+/* Control Pill Below Cards */
+.projects-control-pill-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.projects-control-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px;
+  background-color: #f8f9fc;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+}
+
+.project-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  color: var(--text-primary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.project-nav-btn svg,
+.project-nav-btn i {
+  width: 18px;
+  height: 18px;
+}
+
+.project-nav-btn:hover:not(:disabled) {
+  background-color: #eff0f3;
+}
+
+.project-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.projects-page-indicator {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--text-subtle);
+  font-family: monospace, var(--font-main);
+  letter-spacing: 0.08em;
+  min-width: 54px;
+  text-align: center;
 }
 
 /* Floating View Project Cursor Pill (Smooth Elastic Pop-Up / Pop-Out) */

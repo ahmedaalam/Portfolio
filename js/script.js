@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileMenu();
   initCopyEmailWidget();
   initTypewriter();
+  initProjectsCarousel();
 
   if (!prefersReducedMotion) {
     initProjectCursorPill();
@@ -106,44 +107,117 @@ function initRevealAnimations() {
   }
 }
 
-/** 5. Navigation Link Active Tracking */
+/** 5. Navigation Link Active Tracking & Smooth Scroll Handling */
 function initActiveNavTracking() {
   const sections = document.querySelectorAll("section[id]");
   const navLinks = document.querySelectorAll(".nav-link");
 
-  let ticking = false;
+  if (sections.length === 0 || navLinks.length === 0) return;
 
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        let currentSectionId = "home";
-        const scrollPosition = window.scrollY + 140;
+  let isManualNavClick = false;
+  let clickTimeout = null;
 
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
+  function setActiveLink(sectionId) {
+    navLinks.forEach((link) => {
+      const href = link.getAttribute("href");
+      if (href === `#${sectionId}`) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
 
-          if (
-            scrollPosition >= sectionTop &&
-            scrollPosition < sectionTop + sectionHeight
-          ) {
-            currentSectionId = section.getAttribute("id");
+  // Handle all nav link clicks for instant active feedback & perfect scroll offset
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", (e) => {
+      const href = anchor.getAttribute("href");
+      if (!href || href === "#" || !href.startsWith("#")) return;
+
+      const targetSection = document.querySelector(href);
+      if (targetSection) {
+        e.preventDefault();
+
+        // Lock scroll tracking observer temporarily during smooth scroll
+        isManualNavClick = true;
+        if (clickTimeout) clearTimeout(clickTimeout);
+
+        // Update active UI immediately if it's a nav link
+        const sectionId = href.replace("#", "");
+        setActiveLink(sectionId);
+
+        // Close mobile nav drawer if open
+        const navLinksContainer = document.getElementById("navLinks");
+        const menuIcon = document.getElementById("menuIcon");
+        if (navLinksContainer && navLinksContainer.classList.contains("open")) {
+          navLinksContainer.classList.remove("open");
+          if (menuIcon && window.lucide) {
+            menuIcon.setAttribute("data-lucide", "menu");
+            window.lucide.createIcons();
           }
+        }
+
+        // Smooth scroll to section with perfect 85px header offset
+        const targetTop =
+          targetSection.getBoundingClientRect().top + window.scrollY - 85;
+
+        window.scrollTo({
+          top: Math.max(0, targetTop),
+          behavior: "smooth",
         });
 
-        navLinks.forEach((link) => {
-          link.classList.remove("active");
-          if (link.getAttribute("href") === `#${currentSectionId}`) {
-            link.classList.add("active");
-          }
-        });
-
-        ticking = false;
-      });
-
-      ticking = true;
-    }
+        // Release scroll lock after smooth scroll finishes
+        clickTimeout = setTimeout(() => {
+          isManualNavClick = false;
+        }, 800);
+      }
+    });
   });
+
+  // Track active section on manual user scroll
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (isManualNavClick) return;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPosition = window.scrollY;
+          const windowHeight = window.innerHeight;
+          const fullHeight = document.documentElement.scrollHeight;
+
+          // At bottom of page -> activate contact
+          if (scrollPosition + windowHeight >= fullHeight - 50) {
+            setActiveLink("contact");
+            ticking = false;
+            return;
+          }
+
+          let currentSectionId = "home";
+          let maxVisibleHeight = 0;
+
+          sections.forEach((section) => {
+            const rect = section.getBoundingClientRect();
+            const visibleTop = Math.max(0, rect.top);
+            const visibleBottom = Math.min(windowHeight, rect.bottom);
+            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+            if (visibleHeight > maxVisibleHeight) {
+              maxVisibleHeight = visibleHeight;
+              currentSectionId = section.getAttribute("id");
+            }
+          });
+
+          setActiveLink(currentSectionId);
+          ticking = false;
+        });
+
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
 }
 
 /** 6. Mobile Navigation Drawer Toggle */
@@ -366,16 +440,91 @@ function initTypewriter() {
         element.classList.add("active");
       });
 
-      // Fade out cursor gracefully after 1s
-      setTimeout(() => {
-        if (cursor) {
-          cursor.style.transition = "opacity 0.6s ease";
-          cursor.style.opacity = "0";
-        }
-      }, 1000);
+      // Remove cursor caret immediately after typing completes
+      if (cursor) {
+        cursor.remove();
+      }
     }
   }
 
   // Start typing Line 1 after reveal animation (350ms)
   setTimeout(typeLine1, 350);
+}
+
+/** 12. Horizontally Scrollable Projects Carousel & Keyboard Controller */
+function initProjectsCarousel() {
+  const container = document.getElementById("projectsContainer");
+  const prevBtn = document.getElementById("prevProjectBtn");
+  const nextBtn = document.getElementById("nextProjectBtn");
+
+  if (!container || !prevBtn || !nextBtn) return;
+
+  const cards = container.querySelectorAll(".project-split-card");
+  if (cards.length === 0) return;
+
+  function updateButtonState() {
+    const scrollLeft = container.scrollLeft;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    prevBtn.disabled = scrollLeft <= 4;
+    nextBtn.disabled = scrollLeft >= maxScroll - 4;
+  }
+
+  function scrollByCard(direction) {
+    const cardWidth = cards[0].offsetWidth + 24;
+    const targetScroll = container.scrollLeft + direction * cardWidth;
+
+    // Fast instant JS scroll (no CSS smooth — much faster response)
+    const start = container.scrollLeft;
+    const distance = targetScroll - start;
+    const duration = 280; // ms — fast but not jarring
+    let startTime = null;
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      container.scrollLeft = start + distance * easeOutCubic(progress);
+      if (progress < 1) requestAnimationFrame(step);
+      else updateButtonState();
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  prevBtn.addEventListener("click", () => scrollByCard(-1));
+  nextBtn.addEventListener("click", () => scrollByCard(1));
+
+  container.addEventListener("scroll", updateButtonState, { passive: true });
+  window.addEventListener("resize", updateButtonState, { passive: true });
+
+  // Keyboard navigation — ArrowLeft / ArrowRight when Projects section is visible
+  window.addEventListener("keydown", (e) => {
+    if (
+      e.target.tagName === "INPUT" ||
+      e.target.tagName === "TEXTAREA" ||
+      e.target.isContentEditable
+    ) return;
+
+    const projectsSection = document.getElementById("projects");
+    if (!projectsSection) return;
+
+    const rect = projectsSection.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (isVisible) {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        scrollByCard(-1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        scrollByCard(1);
+      }
+    }
+  });
+
+  updateButtonState();
 }
