@@ -516,19 +516,6 @@ function initProjectsCarousel() {
   container.addEventListener("scroll", updateButtonState, { passive: true });
   window.addEventListener("resize", updateButtonState, { passive: true });
 
-  // On desktop, prevent trackpad/mousewheel horizontal scrolling so navigation is strictly via pill buttons & keyboard arrows
-  container.addEventListener(
-    "wheel",
-    (e) => {
-      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-          e.preventDefault();
-        }
-      }
-    },
-    { passive: false }
-  );
-
   // Keyboard navigation — ArrowLeft / ArrowRight when Projects section is visible
   window.addEventListener("keydown", (e) => {
     if (

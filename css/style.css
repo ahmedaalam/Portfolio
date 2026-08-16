@@ -895,6 +895,7 @@ section {
 
 .projects-split-container {
   display: flex;
+  align-items: stretch;
   gap: 24px;
   padding: 6px 4px 16px 4px;
   scrollbar-width: none; /* Firefox */
@@ -932,10 +933,16 @@ section {
   flex-direction: column;
   justify-content: space-between;
   gap: 24px;
-  transition: all var(--transition-smooth);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
+  transform: none !important;
+}
+
+.project-split-card:hover,
+.project-split-card.has-custom-cursor {
+  transform: none !important;
 }
 
 @media (max-width: 900px) {
