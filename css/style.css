@@ -896,12 +896,24 @@ section {
 .projects-split-container {
   display: flex;
   gap: 24px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
   padding: 6px 4px 16px 4px;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Desktop: Lock trackpad/mousewheel scroll (Pill buttons & Keyboard arrows only) */
+@media (hover: hover) and (pointer: fine) {
+  .projects-split-container {
+    overflow-x: hidden;
+  }
+}
+
+/* Touch Devices: Allow native finger swipe */
+@media (hover: none), (pointer: coarse) {
+  .projects-split-container {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
 }
 
 .projects-split-container::-webkit-scrollbar {
@@ -1033,6 +1045,11 @@ section {
   .project-split-card.has-custom-cursor,
   .project-split-card.has-custom-cursor * {
     cursor: none !important;
+  }
+
+  .project-split-card.has-custom-cursor .project-repo-link,
+  .project-split-card.has-custom-cursor .project-repo-link * {
+    cursor: pointer !important;
   }
 }
 

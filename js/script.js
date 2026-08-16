@@ -277,6 +277,7 @@ function initCopyEmailWidget() {
 /** 10. Project Card Mouse-Follow "View Project" Pill & Click Handler */
 function initProjectCursorPill() {
   const pill = document.getElementById("projectCursorPill");
+  const container = document.getElementById("projectsContainer");
   const cards = document.querySelectorAll(".project-split-card");
 
   if (cards.length === 0) return;
@@ -301,7 +302,7 @@ function initProjectCursorPill() {
   const isTouchDevice =
     "ontouchstart" in window ||
     navigator.maxTouchPoints > 0 ||
-    window.matchMedia("(hover: none)").matches;
+    window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
   if (isTouchDevice) return;
 
@@ -313,10 +314,8 @@ function initProjectCursorPill() {
   let rafId = null;
 
   function resetPill() {
-    if (activeCard) {
-      activeCard.classList.remove("has-custom-cursor");
-      activeCard = null;
-    }
+    cards.forEach((c) => c.classList.remove("has-custom-cursor"));
+    activeCard = null;
     pill.classList.remove("visible");
     if (rafId) {
       cancelAnimationFrame(rafId);
@@ -325,71 +324,87 @@ function initProjectCursorPill() {
   }
 
   function updatePillPosition() {
-    if (activeCard) {
-      pillX += (mouseX - pillX) * 0.2;
-      pillY += (mouseY - pillY) * 0.2;
+    if (activeCard && pill.classList.contains("visible")) {
+      pillX += (mouseX - pillX) * 0.22;
+      pillY += (mouseY - pillY) * 0.22;
 
       pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%)`;
       rafId = requestAnimationFrame(updatePillPosition);
     }
   }
 
-  function checkScrollBounds() {
-    if (!activeCard) return;
-    const rect = activeCard.getBoundingClientRect();
-    if (
-      mouseX < rect.left ||
-      mouseX > rect.right ||
-      mouseY < rect.top ||
-      mouseY > rect.bottom
-    ) {
+  function evaluateMouseTarget(x, y) {
+    if (x < 0 || y < 0 || x > window.innerWidth || y > window.innerHeight) {
+      resetPill();
+      return;
+    }
+
+    const elementUnderMouse = document.elementFromPoint(x, y);
+    if (!elementUnderMouse) {
+      resetPill();
+      return;
+    }
+
+    // Check if mouse is hovering over top-right Repository link
+    if (elementUnderMouse.closest(".project-repo-link")) {
+      resetPill();
+      return;
+    }
+
+    // Check if mouse is hovering over a project card
+    const cardUnderMouse = elementUnderMouse.closest(".project-split-card");
+
+    if (cardUnderMouse) {
+      if (activeCard !== cardUnderMouse) {
+        cards.forEach((c) => c.classList.remove("has-custom-cursor"));
+        activeCard = cardUnderMouse;
+        activeCard.classList.add("has-custom-cursor");
+
+        if (!pill.classList.contains("visible")) {
+          pillX = x;
+          pillY = y;
+          pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%)`;
+          pill.classList.add("visible");
+        }
+
+        if (!rafId) {
+          rafId = requestAnimationFrame(updatePillPosition);
+        }
+      }
+    } else {
       resetPill();
     }
   }
 
-  // Recalculate pointer position relative to active card during page scroll
-  window.addEventListener("scroll", checkScrollBounds, { passive: true });
-
-  cards.forEach((card) => {
-    card.addEventListener("mouseenter", (e) => {
-      activeCard = card;
-      card.classList.add("has-custom-cursor");
-
+  // Update mouse coordinates and re-evaluate hover state
+  window.addEventListener(
+    "mousemove",
+    (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      pillX = mouseX;
-      pillY = mouseY;
+      evaluateMouseTarget(mouseX, mouseY);
+    },
+    { passive: true }
+  );
 
-      pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0) translate(-50%, -50%)`;
-      pill.classList.add("visible");
+  // Re-evaluate hover target during page or carousel scroll (arrow keys / drag / wheel)
+  window.addEventListener(
+    "scroll",
+    () => {
+      evaluateMouseTarget(mouseX, mouseY);
+    },
+    { passive: true }
+  );
 
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(updatePillPosition);
-    });
-
-    card.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      if (activeCard === card) {
-        const rect = card.getBoundingClientRect();
-        if (
-          mouseX < rect.left ||
-          mouseX > rect.right ||
-          mouseY < rect.top ||
-          mouseY > rect.bottom
-        ) {
-          resetPill();
-        }
-      }
-    });
-
-    card.addEventListener("mouseleave", () => {
-      if (activeCard === card) {
-        resetPill();
-      }
-    });
-  });
+  if (container) {
+    container.addEventListener(
+      "scroll",
+      () => {
+        evaluateMouseTarget(mouseX, mouseY);
+      },
+      { passive: true }
+    );
+  }
 
   document.addEventListener("mouseleave", resetPill);
 }
@@ -500,6 +515,19 @@ function initProjectsCarousel() {
 
   container.addEventListener("scroll", updateButtonState, { passive: true });
   window.addEventListener("resize", updateButtonState, { passive: true });
+
+  // On desktop, prevent trackpad/mousewheel horizontal scrolling so navigation is strictly via pill buttons & keyboard arrows
+  container.addEventListener(
+    "wheel",
+    (e) => {
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+          e.preventDefault();
+        }
+      }
+    },
+    { passive: false }
+  );
 
   // Keyboard navigation — ArrowLeft / ArrowRight when Projects section is visible
   window.addEventListener("keydown", (e) => {
