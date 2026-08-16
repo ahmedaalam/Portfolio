@@ -518,16 +518,14 @@ function init3DCardDeck() {
         translateZ = -80; // pushed behind active card
         rotateY = 12; // gentle inward bend (faces right toward center)
         scale = 0.86;
-        opacity = 0.78;
-        brightness = 0.88;
+        opacity = 0.65;
         zIndex = 80;
       } else if (isRight) {
         translateX = isMobile ? 220 : 290;
         translateZ = -80; // pushed behind active card
         rotateY = -12; // gentle inward bend (faces left toward center)
         scale = 0.86;
-        opacity = 0.78;
-        brightness = 0.88;
+        opacity = 0.65;
         zIndex = 80;
       } else {
         // All other cards: hidden but ready to transition in
@@ -536,21 +534,21 @@ function init3DCardDeck() {
         rotateY = diff > 0 ? -20 : 20;
         scale = 0.75;
         opacity = 0;
-        brightness = 0.4;
         zIndex = 10;
       }
 
       card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
       card.style.opacity = opacity;
-      card.style.filter = `brightness(${brightness})`;
       card.style.zIndex = zIndex;
 
       if (isActive) {
         card.classList.add("is-active");
+        card.style.cursor = "default";
         card.setAttribute("tabindex", "0");
         card.removeAttribute("aria-hidden");
       } else {
         card.classList.remove("is-active");
+        card.style.cursor = "pointer";
         const isVisible = isLeft || isRight;
         card.setAttribute("tabindex", isVisible ? "0" : "-1");
         card.setAttribute("aria-hidden", isVisible ? "false" : "true");
