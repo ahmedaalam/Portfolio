@@ -300,12 +300,7 @@ function initProjectCursorPill() {
 
   // Add click navigation listener to each project card
   cards.forEach((card) => {
-    card.addEventListener("click", (e) => {
-      // If user clicked the top-right Repository link, let the link handle itself
-      if (e.target.closest(".project-repo-link")) {
-        return;
-      }
-
+    card.addEventListener("click", () => {
       const url = card.getAttribute("data-url");
       if (url) {
         window.open(url, "_blank", "noopener,noreferrer");
@@ -357,12 +352,6 @@ function initProjectCursorPill() {
 
     const elementUnderMouse = document.elementFromPoint(x, y);
     if (!elementUnderMouse) {
-      resetPill();
-      return;
-    }
-
-    // Check if mouse is hovering over top-right Repository link
-    if (elementUnderMouse.closest(".project-repo-link")) {
       resetPill();
       return;
     }
