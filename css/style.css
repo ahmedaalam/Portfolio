@@ -294,20 +294,7 @@ section {
   transform: translate(0, 0);
 }
 
-/* Hero Delayed Entrance Elements (Revealed After Typewriter Completes) */
-.hero-delayed-element {
-  opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
 
-.hero-delayed-element.active {
-  opacity: 1;
-  transform: translateY(0);
-}
 
 /* ==========================================================================
    HERO SECTION — CENTER-ALIGNED EDITORIAL DESIGN
@@ -384,52 +371,17 @@ section {
   color: var(--text-primary);
 }
 
-/* Two-Line Sequential Typewriter Tagline */
-.hero-typewriter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  max-width: 720px;
+/* Static Hero Tagline */
+.hero-tagline {
+  max-width: 680px;
   width: 100%;
   font-size: clamp(1.05rem, 2.2vw, 1.35rem);
   font-weight: 500;
   color: var(--text-muted);
   letter-spacing: -0.015em;
-  line-height: 1.5;
+  line-height: 1.6;
   text-align: center;
   margin: 0 auto;
-}
-
-.typewriter-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 1.6em;
-  white-space: nowrap;
-}
-
-.hero-typewriter-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1.1em;
-  background-color: var(--text-primary);
-  margin-left: 3px;
-  border-radius: 1px;
-  vertical-align: middle;
-  flex-shrink: 0;
-  animation: blinkCursor 0.85s ease-in-out infinite;
-}
-
-@keyframes blinkCursor {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.15;
-  }
 }
 
 @keyframes pulseDot {
