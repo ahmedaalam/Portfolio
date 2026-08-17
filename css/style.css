@@ -30,25 +30,25 @@
   --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Dark Theme Overrides (Strict Website Color Palette Alignment - #121317 Main BG) */
+/* Dark Theme Overrides — Warm Near-Black Monochrome Palette */
 [data-theme="dark"] {
-  --bg-primary: #121317;
-  --bg-secondary: #1a1c23;
-  --text-primary: #ffffff;
-  --text-muted: #a0a5b1;
-  --text-subtle: #717682;
-  --border-color: #262933;
-  --border-hover: rgba(255, 255, 255, 0.25);
-  --btn-dark-hover: #e4e3ea;
-  --btn-light-hover: #2a2d33;
+  --bg-primary:   #0a0a0a;                  /* --bg:     page background */
+  --bg-secondary: #111111;                  /* --bg-alt: card/panel background */
+  --text-primary: #f4f4f2;                  /* --fg:     primary text/headings */
+  --text-muted:   #8a8a86;                  /* --fg-dim: secondary text, captions */
+  --text-subtle:  #5e5e5a;                  /* dimmer variant of fg-dim */
+  --border-color: #2a2a28;                  /* --line:   borders, dividers */
+  --border-hover: rgba(255, 255, 255, 0.2); /* --accent: hover/active borders */
+  --btn-dark-hover: #f4f4f2;
+  --btn-light-hover: #1a1a18;
 
-  --header-bg: rgba(18, 19, 23, 0.85);
-  --header-scrolled-bg: rgba(18, 19, 23, 0.95);
-  --nav-hover-bg: rgba(255, 255, 255, 0.1);
+  --header-bg:         rgba(10, 10, 10, 0.85);
+  --header-scrolled-bg: rgba(10, 10, 10, 0.96);
+  --nav-hover-bg:      rgba(255, 255, 255, 0.07);
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 2px 8px  rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.65);
 }
 
 * {
@@ -85,11 +85,11 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3px;
+  height: 2px;
   width: 0%;
   background-color: var(--text-primary);
   z-index: 1001;
-  transition: width 0.1s ease-out;
+  will-change: width;
 }
 
 /* ==========================================================================
@@ -956,7 +956,7 @@ section {
 }
 
 .deck-card.is-active {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
   border-color: var(--border-hover);
   box-shadow: var(--shadow-lg);
   cursor: default;
@@ -1136,6 +1136,10 @@ section {
   height: 15px;
   object-fit: contain;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="dark"] .deck-card-repo-icon {
+  filter: invert(1);
 }
 
 .deck-card.is-active .deck-card-link {

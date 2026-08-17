@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   ).matches;
 
   initYear();
+  initScrollProgress();
+  initLenis(prefersReducedMotion);
   initLucideIcons();
   initThemeToggle();
   initNavbarScroll();
@@ -30,6 +32,47 @@ function initYear() {
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+}
+
+/** 2. Scroll Progress Bar (synced to Lenis when available) */
+function initScrollProgress() {
+  const bar = document.getElementById("scrollProgress");
+  if (!bar) return;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = total > 0 ? (scrolled / total) * 100 + "%" : "0%";
+    },
+    { passive: true },
+  );
+}
+
+/** 3. Lenis Smooth Scroll Physics */
+function initLenis(prefersReducedMotion) {
+  if (prefersReducedMotion || typeof Lenis === "undefined") return;
+
+  const lenis = new Lenis({
+    duration: 1.15,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smooth: true,
+  });
+
+  // Sync scroll progress bar with Lenis scroll position
+  const bar = document.getElementById("scrollProgress");
+  if (bar) {
+    lenis.on("scroll", ({ scroll, limit }) => {
+      bar.style.width = limit > 0 ? (scroll / limit) * 100 + "%" : "0%";
+    });
+  }
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
 }
 
 /** 2. Safeguard Refresh Lucide Icons */
@@ -290,7 +333,6 @@ function initCopyEmailWidget() {
   });
 }
 
-
 /** 12. Self-Contained 3D Project Card Deck Component */
 function init3DCardDeck() {
   const container = document.getElementById("deckContainer");
@@ -306,7 +348,7 @@ function init3DCardDeck() {
       title: "LoopChat",
       image: "assets/projects/loopchat.png",
       description:
-        "Real-time chat application featuring direct messaging, voice/video calls, and a sleek modern UI built using the MERN stack and Socket.IO.",
+        "Real-time chat application featuring direct messaging, voice/video calls, and a sleek modern UI.",
       tags: ["React", "Node.js", "Express", "MongoDB", "Socket.IO"],
       href: "https://loopchat-web.vercel.app/",
       repoHref: "https://github.com/ahmedaalam/loopchat",
