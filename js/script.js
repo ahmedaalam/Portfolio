@@ -304,6 +304,7 @@ function init3DCardDeck() {
       indexTag: "01 / 2025",
       kicker: "Full Stack MERN",
       title: "LoopChat",
+      image: "assets/projects/loopchat.png",
       description:
         "Real-time chat application featuring direct messaging, voice/video calls, and a sleek modern UI built using the MERN stack and Socket.IO.",
       tags: ["React", "Node.js", "Express", "MongoDB", "Socket.IO"],
@@ -314,6 +315,7 @@ function init3DCardDeck() {
       indexTag: "02 / 2025",
       kicker: "Frontend & API",
       title: "Cineva",
+      image: "assets/projects/cineva.png",
       description:
         "Movie browsing and discovery platform integrated with TMDB API, featuring responsive layouts, filtering, and fluid micro-animations.",
       tags: ["React", "TMDB API", "CSS3", "JavaScript"],
@@ -324,6 +326,7 @@ function init3DCardDeck() {
       indexTag: "03 / 2024",
       kicker: "Full Stack Web",
       title: "DevFlow",
+      image: "assets/projects/devflow.png",
       description:
         "Developer Q&A and knowledge sharing platform featuring rich text editing, upvoting, tag filtering, and user reputation analytics.",
       tags: ["React", "Node.js", "Express", "MongoDB", "Tailwind"],
@@ -334,6 +337,7 @@ function init3DCardDeck() {
       indexTag: "04 / 2024",
       kicker: "Frontend & AI",
       title: "AI Canvas",
+      image: "assets/projects/aicanvas.png",
       description:
         "Interactive AI-powered graphics studio for generating, editing, and transforming images with custom prompt presets and canvas export tools.",
       tags: ["React", "OpenAI API", "Canvas API", "Zustand"],
@@ -363,6 +367,17 @@ function init3DCardDeck() {
       .join("");
 
     card.innerHTML = `
+      <a
+        href="${project.href}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="deck-card-image-link"
+        aria-label="Open ${project.title} live demo"
+      >
+        <div class="deck-card-image-box">
+          <img src="${project.image}" alt="${project.title} UI preview" class="deck-card-img" />
+        </div>
+      </a>
       <div class="deck-card-top">
         <span class="deck-card-kicker">${project.kicker}</span>
       </div>
