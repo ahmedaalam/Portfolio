@@ -279,6 +279,20 @@ section { padding: 8rem 2rem; max-width: 1000px; margin: 0 auto; position: relat
 }
 .pill:hover { border-color: var(--accent); transform: translateY(-3px); }
 .pill i { font-size: 1.2rem; }
+.pill img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Invert monochromatic SVG icons in dark mode so they pop */
+[data-theme="dark"] .pill img[src*="github.svg"],
+[data-theme="dark"] .pill img[src*="express.svg"],
+[data-theme="dark"] .pill img[src*="nextjs.svg"],
+[data-theme="dark"] .pill img[src*="vercel.svg"] {
+  filter: invert(1);
+}
 
 /* ---------- Contact section ---------- */
 .contact-section {
