@@ -1,560 +1,46 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      // Applied before CSS loads so there's no flash of the wrong theme
+      // when the page reloads after a saved preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem("portfolio-theme");
+          if (saved === "light")
+            document.documentElement.setAttribute("data-theme", "light");
+        } catch (e) {}
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ahmed | MERN Stack Developer</title>
+    <title>Ahmed Alam | MERN Stack Developer</title>
     <meta
       name="description"
-      content="Portfolio of Ahmed, a MERN Stack Developer building modern, high-performance web applications with React, Node.js, MongoDB, and Next.js."
+      content="Portfolio of Ahmed Alam, a MERN Stack Developer building modern, high-performance web applications."
     />
-    <link rel="stylesheet" href="./css/style.css" />
 
+    <!-- Fonts & Libraries -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.15.1/devicon.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <!-- Top Scroll Progress Bar -->
-    <div class="scroll-progress" id="scrollProgress"></div>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
 
-    <!-------- Header -------->
-    <header id="header">
-      <nav class="nav-container">
-        <div class="nav-logo">
-          <a href="#home"
-            ><h3>Portfolio<span>.</span></h3></a
-          >
-        </div>
-
-        <div class="nav-links" id="navLinks">
-          <ul>
-            <li><a href="#home" class="nav-link active">Home</a></li>
-            <li><a href="#about" class="nav-link">About</a></li>
-            <li><a href="#skills" class="nav-link">Skills</a></li>
-            <li><a href="#projects" class="nav-link">Projects</a></li>
-            <li><a href="#contact" class="nav-link">Contact</a></li>
-          </ul>
-        </div>
-
-        <div class="nav-actions">
-          <button
-            class="theme-toggle"
-            id="themeToggle"
-            aria-label="Toggle dark/light theme"
-            title="Toggle theme"
-          >
-            <i data-lucide="moon" id="themeIcon"></i>
-          </button>
-          <button
-            class="mobile-toggle"
-            id="mobileToggle"
-            aria-label="Toggle navigation menu"
-          >
-            <i data-lucide="menu" id="menuIcon"></i>
-          </button>
-        </div>
-      </nav>
-    </header>
-
-    <!---------------- Main ------------------>
-    <main>
-      <!---------- Hero ---------->
-      <section class="hero" id="home">
-        <div class="hero-content">
-          <div class="hero-eyebrow reveal reveal-fade">
-            <span class="hero-eyebrow-dot"></span>
-            <span>Full Stack Developer</span>
-          </div>
-
-          <h1 class="main-text reveal reveal-up">
-            <span class="hero-name">Ahmed Alam</span>
-          </h1>
-
-          <p
-            class="hero-tagline reveal reveal-up"
-            style="transition-delay: 0.15s"
-          >
-            Crafting modern web experiences through clean code and thoughtful design.
-          </p>
-
-          <div
-            class="buttons reveal reveal-up"
-            style="transition-delay: 0.25s"
-          >
-            <a class="btn project" href="#projects">
-              <span>View My Work</span>
-              <i data-lucide="arrow-down-right" class="btn-icon"></i>
-            </a>
-            <a class="btn contact" href="#contact">
-              <span>Get in Touch</span>
-              <i data-lucide="mail" class="btn-icon"></i>
-            </a>
-          </div>
-        </div>
-
-        <div
-          class="scroll-down-hint reveal reveal-fade"
-          style="transition-delay: 0.35s"
-        >
-          <a href="#about" aria-label="Scroll to About section">
-            <i data-lucide="chevron-down"></i>
-          </a>
-        </div>
-      </section>
-
-      <!------------- About Section (Two-Column Split Layout) ------------>
-      <section id="about">
-        <div class="section-header reveal reveal-up">
-          <span class="section-tag">Overview & Background</span>
-          <h2 class="section-heading">About Me</h2>
-        </div>
-
-        <div class="about-split-container">
-          <!-- Left Column: Typography Narrative -->
-          <div class="about-split-left reveal reveal-left">
-            <div class="about-story-paragraphs">
-              <p>
-                Holding a degree in Software Engineering from Sir Syed
-                University of Engineering and Technology (SSUET) and hands-on
-                industry experience as a Frontend Intern at Bidec Solutions, I
-                specialize in building responsive, fast, and accessible web
-                solutions.
-              </p>
-              <p>
-                I focus on crafting intuitive user interfaces using React and
-                Next.js, while developing robust, maintainable backends using
-                Node.js, Express, and MongoDB.
-              </p>
-              <p>
-                I enjoy turning ideas into polished digital experiences, paying
-                close attention to usability, performance, and clean code. I’m
-                continuously expanding my full-stack expertise, exploring better
-                ways to build scalable applications, and growing as a developer
-                through hands-on projects and continuous learning.
-              </p>
-            </div>
-          </div>
-
-          <!-- Right Column: Minimal Vertical Timeline -->
-          <div class="about-split-right reveal reveal-right">
-            <div class="timeline-container">
-              <!-- Item 1: Education -->
-              <div class="timeline-item">
-                <div class="timeline-node">
-                  <i data-lucide="graduation-cap"></i>
-                </div>
-                <div class="timeline-content">
-                  <span class="timeline-tag">Degree</span>
-                  <h4>BS Software Engineering</h4>
-                  <p>Sir Syed University of Engineering & Technology</p>
-                </div>
-              </div>
-
-              <!-- Item 2: Experience -->
-              <div class="timeline-item">
-                <div class="timeline-node">
-                  <i data-lucide="briefcase"></i>
-                </div>
-                <div class="timeline-content">
-                  <span class="timeline-tag">Industry Experience</span>
-                  <h4>Frontend Developer Intern</h4>
-                  <p>Bidec Solutions — Web applications & UI</p>
-                </div>
-              </div>
-
-              <!-- Item 4: Location -->
-              <div class="timeline-item">
-                <div class="timeline-node">
-                  <i data-lucide="map-pin"></i>
-                </div>
-                <div class="timeline-content">
-                  <span class="timeline-tag">Location & Status</span>
-                  <h4>Karachi, Pakistan <span class="pulse-online"></span></h4>
-                  <p>Open to onsite & remote roles</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!----------- Skills Section (Ultra Minimal Infinite Marquee Ticker) ------------>
-      <section id="skills">
-        <div class="section-header reveal reveal-up">
-          <span class="section-tag">Tech Stack & Ecosystem</span>
-          <h2 class="section-heading">Skills & Tools</h2>
-        </div>
-
-        <!-- Infinite Scrolling Marquee Ticker -->
-        <div class="marquee-wrapper reveal reveal-up">
-          <!-- Row 1: Left Scroll -->
-          <div class="marquee-track track-left">
-            <div class="marquee-content">
-              <div class="marquee-pill">
-                <img src="./assets/icons/react.svg" alt="React" /><span
-                  >React.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/nextjs.svg" alt="Next.js" /><span
-                  >Next.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/javascript.svg" alt="JS" /><span
-                  >JavaScript</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/python.svg" alt="Python" /><span
-                  >Python</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/nodejs.svg" alt="Node" /><span
-                  >Node.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/express.svg" alt="Express" /><span
-                  >Express.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/mongodb.svg" alt="MongoDB" /><span
-                  >MongoDB</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/tailwind.svg" alt="Tailwind" /><span
-                  >Tailwind CSS</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/vscode.svg" alt="VS Code" /><span
-                  >VS Code</span
-                >
-              </div>
-            </div>
-            <!-- Duplicated for Seamless Infinite Loop -->
-            <div class="marquee-content" aria-hidden="true">
-              <div class="marquee-pill">
-                <img src="./assets/icons/react.svg" alt="React" /><span
-                  >React.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/nextjs.svg" alt="Next.js" /><span
-                  >Next.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/javascript.svg" alt="JS" /><span
-                  >JavaScript</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/python.svg" alt="Python" /><span
-                  >Python</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/nodejs.svg" alt="Node" /><span
-                  >Node.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/express.svg" alt="Express" /><span
-                  >Express.js</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/mongodb.svg" alt="MongoDB" /><span
-                  >MongoDB</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/tailwind.svg" alt="Tailwind" /><span
-                  >Tailwind CSS</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/vscode.svg" alt="VS Code" /><span
-                  >VS Code</span
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 2: Right Scroll -->
-          <div class="marquee-track track-right">
-            <div class="marquee-content">
-              <div class="marquee-pill">
-                <img src="./assets/icons/git.svg" alt="Git" /><span>Git</span>
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/github.svg" alt="GitHub" /><span
-                  >GitHub</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/redux.svg" alt="Redux" /><span
-                  >Redux Toolkit</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/render.svg" alt="Render" /><span
-                  >Render</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/figma.svg" alt="Figma" /><span
-                  >Figma</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/postman.svg" alt="Postman" /><span
-                  >Postman</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/vercel.svg" alt="Vercel" /><span
-                  >Vercel</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/html5.svg" alt="HTML5" /><span
-                  >HTML5</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/css3.svg" alt="CSS3" /><span
-                  >CSS3</span
-                >
-              </div>
-            </div>
-            <!-- Duplicated for Seamless Infinite Loop -->
-            <div class="marquee-content" aria-hidden="true">
-              <div class="marquee-pill">
-                <img src="./assets/icons/git.svg" alt="Git" /><span>Git</span>
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/github.svg" alt="GitHub" /><span
-                  >GitHub</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/redux.svg" alt="Redux" /><span
-                  >Redux Toolkit</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/render.svg" alt="Render" /><span
-                  >Render</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/figma.svg" alt="Figma" /><span
-                  >Figma</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/postman.svg" alt="Postman" /><span
-                  >Postman</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/vercel.svg" alt="Vercel" /><span
-                  >Vercel</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/html5.svg" alt="HTML5" /><span
-                  >HTML5</span
-                >
-              </div>
-              <div class="marquee-pill">
-                <img src="./assets/icons/css3.svg" alt="CSS3" /><span
-                  >CSS3</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!---------- Projects Section ---------->
-      <section id="projects">
-        <div class="section-header reveal reveal-up">
-          <span class="section-tag">Featured Work</span>
-          <h2 class="section-heading">Projects</h2>
-        </div>
-
-        <!-- 3D Card Deck Projects Container -->
-        <div class="deck-perspective-wrapper reveal reveal-up">
-          <div class="deck-container" id="deckContainer">
-            <!-- Dynamic 3D Cards rendered via JS -->
-          </div>
-        </div>
-
-        <!-- 3D Deck Controls (Dot Indicators Only) -->
-        <div class="deck-controls-wrapper reveal reveal-fade">
-          <div
-            class="deck-dots-container"
-            id="deckDotsContainer"
-            aria-label="Select project"
-          >
-            <!-- Dynamic Dots rendered via JS -->
-          </div>
-        </div>
-      </section>
-
-      <!---------- Contact Section ---------->
-      <section id="contact">
-        <div class="section-header reveal reveal-up">
-          <span class="section-tag">Let's Connect</span>
-          <h2 class="section-heading">Contact</h2>
-        </div>
-
-        <div class="contact-card-box reveal reveal-up">
-          <!-- Left Info Box -->
-          <div class="contact-info-col">
-            <h3 class="contact-headline">
-              Let's build something awesome together.
-            </h3>
-            <p class="contact-subtext">
-              I’m currently open to full-time software engineering roles,
-              freelance opportunities, and interesting collaborations. Feel free
-              to reach out directly or connect with me on social platforms!
-            </p>
-
-            <div class="contact-details-list">
-              <div class="contact-detail-item">
-                <div class="contact-detail-icon">
-                  <i data-lucide="mail"></i>
-                </div>
-                <div>
-                  <span class="detail-label">Email Me</span>
-                  <a href="mailto:ahmedalam.dev@gmail.com" class="detail-value"
-                    >ahmedalam.dev@gmail.com</a
-                  >
-                </div>
-              </div>
-
-              <div class="contact-detail-item">
-                <div class="contact-detail-icon">
-                  <i data-lucide="map-pin"></i>
-                </div>
-                <div>
-                  <span class="detail-label">Location</span>
-                  <span class="detail-value">Karachi, Pakistan</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Action Box -->
-          <div class="contact-actions-col">
-            <div class="contact-btn-group">
-              <a
-                href="mailto:ahmedalam.dev@gmail.com"
-                class="contact-action-btn primary-btn"
-              >
-                <i data-lucide="send"></i>
-                <span>Send Message</span>
-              </a>
-
-              <button
-                class="contact-action-btn secondary-btn"
-                id="copyEmailBtn"
-                data-email="ahmedalam.dev@gmail.com"
-              >
-                <span class="copy-btn-icon-wrap">
-                  <i class="copy-icon" data-lucide="copy"></i>
-                  <i class="check-icon" data-lucide="check"></i>
-                </span>
-                <span class="copy-btn-label">
-                  <span class="copy-label-default">Copy Email</span>
-                  <span class="copy-label-success">Email Copied!</span>
-                </span>
-              </button>
-            </div>
-
-            <div class="socials-container">
-              <span class="socials-label">Connect with me</span>
-              <div class="social-pills">
-                <a
-                  href="https://github.com/ahmedaalam"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="social-pill"
-                >
-                  <svg
-                    class="social-brand-icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"
-                    />
-                  </svg>
-                  <span>GitHub</span>
-                  <i data-lucide="arrow-up-right" class="pill-arrow"></i>
-                </a>
-
-                <a
-                  href="https://www.linkedin.com/in/ahmed-aalam/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="social-pill"
-                >
-                  <svg
-                    class="social-brand-icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"
-                    />
-                  </svg>
-                  <span>LinkedIn</span>
-                  <i data-lucide="arrow-up-right" class="pill-arrow"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!---------- Footer ---------->
-    <footer class="footer">
-      <div class="footer-content">
-        <p>
-          &copy; <span id="year"></span> Ahmed Alam. Crafted with modern web
-          tech.
-        </p>
-        <a href="#home" class="back-to-top" aria-label="Back to top">
-          <span>Back to Top</span>
-          <i data-lucide="arrow-up"></i>
-        </a>
-      </div>
-    </footer>
-
-    <!-- Toast Notification for Copy -->
-    <div id="toast" class="toast">Email copied to clipboard!</div>
-
-    <!-- Trailing Circle Cursor Effect -->
-    <div class="cursor" id="trailCursor">
+    <!-- Trailing Circle Cursor Elements -->
+    <div class="cursor" aria-hidden="true">
       <div class="circle"></div>
       <div class="circle"></div>
       <div class="circle"></div>
@@ -577,10 +63,452 @@
       <div class="circle"></div>
     </div>
 
-    <script>
-      lucide.createIcons();
-    </script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <a href="#home" class="nav-logo">Portfolio.</a>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#toolkit">Toolkit</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle light and dark theme"
+        >
+          <svg
+            class="icon-sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+            />
+          </svg>
+          <svg
+            class="icon-moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero" id="home">
+      <h1>
+        <span class="line"><span>Ahmed Alam</span></span>
+        <span class="line"><span>Full Stack Developer</span></span>
+      </h1>
+      <p id="heroSub">
+        Crafting modern web experiences through clean code and thoughtful
+        design.
+      </p>
+      <div class="scroll-hint">SCROLL</div>
+    </header>
+
+    <!-- Pinned Media Section -->
+    <section class="pin-section">
+      <div class="pin-media">
+        <h2 id="pinText">This scales in as you arrive</h2>
+      </div>
+    </section>
+
+    <!-- Big Statement Section -->
+    <section>
+      <p class="big-statement">
+        <span class="split-line"
+          ><span>I design and build interfaces</span></span
+        ><br />
+        <span class="split-line"
+          ><span class="muted-word">that feel alive —</span></span
+        ><br />
+        <span class="split-line"
+          ><span>every scroll tells part of the story.</span></span
+        >
+      </p>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <div class="about-grid">
+        <div class="about-text">
+          <div class="eyebrow split-line"><span>About me</span></div>
+          <h2 class="split-line">
+            <span>I turn ideas into interfaces people remember.</span>
+          </h2>
+          <p class="split-line">
+            <span
+              >A full stack developer focused on motion-first,
+              performance-conscious builds — from first sketch to shipped
+              product.</span
+            >
+          </p>
+          <p class="split-line">
+            <span
+              >Over the past few years I've picked up a handful of real-world
+              lessons shipping features, chasing pixel-perfect detail, and
+              working closely with teams — the kind of experience that only
+              comes from actually building things people use, not just studying
+              how to.</span
+            >
+          </p>
+        </div>
+        <div class="about-info" id="aboutInfo">
+          <div class="about-info-line"></div>
+          <div class="about-info-line-fill" id="infoLineFill"></div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+                <path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" />
+              </svg>
+            </div>
+            <div class="info-text">
+              <h3>BS Software Engineering</h3>
+              <p>Sir Syed University</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                <path d="M2 13h20" />
+              </svg>
+            </div>
+            <div class="info-text">
+              <h3>Frontend Developer Intern</h3>
+              <p>Bidec Solutions</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <div class="info-text">
+              <h3>Based in</h3>
+              <p>Karachi, Pakistan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section" id="toolkit">
+      <div class="section-heading centered">
+        <div class="eyebrow split-line"><span>Toolkit</span></div>
+        <h2 class="split-line"><span>Technologies I work with</span></h2>
+      </div>
+
+      <div class="skills-wrap" style="margin-bottom: 1rem">
+        <div class="skills-track" id="skillsTrackA">
+          <div class="pill">
+            <i class="devicon-html5-plain colored"></i>HTML5
+          </div>
+          <div class="pill"><i class="devicon-css3-plain colored"></i>CSS3</div>
+          <div class="pill">
+            <i class="devicon-javascript-plain colored"></i>JavaScript
+          </div>
+          <div class="pill">
+            <i class="devicon-typescript-plain colored"></i>TypeScript
+          </div>
+          <div class="pill">
+            <i class="devicon-react-original colored"></i>React
+          </div>
+          <div class="pill"><i class="devicon-nextjs-original"></i>Next.js</div>
+          <div class="pill">
+            <i class="devicon-tailwindcss-plain colored"></i>Tailwind
+          </div>
+          <div class="pill">
+            <i class="devicon-nodejs-plain colored"></i>Node.js
+          </div>
+          <div class="pill">
+            <i class="devicon-html5-plain colored"></i>HTML5
+          </div>
+          <div class="pill"><i class="devicon-css3-plain colored"></i>CSS3</div>
+          <div class="pill">
+            <i class="devicon-javascript-plain colored"></i>JavaScript
+          </div>
+          <div class="pill">
+            <i class="devicon-typescript-plain colored"></i>TypeScript
+          </div>
+          <div class="pill">
+            <i class="devicon-react-original colored"></i>React
+          </div>
+          <div class="pill"><i class="devicon-nextjs-original"></i>Next.js</div>
+          <div class="pill">
+            <i class="devicon-tailwindcss-plain colored"></i>Tailwind
+          </div>
+          <div class="pill">
+            <i class="devicon-nodejs-plain colored"></i>Node.js
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-wrap">
+        <div class="skills-track reverse" id="skillsTrackB">
+          <div class="pill"><i class="devicon-git-plain colored"></i>Git</div>
+          <div class="pill">
+            <i class="devicon-figma-plain colored"></i>Figma
+          </div>
+          <div class="pill">
+            <i class="devicon-python-plain colored"></i>Python
+          </div>
+          <div class="pill">
+            <i class="devicon-postgresql-plain colored"></i>PostgreSQL
+          </div>
+          <div class="pill">
+            <i class="devicon-docker-plain colored"></i>Docker
+          </div>
+          <div class="pill">
+            <i class="devicon-amazonwebservices-plain-wordmark colored"></i>AWS
+          </div>
+          <div class="pill">
+            <i class="devicon-graphql-plain colored"></i>GraphQL
+          </div>
+          <div class="pill">
+            <i class="devicon-vitejs-plain colored"></i>Vite
+          </div>
+          <div class="pill"><i class="devicon-git-plain colored"></i>Git</div>
+          <div class="pill">
+            <i class="devicon-figma-plain colored"></i>Figma
+          </div>
+          <div class="pill">
+            <i class="devicon-python-plain colored"></i>Python
+          </div>
+          <div class="pill">
+            <i class="devicon-postgresql-plain colored"></i>PostgreSQL
+          </div>
+          <div class="pill">
+            <i class="devicon-docker-plain colored"></i>Docker
+          </div>
+          <div class="pill">
+            <i class="devicon-amazonwebservices-plain-wordmark colored"></i>AWS
+          </div>
+          <div class="pill">
+            <i class="devicon-graphql-plain colored"></i>GraphQL
+          </div>
+          <div class="pill">
+            <i class="devicon-vitejs-plain colored"></i>Vite
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Horizontal Gallery Section -->
+    <section class="horizontal-section" id="work">
+      <div class="section-heading" style="padding: 0 2rem">
+        <div class="eyebrow split-line"><span>Work</span></div>
+        <h2 class="split-line"><span>Selected work</span></h2>
+      </div>
+      <div class="pin-wrap">
+        <div class="horizontal-track" id="hTrack">
+          <div class="h-card">
+            <div
+              class="h-card-image"
+              style="
+                background-image: url(&quot;assets/projects/loopchat.png&quot;);
+              "
+            ></div>
+            <div class="h-card-tags">
+              <span class="tag-pill">React</span>
+              <span class="tag-pill">Node.js</span>
+              <span class="tag-pill">Socket.IO</span>
+            </div>
+            <h3>LoopChat</h3>
+            <p>Real-time chat platform built with MERN stack & Socket.IO.</p>
+            <div class="h-card-links">
+              <a
+                href="https://loopchat-web.vercel.app/"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill"
+                >View Project</a
+              >
+              <a
+                href="https://github.com/ahmedaalam/loopchat"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill outline"
+                >Repository</a
+              >
+            </div>
+          </div>
+          <div class="h-card">
+            <div
+              class="h-card-image"
+              style="
+                background-image: url(&quot;assets/projects/cineva.png&quot;);
+              "
+            ></div>
+            <div class="h-card-tags">
+              <span class="tag-pill">React</span>
+              <span class="tag-pill">TMDB API</span>
+              <span class="tag-pill">CSS3</span>
+            </div>
+            <h3>Cineva</h3>
+            <p>Movie browsing & discovery platform powered by TMDB API.</p>
+            <div class="h-card-links">
+              <a
+                href="https://cineva-six.vercel.app/"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill"
+                >View Project</a
+              >
+              <a
+                href="https://github.com/ahmedaalam/cineva"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill outline"
+                >Repository</a
+              >
+            </div>
+          </div>
+          <div class="h-card">
+            <div
+              class="h-card-image"
+              style="
+                background-image: url(&quot;assets/projects/devflow.png&quot;);
+              "
+            ></div>
+            <div class="h-card-tags">
+              <span class="tag-pill">Next.js</span>
+              <span class="tag-pill">MongoDB</span>
+              <span class="tag-pill">Tailwind</span>
+            </div>
+            <h3>DevFlow</h3>
+            <p>Developer Q&A & knowledge sharing community web app.</p>
+            <div class="h-card-links">
+              <a
+                href="https://github.com/ahmedaalam/devflow"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill"
+                >View Project</a
+              >
+              <a
+                href="https://github.com/ahmedaalam/devflow"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill outline"
+                >Repository</a
+              >
+            </div>
+          </div>
+          <div class="h-card">
+            <div
+              class="h-card-image"
+              style="
+                background-image: url(&quot;assets/projects/aicanvas.png&quot;);
+              "
+            ></div>
+            <div class="h-card-tags">
+              <span class="tag-pill">React</span>
+              <span class="tag-pill">Canvas API</span>
+              <span class="tag-pill">Zustand</span>
+            </div>
+            <h3>AI Canvas</h3>
+            <p>Interactive AI-powered graphics studio & prompt generator.</p>
+            <div class="h-card-links">
+              <a
+                href="https://github.com/ahmedaalam/ai-canvas"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill"
+                >View Project</a
+              >
+              <a
+                href="https://github.com/ahmedaalam/ai-canvas"
+                target="_blank"
+                rel="noopener"
+                class="card-link-pill outline"
+                >Repository</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee-wrap">
+      <div class="marquee-track" id="marquee">
+        <span>AVAILABLE FOR WORK</span><span>AVAILABLE FOR WORK</span
+        ><span>AVAILABLE FOR WORK</span><span>AVAILABLE FOR WORK</span>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+      <div class="section-heading centered">
+        <div class="eyebrow split-line"><span>Contact</span></div>
+        <h2 class="split-line">
+          <span>Let's build something worth scrolling for.</span>
+        </h2>
+      </div>
+      <a
+        href="mailto:ahmedaalam.dev@gmail.com"
+        class="contact-email"
+        id="contactEmail"
+        >ahmedaalam.dev@gmail.com</a
+      >
+      <div class="contact-links">
+        <a href="https://github.com/ahmedaalam" target="_blank" rel="noopener"
+          >GitHub</a
+        >
+        <a href="https://linkedin.com" target="_blank" rel="noopener"
+          >LinkedIn</a
+        >
+        <a href="mailto:ahmedaalam.dev@gmail.com" target="_blank" rel="noopener"
+          >Email</a
+        >
+      </div>
+      <p class="contact-footer">&copy; 2026 Ahmed Alam. Built with care.</p>
+    </section>
+
     <script src="./js/script.js"></script>
   </body>
 </html>

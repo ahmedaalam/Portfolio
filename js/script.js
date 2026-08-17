@@ -1,644 +1,320 @@
 /**
- * Portfolio Modern Motion System & Interactive JavaScript
- * Modular, performance-optimized, and accessible motion system
+ * Portfolio Motion System: GSAP + ScrollTrigger + Lenis Smooth Scroll
+ * Retained: Custom Trailing Circle Cursor Animation System
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Check reduced motion setting
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
-  initYear();
-  initScrollProgress();
-  initLenis(prefersReducedMotion);
-  initLucideIcons();
-  initThemeToggle();
-  initNavbarScroll();
-  initRevealAnimations();
-  initActiveNavTracking();
-  initMobileMenu();
-  initCopyEmailWidget();
-  init3DCardDeck();
+  initGSAPAndAnimations();
 
   if (!prefersReducedMotion) {
     initTrailingCircleCursor();
   }
 });
 
-/** 1. Dynamic Footer Year */
-function initYear() {
-  const yearEl = document.getElementById("year");
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
-}
-
-/** 2. Scroll Progress Bar (synced to Lenis when available) */
-function initScrollProgress() {
-  const bar = document.getElementById("scrollProgress");
-  if (!bar) return;
-
-  window.addEventListener(
-    "scroll",
-    () => {
-      const scrolled = window.scrollY;
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = total > 0 ? (scrolled / total) * 100 + "%" : "0%";
-    },
-    { passive: true },
-  );
-}
-
-/** 3. Lenis Smooth Scroll Physics */
-function initLenis(prefersReducedMotion) {
-  if (prefersReducedMotion || typeof Lenis === "undefined") return;
-
-  const lenis = new Lenis({
-    duration: 1.15,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smooth: true,
-  });
-
-  // Sync scroll progress bar with Lenis scroll position
-  const bar = document.getElementById("scrollProgress");
-  if (bar) {
-    lenis.on("scroll", ({ scroll, limit }) => {
-      bar.style.width = limit > 0 ? (scroll / limit) * 100 + "%" : "0%";
-    });
+function initGSAPAndAnimations() {
+  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+    return;
   }
 
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-}
+  gsap.registerPlugin(ScrollTrigger);
 
-/** 2. Safeguard Refresh Lucide Icons */
-function initLucideIcons() {
-  if (window.lucide) {
-    window.lucide.createIcons();
-  }
-}
-
-/** 3. Navbar Scroll & Progress Bar Indicator */
-function initNavbarScroll() {
-  const header = document.getElementById("header");
-  const scrollProgress = document.getElementById("scrollProgress");
-
-  let ticking = false;
-
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const totalScroll =
-          window.scrollY || document.documentElement.scrollTop;
-        const windowHeight =
-          document.documentElement.scrollHeight -
-          document.documentElement.clientHeight;
-
-        // Monochrome Top Scroll Progress Indicator
-        if (scrollProgress && windowHeight > 0) {
-          const scrollPercentage = (totalScroll / windowHeight) * 100;
-          scrollProgress.style.width = `${scrollPercentage}%`;
-        }
-
-        // Header Scrolled Compact State
-        if (header) {
-          if (totalScroll > 30) {
-            header.classList.add("scrolled");
-          } else {
-            header.classList.remove("scrolled");
-          }
-        }
-
-        ticking = false;
-      });
-
-      ticking = true;
-    }
-  });
-}
-
-/** 4. Global Viewport Reveal System via IntersectionObserver */
-function initRevealAnimations() {
-  const revealElements = document.querySelectorAll(".reveal");
-
-  if ("IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-            // Trigger once cleanly to prevent re-layout shifts
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.12,
-        rootMargin: "0px 0px -40px 0px",
-      },
-    );
-
-    revealElements.forEach((el) => revealObserver.observe(el));
+  // ============================================================
+  // SMOOTH SCROLL — Lenis drives the scroll physics, GSAP ticker
+  // drives the render loop so ScrollTrigger stays in sync with it.
+  // ============================================================
+  let smoothScroller = null;
+  if (typeof Lenis !== "undefined") {
+    smoothScroller = new Lenis({ duration: 1.1, smoothWheel: true });
+    smoothScroller.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time) => smoothScroller.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
   } else {
-    // Fallback if IntersectionObserver is unsupported
-    revealElements.forEach((el) => el.classList.add("active"));
+    console.warn(
+      "Lenis failed to load — falling back to native scroll. ScrollTrigger animations still work.",
+    );
   }
-}
 
-/** 5. Navigation Link Active Tracking & Smooth Scroll Handling */
-function initActiveNavTracking() {
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll(".nav-link");
-
-  if (sections.length === 0 || navLinks.length === 0) return;
-
-  let isManualNavClick = false;
-  let clickTimeout = null;
-
-  function setActiveLink(sectionId) {
-    navLinks.forEach((link) => {
-      const href = link.getAttribute("href");
-      if (href === `#${sectionId}`) {
-        link.classList.add("active");
+  // ============================================================
+  // THEME TOGGLE — switches between dark (default) and light via
+  // data-theme attribute on <html>.
+  // ============================================================
+  const themeToggle = document.getElementById("themeToggle");
+  if (themeToggle) {
+    function setTheme(theme) {
+      if (theme === "light") {
+        document.documentElement.setAttribute("data-theme", "light");
       } else {
-        link.classList.remove("active");
+        document.documentElement.removeAttribute("data-theme");
       }
+      try {
+        localStorage.setItem("portfolio-theme", theme);
+      } catch (e) {}
+    }
+
+    themeToggle.addEventListener("click", () => {
+      const isLight =
+        document.documentElement.getAttribute("data-theme") === "light";
+      setTheme(isLight ? "dark" : "light");
     });
   }
 
-  // Handle all nav link clicks for instant active feedback & perfect scroll offset
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", (e) => {
-      const href = anchor.getAttribute("href");
-      if (!href || href === "#" || !href.startsWith("#")) return;
+  // ============================================================
+  // NAVBAR — background fades in once scrolled, links smooth-scroll
+  // ============================================================
+  const navbar = document.getElementById("navbar");
+  if (navbar) {
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "top -80",
+      onEnter: () => navbar.classList.add("scrolled"),
+      onLeaveBack: () => navbar.classList.remove("scrolled"),
+    });
 
-      const targetSection = document.querySelector(href);
-      if (targetSection) {
+    gsap.from(".navbar", {
+      y: -30,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      delay: 0.1,
+    });
+
+    document.querySelectorAll(".nav-logo, .nav-links a").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const href = link.getAttribute("href");
+        if (!href || !href.startsWith("#")) return;
+        const target = document.querySelector(href);
+        if (!target) return;
         e.preventDefault();
-
-        // Lock scroll tracking observer temporarily during smooth scroll
-        isManualNavClick = true;
-        if (clickTimeout) clearTimeout(clickTimeout);
-
-        // Update active UI immediately if it's a nav link
-        const sectionId = href.replace("#", "");
-        setActiveLink(sectionId);
-
-        // Close mobile nav drawer if open
-        const navLinksContainer = document.getElementById("navLinks");
-        const menuIcon = document.getElementById("menuIcon");
-        if (navLinksContainer && navLinksContainer.classList.contains("open")) {
-          navLinksContainer.classList.remove("open");
-          if (menuIcon && window.lucide) {
-            menuIcon.setAttribute("data-lucide", "menu");
-            window.lucide.createIcons();
-          }
-        }
-
-        // Smooth scroll to section with perfect 85px header offset
-        const targetTop =
-          targetSection.getBoundingClientRect().top + window.scrollY - 85;
-
-        window.scrollTo({
-          top: Math.max(0, targetTop),
-          behavior: "smooth",
-        });
-
-        // Release scroll lock after smooth scroll finishes
-        clickTimeout = setTimeout(() => {
-          isManualNavClick = false;
-        }, 800);
-      }
-    });
-  });
-
-  // Track active section on manual user scroll
-  let ticking = false;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (isManualNavClick) return;
-
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrollPosition = window.scrollY;
-          const windowHeight = window.innerHeight;
-          const fullHeight = document.documentElement.scrollHeight;
-
-          // At bottom of page -> activate contact
-          if (scrollPosition + windowHeight >= fullHeight - 50) {
-            setActiveLink("contact");
-            ticking = false;
-            return;
-          }
-
-          let currentSectionId = "home";
-          let maxVisibleHeight = 0;
-
-          sections.forEach((section) => {
-            const rect = section.getBoundingClientRect();
-            const visibleTop = Math.max(0, rect.top);
-            const visibleBottom = Math.min(windowHeight, rect.bottom);
-            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-
-            if (visibleHeight > maxVisibleHeight) {
-              maxVisibleHeight = visibleHeight;
-              currentSectionId = section.getAttribute("id");
-            }
-          });
-
-          setActiveLink(currentSectionId);
-          ticking = false;
-        });
-
-        ticking = true;
-      }
-    },
-    { passive: true },
-  );
-}
-
-/** 6. Mobile Navigation Drawer Toggle */
-function initMobileMenu() {
-  const mobileToggle = document.getElementById("mobileToggle");
-  const navLinksContainer = document.getElementById("navLinks");
-  const menuIcon = document.getElementById("menuIcon");
-
-  if (mobileToggle && navLinksContainer) {
-    mobileToggle.addEventListener("click", () => {
-      const isOpen = navLinksContainer.classList.toggle("open");
-
-      if (menuIcon && window.lucide) {
-        menuIcon.setAttribute("data-lucide", isOpen ? "x" : "menu");
-        window.lucide.createIcons();
-      }
-    });
-
-    const links = navLinksContainer.querySelectorAll("a");
-    links.forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinksContainer.classList.remove("open");
-        if (menuIcon && window.lucide) {
-          menuIcon.setAttribute("data-lucide", "menu");
-          window.lucide.createIcons();
+        if (smoothScroller) {
+          smoothScroller.scrollTo(target, { offset: -70, duration: 1.3 });
+        } else {
+          const y = target.getBoundingClientRect().top + window.scrollY - 70;
+          window.scrollTo({ top: y, behavior: "smooth" });
         }
       });
     });
   }
-}
 
-/** 7. Copy Email Widget — Spring Micro-Animation State Machine */
-function initCopyEmailWidget() {
-  const copyEmailBtn = document.getElementById("copyEmailBtn");
-  const toast = document.getElementById("toast");
-
-  if (!copyEmailBtn) return;
-
-  // Re-render Lucide icons inside the button after DOM update
-  let resetTimer = null;
-
-  copyEmailBtn.addEventListener("click", () => {
-    // Prevent re-triggering during animation
-    if (copyEmailBtn.classList.contains("copied")) return;
-
-    const email =
-      copyEmailBtn.getAttribute("data-email") || "ahmedalam.dev@gmail.com";
-
-    navigator.clipboard
-      .writeText(email)
-      .then(() => {
-        // Trigger copied state — CSS handles all the spring animations
-        copyEmailBtn.classList.add("copied");
-
-        // Reset after 2.5s with a smooth spring-back transition
-        if (resetTimer) clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-          copyEmailBtn.classList.add("resetting");
-          copyEmailBtn.classList.remove("copied");
-
-          // Clean up resetting class after transition completes
-          setTimeout(() => {
-            copyEmailBtn.classList.remove("resetting");
-          }, 500);
-        }, 2500);
-      })
-      .catch((err) => {
-        console.error("Failed to copy email:", err);
-      });
+  // ============================================================
+  // TOP PROGRESS BAR
+  // ============================================================
+  gsap.to("#progressBar", {
+    scaleX: 1,
+    ease: "none",
+    scrollTrigger: {
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 0.3,
+    },
   });
-}
 
-/** 12. Self-Contained 3D Project Card Deck Component */
-function init3DCardDeck() {
-  const container = document.getElementById("deckContainer");
-  const dotsContainer = document.getElementById("deckDotsContainer");
+  // ============================================================
+  // HERO: lines slide up on load, subhead fades in after
+  // ============================================================
+  gsap.to(".hero h1 .line span", {
+    y: "0%",
+    duration: 1,
+    ease: "power4.out",
+    stagger: 0.12,
+    delay: 0.2,
+  });
+  gsap.to("#heroSub", { opacity: 1, duration: 0.8, delay: 1.0 });
 
-  if (!container) return;
-
-  // Data-driven projects array
-  const projectsData = [
+  // ============================================================
+  // PINNED SCALE-IN PANEL — the box scales up from small while
+  // pinned, then releases once fully grown.
+  // ============================================================
+  gsap.fromTo(
+    ".pin-media",
+    { scale: 0.6, borderRadius: "40px" },
     {
-      indexTag: "01 / 2025",
-      kicker: "Full Stack MERN",
-      title: "LoopChat",
-      image: "assets/projects/loopchat.png",
-      description:
-        "Real-time chat application featuring direct messaging, voice/video calls, and a sleek modern UI.",
-      tags: ["React", "Node.js", "Express", "MongoDB", "Socket.IO"],
-      href: "https://loopchat-web.vercel.app/",
-      repoHref: "https://github.com/ahmedaalam/loopchat",
+      scale: 1,
+      borderRadius: "24px",
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".pin-section",
+        start: "top top",
+        end: "+=100%",
+        scrub: true,
+        pin: true,
+      },
     },
+  );
+  gsap.fromTo(
+    "#pinText",
+    { opacity: 0, y: 30 },
     {
-      indexTag: "02 / 2025",
-      kicker: "Frontend & API",
-      title: "Cineva",
-      image: "assets/projects/cineva.png",
-      description:
-        "Movie browsing and discovery platform integrated with TMDB API, featuring responsive layouts, filtering, and fluid micro-animations.",
-      tags: ["React", "TMDB API", "CSS3", "JavaScript"],
-      href: "https://cineva-six.vercel.app/",
-      repoHref: "https://github.com/ahmedaalam/cineva",
+      opacity: 1,
+      y: 0,
+      scrollTrigger: {
+        trigger: ".pin-section",
+        start: "top center",
+        end: "top top",
+        scrub: true,
+      },
     },
-    {
-      indexTag: "03 / 2024",
-      kicker: "Full Stack Web",
-      title: "DevFlow",
-      image: "assets/projects/devflow.png",
-      description:
-        "Developer Q&A and knowledge sharing platform featuring rich text editing, upvoting, tag filtering, and user reputation analytics.",
-      tags: ["React", "Node.js", "Express", "MongoDB", "Tailwind"],
-      href: "https://github.com/ahmedaalam",
-      repoHref: "https://github.com/ahmedaalam/devflow",
-    },
-    {
-      indexTag: "04 / 2024",
-      kicker: "Frontend & AI",
-      title: "AI Canvas",
-      image: "assets/projects/aicanvas.png",
-      description:
-        "Interactive AI-powered graphics studio for generating, editing, and transforming images with custom prompt presets and canvas export tools.",
-      tags: ["React", "OpenAI API", "Canvas API", "Zustand"],
-      href: "https://github.com/ahmedaalam",
-      repoHref: "https://github.com/ahmedaalam/ai-canvas",
-    },
-  ];
+  );
 
-  let activeIndex = 0;
-  const numCards = projectsData.length;
+  // ============================================================
+  // SPLIT TEXT LINE REVEALS — each line slides up as it enters
+  // ============================================================
+  document.querySelectorAll(".split-line span").forEach((el) => {
+    gsap.to(el, {
+      y: "0%",
+      duration: 0.9,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  });
 
-  // 1. Render Cards
-  container.innerHTML = "";
-  const cardElements = [];
+  // ============================================================
+  // HORIZONTAL SCROLL GALLERY — vertical scroll drives horizontal
+  // translation while the section is pinned.
+  // ============================================================
+  const track = document.getElementById("hTrack");
+  if (track) {
+    gsap.to(track, {
+      x: () => -(track.scrollWidth - window.innerWidth),
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".pin-wrap",
+        start: "top top",
+        end: () => "+=" + (track.scrollWidth - window.innerWidth),
+        scrub: true,
+        pin: true,
+      },
+    });
+  }
 
-  projectsData.forEach((project, index) => {
-    const card = document.createElement("div");
-    card.className = "deck-card";
-    card.setAttribute("role", "group");
-    card.setAttribute(
-      "aria-label",
-      `Project ${index + 1} of ${numCards}: ${project.title}`,
+  // ============================================================
+  // MARQUEE — continuous horizontal loop with velocity speed-up
+  // ============================================================
+  const marqueeEl = document.getElementById("marquee");
+  if (marqueeEl) {
+    let marqueeTween = gsap.to(marqueeEl, {
+      xPercent: -50,
+      duration: 12,
+      ease: "none",
+      repeat: -1,
+    });
+    ScrollTrigger.create({
+      trigger: ".marquee-wrap",
+      start: "top bottom",
+      end: "bottom top",
+      onUpdate: (self) => {
+        marqueeTween.timeScale(1 + Math.abs(self.getVelocity()) / 3000);
+      },
+    });
+  }
+
+  // ============================================================
+  // ABOUT — timeline line draws down, each icon item pops in & SVG draws
+  // ============================================================
+  const infoLineFill = document.getElementById("infoLineFill");
+  if (infoLineFill) {
+    gsap.to(infoLineFill, {
+      scaleY: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#aboutInfo",
+        start: "top 70%",
+        end: "bottom 60%",
+        scrub: 0.6,
+      },
+    });
+  }
+
+  document.querySelectorAll(".info-item").forEach((item) => {
+    const icon = item.querySelector(".info-icon");
+    const text = item.querySelector(".info-text");
+    const shapes = item.querySelectorAll(
+      ".info-icon svg path, .info-icon svg circle, .info-icon svg rect",
     );
 
-    const tagsHTML = project.tags
-      .map((tag) => `<span class="deck-card-tag">${tag}</span>`)
-      .join("");
-
-    card.innerHTML = `
-      <a
-        href="${project.href}"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="deck-card-image-link"
-        aria-label="Open ${project.title} live demo"
-      >
-        <div class="deck-card-image-box">
-          <img src="${project.image}" alt="${project.title} UI preview" class="deck-card-img" />
-        </div>
-      </a>
-      <div class="deck-card-top">
-        <span class="deck-card-kicker">${project.kicker}</span>
-      </div>
-      <div class="deck-card-body">
-        <h3 class="deck-card-title">${project.title}</h3>
-        <p class="deck-card-desc">${project.description}</p>
-        <div class="deck-card-tags">${tagsHTML}</div>
-      </div>
-      <div class="deck-card-footer">
-        <a
-          href="${project.href}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="deck-card-link deck-card-link-demo"
-          aria-label="View ${project.title} live demo"
-        >
-          <span>View project</span>
-          <i data-lucide="arrow-up-right"></i>
-        </a>
-        <a
-          href="${project.repoHref}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="deck-card-link deck-card-link-repo"
-          aria-label="View ${project.title} repository"
-        >
-          <span>Repository</span>
-          <img src="assets/icons/github.svg" alt="" class="deck-card-repo-icon" />
-        </a>
-      </div>
-    `;
-
-    // Click on side card makes it active
-    card.addEventListener("click", (e) => {
-      if (index !== activeIndex) {
-        e.preventDefault();
-        setActive(index);
-      }
+    shapes.forEach((shape) => {
+      const length = shape.getTotalLength ? shape.getTotalLength() : 40;
+      shape.style.strokeDasharray = length;
+      shape.style.strokeDashoffset = length;
     });
 
-    // Keyboard activate on Enter or Space for side cards
-    card.addEventListener("keydown", (e) => {
-      if (index !== activeIndex && (e.key === "Enter" || e.key === " ")) {
-        e.preventDefault();
-        setActive(index);
-      }
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: item,
+        start: "top 82%",
+        toggleActions: "play none none reverse",
+      },
     });
-
-    container.appendChild(card);
-    cardElements.push(card);
-  });
-
-  // Re-render Lucide icons inside cards
-  if (window.lucide) {
-    window.lucide.createIcons();
-  }
-
-  // 2. Render Indicator Dots
-  const dotElements = [];
-  if (dotsContainer) {
-    dotsContainer.innerHTML = "";
-    projectsData.forEach((project, index) => {
-      const dot = document.createElement("button");
-      dot.className = "deck-dot";
-      dot.setAttribute(
-        "aria-label",
-        `Go to project ${index + 1}: ${project.title}`,
-      );
-      dot.addEventListener("click", () => setActive(index));
-      dotsContainer.appendChild(dot);
-      dotElements.push(dot);
-    });
-  }
-
-  // 3. Update 3D Positions & States
-  // Layout: [ LEFT ] ... [ ACTIVE ] ... [ RIGHT ]
-  // Side cards are flat (no rotation), just offset, dimmed & scaled down
-  function updateDeckState() {
-    const width = window.innerWidth;
-    const isSmallMobile = width <= 480;
-    const isMobile = width <= 640;
-    const isTablet = width <= 900;
-
-    cardElements.forEach((card, index) => {
-      // Calculate circular distance offset from activeIndex
-      let diff = (((index - activeIndex) % numCards) + numCards) % numCards;
-      if (diff > numCards / 2) diff -= numCards;
-
-      const isActive = diff === 0;
-      const isLeft = diff === -1;
-      const isRight = diff === 1;
-
-      let translateX, translateZ, rotateY, scale, opacity, zIndex;
-
-      if (isActive) {
-        translateX = 0;
-        translateZ = 0;
-        rotateY = 0;
-        scale = 1;
-        opacity = 1;
-        zIndex = 100;
-      } else if (isLeft) {
-        translateX = isSmallMobile ? -190 : isMobile ? -230 : isTablet ? -285 : -335;
-        translateZ = -60; // pushed behind active card
-        rotateY = isMobile ? 3 : 6; // gentle angle so heading text is clearly visible
-        scale = isMobile ? 0.82 : 0.88;
-        opacity = 0.72;
-        zIndex = 80;
-      } else if (isRight) {
-        translateX = isSmallMobile ? 190 : isMobile ? 230 : isTablet ? 285 : 335;
-        translateZ = -60; // pushed behind active card
-        rotateY = isMobile ? -3 : -6; // gentle angle so heading text is clearly visible
-        scale = isMobile ? 0.82 : 0.88;
-        opacity = 0.72;
-        zIndex = 80;
-      } else {
-        // All other cards: hidden but ready to transition in
-        translateX = diff > 0 ? 560 : -560;
-        translateZ = -120;
-        rotateY = diff > 0 ? -15 : 15;
-        scale = 0.75;
-        opacity = 0;
-        zIndex = 10;
-      }
-
-      card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
-      card.style.opacity = opacity;
-      card.style.zIndex = zIndex;
-
-      if (isActive) {
-        card.classList.add("is-active");
-        card.style.cursor = "default";
-        card.setAttribute("tabindex", "0");
-        card.removeAttribute("aria-hidden");
-      } else {
-        card.classList.remove("is-active");
-        card.style.cursor = "pointer";
-        const isVisible = isLeft || isRight;
-        card.setAttribute("tabindex", isVisible ? "0" : "-1");
-        card.setAttribute("aria-hidden", isVisible ? "false" : "true");
-      }
-    });
-
-    // Update Dots
-    dotElements.forEach((dot, index) => {
-      if (index === activeIndex) {
-        dot.classList.add("active");
-        dot.setAttribute("aria-current", "true");
-      } else {
-        dot.classList.remove("active");
-        dot.removeAttribute("aria-current");
-      }
-    });
-  }
-
-  function setActive(newIndex) {
-    activeIndex = ((newIndex % numCards) + numCards) % numCards;
-    updateDeckState();
-  }
-
-  // Keyboard navigation (ArrowLeft / ArrowRight) when Projects section is visible
-  window.addEventListener("keydown", (e) => {
-    if (
-      e.target.tagName === "INPUT" ||
-      e.target.tagName === "TEXTAREA" ||
-      e.target.isContentEditable
+    tl.fromTo(
+      icon,
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2.2)" },
     )
-      return;
-
-    const projectsSection = document.getElementById("projects");
-    if (!projectsSection) return;
-
-    const rect = projectsSection.getBoundingClientRect();
-    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-
-    if (isVisible) {
-      if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        setActive(activeIndex - 1);
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault();
-        setActive(activeIndex + 1);
-      }
-    }
+      .to(
+        shapes,
+        { strokeDashoffset: 0, duration: 0.8, ease: "power2.out", stagger: 0.1 },
+        "-=0.2",
+      )
+      .fromTo(
+        text,
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" },
+        "-=0.6",
+      );
   });
 
-  // Touch Swipe Gesture Support
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  container.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartX = e.changedTouches[0].screenX;
+  // ============================================================
+  // SKILLS PILLS — fade the two marquee rows in as they arrive
+  // ============================================================
+  gsap.fromTo(
+    ["#skillsTrackA", "#skillsTrackB"],
+    { opacity: 0 },
+    {
+      opacity: 1,
+      duration: 0.8,
+      stagger: 0.15,
+      scrollTrigger: { trigger: ".skills-section", start: "top 80%" },
     },
-    { passive: true },
   );
 
-  container.addEventListener(
-    "touchend",
-    (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const deltaX = touchEndX - touchStartX;
-      if (deltaX < -40) {
-        setActive(activeIndex + 1);
-      } else if (deltaX > 40) {
-        setActive(activeIndex - 1);
-      }
+  // ============================================================
+  // CONTACT — email link scales in, link pills stagger up after
+  // ============================================================
+  gsap.fromTo(
+    "#contactEmail",
+    { opacity: 0, scale: 0.9 },
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 0.8,
+      ease: "back.out(1.6)",
+      scrollTrigger: { trigger: ".contact-section", start: "top 75%" },
     },
-    { passive: true },
   );
-
-  window.addEventListener("resize", updateDeckState, { passive: true });
-
-  // Initial state setup
-  updateDeckState();
+  gsap.fromTo(
+    ".contact-links a",
+    { opacity: 0, y: 20 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.08,
+      scrollTrigger: { trigger: ".contact-links", start: "top 85%" },
+    },
+  );
 }
 
-/** 13. Trailing Circle Cursor Animation System */
+/**
+ * Trailing Circle Cursor Animation System (Preserved)
+ */
 function initTrailingCircleCursor() {
   const circles = document.querySelectorAll(".circle");
   if (circles.length === 0) return;
@@ -687,37 +363,4 @@ function initTrailingCircleCursor() {
   }
 
   requestAnimationFrame(animateCircles);
-}
-
-/** 14. Dark Theme Toggle System */
-function initThemeToggle() {
-  const themeToggleBtn = document.getElementById("themeToggle");
-  const themeIcon = document.getElementById("themeIcon");
-  if (!themeToggleBtn) return;
-
-  const savedTheme = localStorage.getItem("portfolio_theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
-
-  function applyTheme(theme) {
-    if (theme === "dark") {
-      document.documentElement.setAttribute("data-theme", "dark");
-      themeToggleBtn.innerHTML = `<i data-lucide="sun" id="themeIcon"></i>`;
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-      themeToggleBtn.innerHTML = `<i data-lucide="moon" id="themeIcon"></i>`;
-    }
-    if (window.lucide) {
-      window.lucide.createIcons();
-    }
-    localStorage.setItem("portfolio_theme", theme);
-  }
-
-  applyTheme(initialTheme);
-
-  themeToggleBtn.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-    applyTheme(nextTheme);
-  });
 }
