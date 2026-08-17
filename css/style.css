@@ -1618,6 +1618,11 @@ section {
     gap: 36px;
   }
 
+  .mastery-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
   .about-photo-wrapper {
     max-height: 420px;
   }

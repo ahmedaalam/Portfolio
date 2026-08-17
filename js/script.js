@@ -498,7 +498,10 @@ function init3DCardDeck() {
   // Layout: [ LEFT ] ... [ ACTIVE ] ... [ RIGHT ]
   // Side cards are flat (no rotation), just offset, dimmed & scaled down
   function updateDeckState() {
-    const isMobile = window.innerWidth <= 640;
+    const width = window.innerWidth;
+    const isSmallMobile = width <= 480;
+    const isMobile = width <= 640;
+    const isTablet = width <= 900;
 
     cardElements.forEach((card, index) => {
       // Calculate circular distance offset from activeIndex
@@ -509,7 +512,7 @@ function init3DCardDeck() {
       const isLeft = diff === -1;
       const isRight = diff === 1;
 
-      let translateX, translateZ, rotateY, scale, opacity, brightness, zIndex;
+      let translateX, translateZ, rotateY, scale, opacity, zIndex;
 
       if (isActive) {
         translateX = 0;
@@ -517,27 +520,26 @@ function init3DCardDeck() {
         rotateY = 0;
         scale = 1;
         opacity = 1;
-        brightness = 1;
         zIndex = 100;
       } else if (isLeft) {
-        translateX = isMobile ? -220 : -290;
-        translateZ = -80; // pushed behind active card
-        rotateY = 12; // gentle inward bend (faces right toward center)
-        scale = 0.86;
-        opacity = 0.65;
+        translateX = isSmallMobile ? -190 : isMobile ? -230 : isTablet ? -285 : -335;
+        translateZ = -60; // pushed behind active card
+        rotateY = isMobile ? 3 : 6; // gentle angle so heading text is clearly visible
+        scale = isMobile ? 0.82 : 0.88;
+        opacity = 0.72;
         zIndex = 80;
       } else if (isRight) {
-        translateX = isMobile ? 220 : 290;
-        translateZ = -80; // pushed behind active card
-        rotateY = -12; // gentle inward bend (faces left toward center)
-        scale = 0.86;
-        opacity = 0.65;
+        translateX = isSmallMobile ? 190 : isMobile ? 230 : isTablet ? 285 : 335;
+        translateZ = -60; // pushed behind active card
+        rotateY = isMobile ? -3 : -6; // gentle angle so heading text is clearly visible
+        scale = isMobile ? 0.82 : 0.88;
+        opacity = 0.72;
         zIndex = 80;
       } else {
         // All other cards: hidden but ready to transition in
-        translateX = diff > 0 ? 520 : -520;
+        translateX = diff > 0 ? 560 : -560;
         translateZ = -120;
-        rotateY = diff > 0 ? -20 : 20;
+        rotateY = diff > 0 ? -15 : 15;
         scale = 0.75;
         opacity = 0;
         zIndex = 10;
