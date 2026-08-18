@@ -4,7 +4,9 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
 
   initGSAPAndAnimations(reduceMotion);
 
@@ -154,33 +156,37 @@ function initGSAPAndAnimations(reduceMotion) {
     );
   }
 
-  document.querySelectorAll("section[id], .horizontal-section[id]").forEach((sec) => {
-    ScrollTrigger.create({
-      trigger: sec,
-      start: "top center",
-      end: "bottom center",
-      onEnter: () => setActiveLink(sec.id),
-      onEnterBack: () => setActiveLink(sec.id),
+  document
+    .querySelectorAll("section[id], .horizontal-section[id]")
+    .forEach((sec) => {
+      ScrollTrigger.create({
+        trigger: sec,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => setActiveLink(sec.id),
+        onEnterBack: () => setActiveLink(sec.id),
+      });
     });
-  });
 
   // ============================================================
   // MAGNETIC HOVER — buttons/links nudge toward cursor
   // ============================================================
   if (!isTouch && !reduceMotion) {
-    document.querySelectorAll(".theme-toggle, .contact-links a, #contactEmail").forEach((el) => {
-      const moveX = gsap.quickTo(el, "x", { duration: 0.4, ease: "power3" });
-      const moveY = gsap.quickTo(el, "y", { duration: 0.4, ease: "power3" });
-      el.addEventListener("mousemove", (e) => {
-        const r = el.getBoundingClientRect();
-        moveX((e.clientX - r.left - r.width / 2) * 0.3);
-        moveY((e.clientY - r.top - r.height / 2) * 0.3);
+    document
+      .querySelectorAll(".theme-toggle, .contact-links a, #contactEmail")
+      .forEach((el) => {
+        const moveX = gsap.quickTo(el, "x", { duration: 0.4, ease: "power3" });
+        const moveY = gsap.quickTo(el, "y", { duration: 0.4, ease: "power3" });
+        el.addEventListener("mousemove", (e) => {
+          const r = el.getBoundingClientRect();
+          moveX((e.clientX - r.left - r.width / 2) * 0.3);
+          moveY((e.clientY - r.top - r.height / 2) * 0.3);
+        });
+        el.addEventListener("mouseleave", () => {
+          moveX(0);
+          moveY(0);
+        });
       });
-      el.addEventListener("mouseleave", () => {
-        moveX(0);
-        moveY(0);
-      });
-    });
   }
 
   // ============================================================
@@ -197,9 +203,12 @@ function initGSAPAndAnimations(reduceMotion) {
         setTimeout(() => copyTooltip.classList.remove("show"), 1400);
       };
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(email).then(done).catch(() => {
-          window.location.href = "mailto:" + email;
-        });
+        navigator.clipboard
+          .writeText(email)
+          .then(done)
+          .catch(() => {
+            window.location.href = "mailto:" + email;
+          });
       } else {
         window.location.href = "mailto:" + email;
       }
@@ -225,8 +234,19 @@ function initGSAPAndAnimations(reduceMotion) {
   // PRELOADER & ENTRANCE ANIMATIONS
   // ============================================================
   function runEntranceAnimations() {
-    gsap.from(".navbar", { y: -30, opacity: 0, duration: 0.8, ease: "power3.out" });
-    gsap.to(".hero h1 .line span", { y: "0%", duration: 1, ease: "power4.out", stagger: 0.12, delay: 0.1 });
+    gsap.from(".navbar", {
+      y: -30,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    });
+    gsap.to(".hero h1 .line span", {
+      y: "0%",
+      duration: 1,
+      ease: "power4.out",
+      stagger: 0.12,
+      delay: 0.1,
+    });
     gsap.to("#heroSub", { opacity: 1, duration: 0.8, delay: 0.9 });
   }
 
@@ -262,7 +282,12 @@ function initGSAPAndAnimations(reduceMotion) {
   gsap.to("#progressBar", {
     scaleX: 1,
     ease: "none",
-    scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: 0.3 },
+    scrollTrigger: {
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 0.3,
+    },
   });
 
   // ============================================================
@@ -276,7 +301,13 @@ function initGSAPAndAnimations(reduceMotion) {
         scale: 1,
         borderRadius: "24px",
         ease: "none",
-        scrollTrigger: { trigger: ".pin-section", start: "top top", end: "+=100%", scrub: true, pin: true },
+        scrollTrigger: {
+          trigger: ".pin-section",
+          start: "top top",
+          end: "+=100%",
+          scrub: true,
+          pin: true,
+        },
       },
     );
     gsap.fromTo(
@@ -285,7 +316,12 @@ function initGSAPAndAnimations(reduceMotion) {
       {
         opacity: 1,
         y: 0,
-        scrollTrigger: { trigger: ".pin-section", start: "top center", end: "top top", scrub: true },
+        scrollTrigger: {
+          trigger: ".pin-section",
+          start: "top center",
+          end: "top top",
+          scrub: true,
+        },
       },
     );
   } else {
@@ -304,7 +340,11 @@ function initGSAPAndAnimations(reduceMotion) {
         y: "0%",
         duration: 0.9,
         ease: "power4.out",
-        scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
       });
     }
   });
@@ -342,7 +382,12 @@ function initGSAPAndAnimations(reduceMotion) {
   // ============================================================
   const marqueeEl = document.getElementById("marquee");
   if (marqueeEl && !reduceMotion) {
-    let marqueeTween = gsap.to(marqueeEl, { xPercent: -50, duration: 12, ease: "none", repeat: -1 });
+    let marqueeTween = gsap.to(marqueeEl, {
+      xPercent: -50,
+      duration: 12,
+      ease: "none",
+      repeat: -1,
+    });
     ScrollTrigger.create({
       trigger: ".marquee-wrap",
       start: "top bottom",
@@ -361,7 +406,12 @@ function initGSAPAndAnimations(reduceMotion) {
     gsap.to(infoLineFill, {
       scaleY: 1,
       ease: "none",
-      scrollTrigger: { trigger: "#aboutInfo", start: "top 70%", end: "bottom 60%", scrub: 0.6 },
+      scrollTrigger: {
+        trigger: "#aboutInfo",
+        start: "top 70%",
+        end: "bottom 60%",
+        scrub: 0.6,
+      },
     });
 
     document.querySelectorAll(".info-item").forEach((item) => {
@@ -378,11 +428,33 @@ function initGSAPAndAnimations(reduceMotion) {
       });
 
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: item, start: "top 82%", toggleActions: "play none none reverse" },
+        scrollTrigger: {
+          trigger: item,
+          start: "top 82%",
+          toggleActions: "play none none reverse",
+        },
       });
-      tl.fromTo(icon, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2.2)" })
-        .to(shapes, { strokeDashoffset: 0, duration: 0.8, ease: "power2.out", stagger: 0.1 }, "-=0.2")
-        .fromTo(text, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, "-=0.6");
+      tl.fromTo(
+        icon,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2.2)" },
+      )
+        .to(
+          shapes,
+          {
+            strokeDashoffset: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.1,
+          },
+          "-=0.2",
+        )
+        .fromTo(
+          text,
+          { opacity: 0, x: -20 },
+          { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" },
+          "-=0.6",
+        );
     });
   } else if (infoLineFill) {
     gsap.set(infoLineFill, { scaleY: 1 });
