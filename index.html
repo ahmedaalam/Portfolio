@@ -38,7 +38,7 @@
     <!-- Inline SVG favicon -->
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0b0d'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='Arial, sans-serif' font-weight='700' font-size='34' fill='%23d85a30'%3EA%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0b0d'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='Arial, sans-serif' font-weight='700'  font-size='34' fill='%233b82f6'%3EA%3C/text%3E%3C/svg%3E"
     />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -152,8 +152,8 @@
 
     <header class="hero" id="home">
       <h1>
-        <span class="line"><span>Ahmed</span></span>
-        <span class="line"><span>Full Stack Developer</span></span>
+        <span class="line"><span>Ahmed.</span></span>
+        <span class="line"><span>Full Stack Developer.</span></span>
       </h1>
       <p id="heroSub">
         Crafting modern web experiences through clean code and thoughtful
@@ -425,11 +425,20 @@
             rel="noopener"
             aria-label="View case study: LoopChat"
           >
-            <h3>LoopChat</h3>
-            <p>
-              Real-time chat app with messaging, media sharing, and voice/video
-              calls.
-            </p>
+            <div class="h-card-media">
+              <img
+                src="assets/projects/loopchat.png"
+                alt="LoopChat project preview"
+                loading="lazy"
+              />
+            </div>
+            <div class="h-card-info">
+              <h3>LoopChat</h3>
+              <p>
+                Real-time chat app with messaging, media sharing, and
+                voice/video calls.
+              </p>
+            </div>
           </div>
           <div
             class="h-card"
@@ -440,20 +449,41 @@
             rel="noopener"
             aria-label="View case study: Cineva"
           >
-            <h3>Cineva</h3>
-            <p>Movie browsing & discovery platform powered by TMDB API.</p>
+            <div class="h-card-media">
+              <img
+                src="assets/projects/cineva.png"
+                alt="Cineva project preview"
+                loading="lazy"
+              />
+            </div>
+            <div class="h-card-info">
+              <h3>Cineva</h3>
+              <p>Movie browsing & discovery platform powered by TMDB API.</p>
+            </div>
           </div>
           <div
             class="h-card"
             tabindex="0"
             role="link"
-            data-href="https://github.com/ahmedaalam/devflow"
+            data-href="https://ahmedaalam.github.io/burgerlicious-frontend/"
             target="_blank"
             rel="noopener"
-            aria-label="View case study: DevFlow"
+            aria-label="View case study: Burgerlicious"
           >
-            <h3>DevFlow</h3>
-            <p>Developer Q&A & knowledge sharing community web app.</p>
+            <div class="h-card-media">
+              <img
+                src="assets/projects/burgerlicious.png"
+                alt="Burgerlicious project preview"
+                loading="lazy"
+              />
+            </div>
+            <div class="h-card-info">
+              <h3>Burgerlicious</h3>
+              <p>
+                A food ordering website with browse menus, customize orders, and
+                a clean UI.
+              </p>
+            </div>
           </div>
           <div
             class="h-card"
@@ -464,8 +494,17 @@
             rel="noopener"
             aria-label="View case study: AI Canvas"
           >
-            <h3>AI Canvas</h3>
-            <p>Interactive AI-powered graphics studio & prompt generator.</p>
+            <div class="h-card-media">
+              <img
+                src="assets/projects/aicanvas.png"
+                alt="AI Canvas project preview"
+                loading="lazy"
+              />
+            </div>
+            <div class="h-card-info">
+              <h3>AI Canvas</h3>
+              <p>Interactive AI-powered graphics studio & prompt generator.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -490,11 +529,11 @@
       <div class="contact-email-wrap">
         <div class="copy-tooltip" id="copyTooltip">Copied!</div>
         <a
-          href="mailto:ahmedaalam.dev@gmail.com"
+          href="mailto:ahmedalam.dev@gmail.com"
           class="contact-email"
           id="contactEmail"
-          data-email="ahmedaalam.dev@gmail.com"
-          >ahmedaalam.dev@gmail.com</a
+          data-email="ahmedalam.dev@gmail.com"
+          >ahmedalam.dev@gmail.com</a
         >
       </div>
       <p class="contact-hint">
