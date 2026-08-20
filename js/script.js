@@ -208,6 +208,17 @@ document.querySelectorAll(".h-card, .project-card").forEach((card) => {
 });
 
 // ============================================================
+// VIEW MY WORK BUTTON — smooth scroll to #work
+// ============================================================
+const viewWorkBtn = document.getElementById("viewWorkBtn");
+if (viewWorkBtn) {
+  viewWorkBtn.addEventListener("click", () => {
+    const workSection = document.getElementById("work");
+    scrollToTarget(workSection);
+  });
+}
+
+// ============================================================
 // EMAIL — click to copy
 // ============================================================
 const contactEmail = document.getElementById("contactEmail");
@@ -268,6 +279,13 @@ function runEntranceAnimations() {
     delay: 0.1,
   });
   gsap.to("#heroSub", { opacity: 1, duration: 0.8, delay: 0.9 });
+  gsap.to("#resumeBtn", {
+    opacity: 1,
+    y: 0,
+    duration: 0.7,
+    ease: "power3.out",
+    delay: 1.2,
+  });
 }
 
 function hidePreloader() {

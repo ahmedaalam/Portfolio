@@ -38,10 +38,10 @@
       content="Portfolio of Ahmed, a full stack web developer based in Karachi, Pakistan."
     />
 
-    <!-- Inline SVG favicon -->
+    <!-- Inline SVG favicon — geometric A mark -->
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0b0d'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='Arial, sans-serif' font-weight='700'  font-size='34' fill='%233b82f6'%3EA%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0b0d'/%3E%3Crect x='.75' y='.75' width='62.5' height='62.5' rx='13.25' fill='none' stroke='%2326262a' stroke-width='1.5'/%3E%3Cpath d='M13 51L32 12L51 51' stroke='%23f0f0f0' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='23' y1='35' x2='41' y2='35' stroke='%233b82f6' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E"
     />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -162,6 +162,50 @@
         Crafting modern web experiences through clean code and thoughtful
         design.
       </p>
+      <div class="hero-cta" id="resumeBtn">
+        <button
+          class="work-btn"
+          id="viewWorkBtn"
+          aria-label="Scroll to work section"
+        >
+          <span>View My Work</span>
+          <svg
+            class="work-btn-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="M12 5l7 7-7 7" />
+          </svg>
+        </button>
+        <a
+          href="assets/CV.pdf"
+          download
+          class="resume-btn"
+          aria-label="Download Ahmed's CV"
+        >
+          <span>Download CV</span>
+          <svg
+            class="resume-btn-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <path d="M7 10l5 5 5-5" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </a>
+      </div>
       <div class="scroll-hint">SCROLL</div>
     </header>
 
@@ -441,6 +485,12 @@
                 Real-time chat app with messaging, media sharing, and
                 voice/video calls.
               </p>
+              <div class="card-tags">
+                <span class="tag">React</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">Socket.io</span>
+                <span class="tag">MongoDB</span>
+              </div>
             </div>
           </div>
           <div
@@ -461,7 +511,15 @@
             </div>
             <div class="h-card-info">
               <h3>Cineva</h3>
-              <p>Movie browsing & discovery platform powered by TMDB API.</p>
+              <p>
+                Movie browsing &amp; discovery platform powered by TMDB API.
+              </p>
+              <div class="card-tags">
+                <span class="tag">React</span>
+                <span class="tag">Redux</span>
+                <span class="tag">TMDB API</span>
+                <span class="tag">CSS3</span>
+              </div>
             </div>
           </div>
           <div
@@ -486,6 +544,11 @@
                 A food ordering website with browse menus, customize orders, and
                 a clean UI.
               </p>
+              <div class="card-tags">
+                <span class="tag">HTML5</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">JavaScript</span>
+              </div>
             </div>
           </div>
           <div
@@ -506,7 +569,15 @@
             </div>
             <div class="h-card-info">
               <h3>AI Canvas</h3>
-              <p>Interactive AI-powered graphics studio & prompt generator.</p>
+              <p>
+                Interactive AI-powered graphics studio &amp; prompt generator.
+              </p>
+              <div class="card-tags">
+                <span class="tag">React</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">OpenAI API</span>
+                <span class="tag">Express</span>
+              </div>
             </div>
           </div>
         </div>
