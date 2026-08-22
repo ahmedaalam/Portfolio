@@ -1,366 +1,164 @@
 gsap.registerPlugin(ScrollTrigger);
-
 const reduceMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 ).matches;
-const isTouch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
-// ============================================================
-// SMOOTH SCROLL — Lenis drives scroll physics
-// ============================================================
-let smoothScroller = null;
-if (!reduceMotion && typeof Lenis !== "undefined") {
-  smoothScroller = new Lenis({ duration: 1.1, smoothWheel: true });
-  smoothScroller.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => smoothScroller.raf(time * 1000));
+// ---------------- Lenis smooth scroll + ScrollTrigger sync ----------------
+let lenisInstance = null;
+if (!reduceMotion && window.Lenis) {
+  lenisInstance = new Lenis({ duration: 1.1, smoothWheel: true });
+  lenisInstance.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenisInstance.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 }
 
-function scrollToTarget(target) {
-  if (!target) return;
-  if (smoothScroller) {
-    smoothScroller.scrollTo(target, { offset: -70, duration: 1.3 });
-  } else {
-    window.scrollTo({
-      top: target.getBoundingClientRect().top + window.scrollY - 70,
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-  }
-}
-
-// ============================================================
-// THEME TOGGLE
-// ============================================================
-const themeToggle = document.getElementById("themeToggle");
-function setTheme(theme) {
-  if (theme === "light") {
-    document.documentElement.setAttribute("data-theme", "light");
-  } else {
-    document.documentElement.removeAttribute("data-theme");
-  }
-  try {
-    localStorage.setItem("portfolio-theme", theme);
-  } catch (e) {}
-}
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    const isLight =
-      document.documentElement.getAttribute("data-theme") === "light";
-    setTheme(isLight ? "dark" : "light");
+// smooth in-page nav links (logo + nav links + CTA + hero anchor)
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener("click", (e) => {
+    const href = link.getAttribute("href");
+    const target =
+      href && href.length > 1 ? document.querySelector(href) : null;
+    if (target) {
+      e.preventDefault();
+      closeMobileNav();
+      if (lenisInstance) lenisInstance.scrollTo(target, { offset: -70 });
+      else {
+        const top = target.getBoundingClientRect().top + window.scrollY - 70;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    }
   });
+});
+
+// ---------------- Mobile hamburger nav ----------------
+const hamburger = document.getElementById("navHamburger");
+const mobileNav = document.getElementById("mobileNav");
+const mobileOverlay = document.getElementById("mobileNavOverlay");
+
+function openMobileNav() {
+  hamburger.classList.add("is-open");
+  hamburger.setAttribute("aria-expanded", "true");
+  mobileNav.classList.add("is-open");
+  mobileNav.setAttribute("aria-hidden", "false");
+  mobileOverlay.classList.add("is-open");
+  document.body.style.overflow = "hidden";
 }
 
-// ============================================================
-// MOBILE MENU
-// ============================================================
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const mobileMenu = document.getElementById("mobileMenu");
-
-function closeMobileMenu() {
-  if (!hamburgerBtn || !mobileMenu) return;
-  hamburgerBtn.classList.remove("open");
-  mobileMenu.classList.remove("open");
+function closeMobileNav() {
+  hamburger.classList.remove("is-open");
+  hamburger.setAttribute("aria-expanded", "false");
+  mobileNav.classList.remove("is-open");
+  mobileNav.setAttribute("aria-hidden", "true");
+  mobileOverlay.classList.remove("is-open");
   document.body.style.overflow = "";
-  if (smoothScroller) smoothScroller.start();
 }
 
-if (hamburgerBtn && mobileMenu) {
-  hamburgerBtn.addEventListener("click", () => {
-    const opening = !mobileMenu.classList.contains("open");
-    hamburgerBtn.classList.toggle("open", opening);
-    mobileMenu.classList.toggle("open", opening);
-    document.body.style.overflow = opening ? "hidden" : "";
-    if (smoothScroller) {
-      opening ? smoothScroller.stop() : smoothScroller.start();
-    }
-  });
-}
-
-// ============================================================
-// NAVBAR — background on scroll
-// ============================================================
-const navbar = document.getElementById("navbar");
-if (navbar) {
-  ScrollTrigger.create({
-    trigger: document.body,
-    start: "top -80",
-    onEnter: () => navbar.classList.add("scrolled"),
-    onLeaveBack: () => navbar.classList.remove("scrolled"),
-  });
-}
-
-// ============================================================
-// ACTIVE NAV STATE & CLICK NAVIGATION
-// ============================================================
-const navAnchors = [
-  ...document.querySelectorAll(".nav-links a"),
-  ...document.querySelectorAll(".mobile-menu a"),
-];
-
-let isNavClicking = false;
-let navClickTimeout = null;
-
-function setActiveLink(id) {
-  navAnchors.forEach((a) => {
-    const href = a.getAttribute("href");
-    if (id && href === "#" + id) {
-      a.classList.add("active");
-    } else {
-      a.classList.remove("active");
-    }
-  });
-}
-
-// Handle click on any nav link or logo
-document
-  .querySelectorAll(".nav-logo, .nav-links a, .mobile-menu a")
-  .forEach((link) => {
-    link.addEventListener("click", (e) => {
-      const href = link.getAttribute("href");
-      if (!href || !href.startsWith("#")) return;
-      e.preventDefault();
-
-      const targetId = href.substring(1);
-      if (targetId && targetId !== "home") {
-        isNavClicking = true;
-        setActiveLink(targetId);
-        if (navClickTimeout) clearTimeout(navClickTimeout);
-        navClickTimeout = setTimeout(() => {
-          isNavClicking = false;
-        }, 1200);
-      } else if (targetId === "home") {
-        isNavClicking = true;
-        setActiveLink("");
-        if (navClickTimeout) clearTimeout(navClickTimeout);
-        navClickTimeout = setTimeout(() => {
-          isNavClicking = false;
-        }, 1200);
-      }
-
-      const targetEl = document.querySelector(href);
-      if (link.closest(".mobile-menu")) {
-        closeMobileMenu();
-        setTimeout(() => scrollToTarget(targetEl), 50);
-      } else {
-        scrollToTarget(targetEl);
-      }
-    });
-  });
-
-// Scroll-based Section Active State Tracker
-const navSections = [
-  { id: "about", el: document.getElementById("about") },
-  { id: "toolkit", el: document.getElementById("toolkit") },
-  { id: "work", el: document.getElementById("work") },
-  { id: "contact", el: document.getElementById("contact") },
-].filter((s) => s.el);
-
-navSections.forEach((s) => {
-  ScrollTrigger.create({
-    trigger: s.el,
-    start: s.id === "work" ? "top 50%" : "top 45%",
-    end: s.id === "work" ? "bottom top" : "bottom 45%",
-    onEnter: () => {
-      if (!isNavClicking) setActiveLink(s.id);
-    },
-    onEnterBack: () => {
-      if (!isNavClicking) setActiveLink(s.id);
-    },
-    onLeaveBack: () => {
-      if (!isNavClicking && s.id === "about") setActiveLink("");
-    },
-  });
+hamburger.addEventListener("click", () => {
+  mobileNav.classList.contains("is-open") ? closeMobileNav() : openMobileNav();
 });
 
-// Clear active link when at top Hero section
-ScrollTrigger.create({
-  trigger: document.body,
-  start: "top top",
-  end: "top 400px",
-  onEnter: () => {
-    if (!isNavClicking) setActiveLink("");
-  },
-  onEnterBack: () => {
-    if (!isNavClicking) setActiveLink("");
-  },
+document.getElementById("mobileNavClose").addEventListener("click", closeMobileNav);
+mobileOverlay.addEventListener("click", closeMobileNav);
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeMobileNav();
 });
 
-// ============================================================
-// PROJECT CARD CLICK HANDLER
-// ============================================================
-document.querySelectorAll(".h-card, .project-card").forEach((card) => {
-  const go = () => {
-    const href = card.dataset.href;
-    if (href && href !== "#") {
-      window.open(href, "_blank", "noopener,noreferrer");
-    }
-  };
-  card.addEventListener("click", (e) => {
-    if (e.target.closest("a, button")) return;
-    go();
-  });
-  card.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      go();
-    }
-  });
-});
-
-// ============================================================
-// VIEW MY WORK BUTTON — smooth scroll to #work
-// ============================================================
-const viewWorkBtn = document.getElementById("viewWorkBtn");
-if (viewWorkBtn) {
-  viewWorkBtn.addEventListener("click", () => {
-    const workSection = document.getElementById("work");
-    scrollToTarget(workSection);
-  });
-}
-
-// ============================================================
-// EMAIL — click to copy
-// ============================================================
-const contactEmail = document.getElementById("contactEmail");
-const copyTooltip = document.getElementById("copyTooltip");
-if (contactEmail && copyTooltip) {
-  contactEmail.addEventListener("click", (e) => {
-    e.preventDefault();
-    const email = contactEmail.dataset.email;
-    const done = () => {
-      copyTooltip.classList.add("show");
-      setTimeout(() => copyTooltip.classList.remove("show"), 1400);
-    };
-    if (navigator.clipboard) {
-      navigator.clipboard
-        .writeText(email)
-        .then(done)
-        .catch(() => {
-          window.location.href = "mailto:" + email;
-        });
-    } else {
-      window.location.href = "mailto:" + email;
-    }
-  });
-}
-
-// ============================================================
-// CONTACT GLOW
-// ============================================================
-if (!isTouch && !reduceMotion) {
-  const glow = document.getElementById("contactGlow");
-  const contactSection = document.getElementById("contact");
-  if (glow && contactSection) {
-    const gx = gsap.quickTo(glow, "x", { duration: 0.6, ease: "power3" });
-    const gy = gsap.quickTo(glow, "y", { duration: 0.6, ease: "power3" });
-    contactSection.addEventListener("mousemove", (e) => {
-      const r = contactSection.getBoundingClientRect();
-      gx(e.clientX - r.left - r.width / 2);
-      gy(e.clientY - r.top - r.height / 2);
-    });
-  }
-}
-
-// ============================================================
-// PRELOADER
-// ============================================================
-function runEntranceAnimations() {
-  gsap.from(".navbar", {
-    y: -30,
-    opacity: 0,
-    duration: 0.8,
-    ease: "power3.out",
-  });
-  gsap.to(".hero h1 .line span", {
-    y: "0%",
-    duration: 1,
-    ease: "power4.out",
-    stagger: 0.12,
-    delay: 0.1,
-  });
-  gsap.to("#heroSub", { opacity: 1, duration: 0.8, delay: 0.9 });
-  gsap.to("#resumeBtn", {
-    opacity: 1,
-    y: 0,
-    duration: 0.7,
-    ease: "power3.out",
-    delay: 1.2,
-  });
-}
-
-function hidePreloader() {
-  const preloader = document.getElementById("preloader");
-  if (!preloader || preloader.dataset.done) return;
-  preloader.dataset.done = "1";
-  if (reduceMotion) {
-    preloader.style.display = "none";
-  } else {
-    gsap.to(preloader, {
-      opacity: 0,
-      duration: 0.5,
-      ease: "power2.out",
-      onComplete: () => {
-        preloader.style.display = "none";
-      },
-    });
-  }
-  runEntranceAnimations();
-}
-window.addEventListener("load", hidePreloader);
-setTimeout(hidePreloader, 2500);
-
-// ============================================================
-// TOP PROGRESS BAR
-// ============================================================
+// ---------------- fixed chrome: progress bar ----------------
 gsap.to("#progressBar", {
   scaleX: 1,
   ease: "none",
   scrollTrigger: {
-    trigger: document.body,
+    trigger: document.documentElement,
     start: "top top",
     end: "bottom bottom",
-    scrub: 0.3,
+    scrub: true,
   },
 });
 
-// ============================================================
-// PINNED SCALE-IN PANEL
-// ============================================================
-if (!reduceMotion) {
-  gsap.fromTo(
-    ".pin-media",
-    { scale: 0.6, borderRadius: "40px" },
-    {
-      scale: 1,
-      borderRadius: "24px",
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".pin-section",
-        start: "top top",
-        end: "+=100%",
-        scrub: true,
-        pin: true,
-      },
-    },
-  );
-  gsap.fromTo(
-    "#pinText",
-    { opacity: 0, y: 30 },
-    {
-      opacity: 1,
-      y: 0,
-      scrollTrigger: {
-        trigger: ".pin-section",
-        start: "top center",
-        end: "top top",
-        scrub: true,
-      },
-    },
-  );
-} else {
-  gsap.set(".pin-media", { scale: 1, borderRadius: "24px" });
-  gsap.set("#pinText", { opacity: 1, y: 0 });
+// ---------------- Active Navigation Link Tracking ----------------
+const navLinks = document.querySelectorAll(".nav-links a");
+const trackedSections = ["about", "tech", "projects", "contact"];
+
+function setActiveNav(id) {
+  navLinks.forEach((link) => {
+    if (link.getAttribute("href") === `#${id}`) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
 }
+
+function clearActiveNav() {
+  navLinks.forEach((link) => link.classList.remove("active"));
+}
+
+trackedSections.forEach((id) => {
+  const sectionEl = document.getElementById(id);
+  if (sectionEl) {
+    ScrollTrigger.create({
+      trigger: sectionEl,
+      start: "top 45%",
+      end: "bottom 45%",
+      onEnter: () => setActiveNav(id),
+      onEnterBack: () => setActiveNav(id),
+    });
+  }
+});
+
+const heroSection = document.getElementById("hero");
+if (heroSection) {
+  ScrollTrigger.create({
+    trigger: heroSection,
+    start: "top top",
+    end: "bottom 45%",
+    onEnter: () => clearActiveNav(),
+    onEnterBack: () => clearActiveNav(),
+  });
+}
+
+// ---------------- subtle per-section background shift ----------------
+const bgBySection = {
+  hero: "#ffffff",
+  about: "#fbfbfa",
+  tech: "#f6f6f5",
+  projects: "#ffffff",
+  contact: "#fbfbfa",
+};
+Object.entries(bgBySection).forEach(([id, color]) => {
+  ScrollTrigger.create({
+    trigger: `#${id}`,
+    start: "top 60%",
+    end: "bottom 40%",
+    onEnter: () =>
+      gsap.to("body", {
+        backgroundColor: color,
+        duration: 0.9,
+        ease: "power2.out",
+      }),
+    onEnterBack: () =>
+      gsap.to("body", {
+        backgroundColor: color,
+        duration: 0.9,
+        ease: "power2.out",
+      }),
+  });
+});
+
+// ---------------- HERO: on-load wipe (not scroll-tied) ----------------
+const heroTl = gsap.timeline({ delay: 0.2 });
+heroTl
+  .to(
+    "#heroHeading",
+    { clipPath: "inset(0 0% 0 0)", duration: 1.1, ease: "power3.inOut" },
+    0,
+  )
+  .to(
+    "#heroCaption",
+    { opacity: 1, duration: 0.6, ease: "power2.out" },
+    "-=0.4",
+  );
 
 // ============================================================
 // SPLIT TEXT LINE REVEALS
@@ -381,55 +179,6 @@ document.querySelectorAll(".split-line span").forEach((el) => {
     });
   }
 });
-
-// ============================================================
-// HORIZONTAL SCROLL GALLERY
-// ============================================================
-const track = document.getElementById("hTrack");
-if (track) {
-  if (!reduceMotion) {
-    gsap.to(track, {
-      x: () => -(track.scrollWidth - window.innerWidth),
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".pin-wrap",
-        start: "top top",
-        end: () => "+=" + (track.scrollWidth - window.innerWidth),
-        scrub: true,
-        pin: true,
-      },
-    });
-  } else {
-    const pinWrap = document.querySelector(".pin-wrap");
-    if (pinWrap) {
-      pinWrap.style.overflowX = "auto";
-      pinWrap.style.height = "auto";
-    }
-    track.style.height = "auto";
-    track.style.padding = "2rem 0";
-  }
-}
-
-// ============================================================
-// MARQUEE
-// ============================================================
-const marqueeEl = document.getElementById("marquee");
-if (marqueeEl && !reduceMotion) {
-  let marqueeTween = gsap.to(marqueeEl, {
-    xPercent: -50,
-    duration: 12,
-    ease: "none",
-    repeat: -1,
-  });
-  ScrollTrigger.create({
-    trigger: ".marquee-wrap",
-    start: "top bottom",
-    end: "bottom top",
-    onUpdate: (self) => {
-      marqueeTween.timeScale(1 + Math.abs(self.getVelocity()) / 3000);
-    },
-  });
-}
 
 // ============================================================
 // ABOUT — timeline draw-on
@@ -454,7 +203,14 @@ if (infoLineFill && !reduceMotion) {
       ".info-icon svg path, .info-icon svg circle, .info-icon svg rect",
     );
     shapes.forEach((shape) => {
-      const length = shape.getTotalLength ? shape.getTotalLength() : 40;
+      let length = 40;
+      try {
+        if (typeof shape.getTotalLength === "function") {
+          length = shape.getTotalLength() || 40;
+        }
+      } catch (e) {
+        length = 40;
+      }
       shape.style.strokeDasharray = length;
       shape.style.strokeDashoffset = length;
     });
@@ -492,173 +248,249 @@ if (infoLineFill && !reduceMotion) {
   gsap.set(".info-icon, .info-text", { opacity: 1, scale: 1, x: 0 });
 }
 
-// ============================================================
-// SKILLS PILLS
-// ============================================================
-if (!reduceMotion) {
-  gsap.fromTo(
-    ["#skillsTrackA", "#skillsTrackB"],
-    { opacity: 0 },
-    {
-      opacity: 1,
-      duration: 0.8,
-      stagger: 0.15,
-      scrollTrigger: { trigger: ".skills-section", start: "top 80%" },
-    },
-  );
-} else {
-  gsap.set(["#skillsTrackA", "#skillsTrackB"], { opacity: 1 });
+// ---------------- TECH STACK: build infinite marquee rows ----------------
+const techStackRow1 = [
+  { name: "React.js", file: "assets/icons/react.svg" },
+  { name: "Next.js", file: "assets/icons/nextjs.svg" },
+  { name: "JavaScript", file: "assets/icons/javascript.svg" },
+  { name: "Tailwind CSS", file: "assets/icons/tailwind.svg" },
+  { name: "HTML", file: "assets/icons/html5.svg" },
+  { name: "CSS", file: "assets/icons/css3.svg" },
+  { name: "Redux", file: "assets/icons/redux.svg" },
+  { name: "Figma", file: "assets/icons/figma.svg" },
+  { name: "VS Code", file: "assets/icons/vscode.svg" },
+];
+
+const techStackRow2 = [
+  { name: "Node.js", file: "assets/icons/nodejs.svg" },
+  { name: "Express.js", file: "assets/icons/express.svg" },
+  { name: "MongoDB", file: "assets/icons/mongodb.svg" },
+  { name: "Python", file: "assets/icons/python.svg" },
+  { name: "Postman", file: "assets/icons/postman.svg" },
+  { name: "Git", file: "assets/icons/git.svg" },
+  { name: "GitHub", file: "assets/icons/github.svg" },
+  { name: "Vercel", file: "assets/icons/vercel.svg" },
+  { name: "Render", file: "assets/icons/render.svg" },
+];
+
+function techItemHTML(t) {
+  return `
+    <div class="tech-pill">
+      <span class="tech-icon">
+        <img src="${t.file}" alt="${t.name}" loading="lazy" />
+      </span>
+      <span class="name">${t.name}</span>
+    </div>`;
 }
 
-// ============================================================
-// CONTACT — email + link pills reveal
-// ============================================================
-if (!reduceMotion) {
+// each row gets its distinct list duplicated twice for seamless loop
+const techRow1 = document.getElementById("techRow1");
+const techRow2 = document.getElementById("techRow2");
+techRow1.innerHTML =
+  techStackRow1.map(techItemHTML).join("") +
+  techStackRow1.map(techItemHTML).join("");
+techRow2.innerHTML =
+  techStackRow2.map(techItemHTML).join("") +
+  techStackRow2.map(techItemHTML).join("");
+
+gsap.set(techRow2, { xPercent: -50 });
+
+const marqueeTween1 = gsap.to(techRow1, {
+  xPercent: -50,
+  duration: 22,
+  ease: "none",
+  repeat: -1,
+});
+
+const marqueeTween2 = gsap.to(techRow2, {
+  xPercent: 0,
+  duration: 20,
+  ease: "none",
+  repeat: -1,
+});
+
+if (reduceMotion) {
+  marqueeTween1.pause();
+  marqueeTween2.pause();
+} else {
+  [
+    [techRow1, marqueeTween1],
+    [techRow2, marqueeTween2],
+  ].forEach(([row, tween]) => {
+    row.addEventListener("mouseenter", () => tween.timeScale(0.15));
+    row.addEventListener("mouseleave", () => tween.timeScale(1));
+  });
+}
+
+gsap
+  .timeline({
+    scrollTrigger: {
+      trigger: "#tech",
+      start: "top 70%",
+      toggleActions: "play none none reverse",
+    },
+  })
+  .to(".tech-head .eyebrow", {
+    opacity: 1,
+    y: 0,
+    duration: 0.7,
+    ease: "power2.out",
+  })
+  .to(
+    ".tech-head h2",
+    { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+    "-=0.5",
+  );
+
+// ---------------- PROJECTS: intro fade-up ----------------
+gsap
+  .timeline({
+    scrollTrigger: {
+      trigger: "#projects",
+      start: "top 80%",
+      toggleActions: "play none none reverse",
+    },
+  })
+  .to(".projects-intro .eyebrow", {
+    opacity: 1,
+    y: 0,
+    duration: 0.6,
+    ease: "power2.out",
+  })
+  .to(
+    ".projects-intro h2",
+    { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
+    "-=0.4",
+  );
+
+// ---------------- PROJECTS: vertical scroll drives horizontal track ----------------
+const track = document.getElementById("track");
+
+function getScrollDistance() {
+  return Math.max(0, track.scrollWidth - window.innerWidth);
+}
+
+const horizontalTween = gsap.to(track, {
+  x: () => -getScrollDistance(),
+  ease: "none",
+  scrollTrigger: {
+    trigger: "#projects",
+    start: "top top",
+    end: () => `+=${getScrollDistance()}`,
+    scrub: 1,
+    pin: true,
+    invalidateOnRefresh: true,
+  },
+});
+
+document.querySelectorAll(".project-card").forEach((card) => {
   gsap.fromTo(
-    "#contactEmail",
-    { opacity: 0, scale: 0.9 },
+    card,
+    { opacity: 0, scale: 0.94 },
     {
       opacity: 1,
       scale: 1,
-      duration: 0.8,
-      ease: "back.out(1.6)",
-      scrollTrigger: { trigger: ".contact-section", start: "top 75%" },
+      ease: "none",
+      scrollTrigger: {
+        trigger: card,
+        containerAnimation: horizontalTween,
+        start: "left 88%",
+        end: "left 55%",
+        scrub: true,
+      },
     },
   );
-  gsap.fromTo(
-    ".contact-links a",
-    { opacity: 0, y: 20 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      stagger: 0.08,
-      scrollTrigger: { trigger: ".contact-links", start: "top 85%" },
+});
+
+// ---------------- AVAILABILITY MARQUEE ----------------
+const marqueeEl = document.getElementById("marquee");
+if (marqueeEl && !reduceMotion) {
+  const marqueeTween = gsap.to(marqueeEl, {
+    xPercent: -50,
+    duration: 12,
+    ease: "none",
+    repeat: -1,
+  });
+
+  ScrollTrigger.create({
+    trigger: ".marquee-wrap",
+    start: "top bottom",
+    end: "bottom top",
+    onUpdate: (self) => {
+      const targetSpeed = 1 + Math.min(3, Math.abs(self.getVelocity()) / 1500);
+      gsap.to(marqueeTween, {
+        timeScale: targetSpeed,
+        duration: 0.35,
+        ease: "power2.out",
+        overwrite: "auto",
+        onComplete: () => {
+          gsap.to(marqueeTween, {
+            timeScale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+          });
+        },
+      });
     },
-  );
-} else {
-  gsap.set("#contactEmail, .contact-links a", {
-    opacity: 1,
-    y: 0,
-    scale: 1,
   });
 }
 
-// ============================================================
-// DYNAMIC UNIFIED CURSOR SYSTEM (Trailing Circles + Project Card Morphing)
-// ============================================================
-(function initUnifiedCursorSystem() {
-  if (isTouch || reduceMotion) return;
-
-  const cardCursor = document.getElementById("cardCursor");
-  const circles = document.querySelectorAll(".circle");
-  if (!cardCursor && !circles.length) return;
-
-  document.body.classList.add("custom-cursor-enabled");
-
-  const mouse = { x: -100, y: -100, isOverWindow: true };
-  const cardPos = { x: -100, y: -100 };
-  let isHoveringCard = false;
-
-  circles.forEach((c) => {
-    c.x = -100;
-    c.y = -100;
-  });
-
-  // Mouse tracking
-  window.addEventListener(
-    "mousemove",
-    (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      mouse.isOverWindow = true;
-      checkCardHover(e.target);
+// ---------------- CONTACT: wipe + rule + cta ----------------
+gsap
+  .timeline({
+    scrollTrigger: {
+      trigger: "#contact",
+      start: "top 65%",
+      toggleActions: "play none none reverse",
     },
-    { passive: true },
+  })
+  .to("#contactEyebrow", {
+    opacity: 1,
+    y: 0,
+    duration: 0.6,
+    ease: "power2.out",
+  })
+  .to(
+    "#contactHeading",
+    { clipPath: "inset(0 0% 0 0)", duration: 1, ease: "power3.inOut" },
+    "-=0.2",
+  )
+  .to(
+    "#contactRuleFill",
+    { width: "100%", duration: 1, ease: "power3.inOut" },
+    "-=0.9",
+  )
+  .to(
+    "#contactCta",
+    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+    "-=0.4",
   );
 
-  document.addEventListener("mouseleave", () => {
-    mouse.isOverWindow = false;
-    setHoverState(false);
-    circles.forEach((c) => (c.style.opacity = "0"));
+if (reduceMotion) {
+  gsap.set(["#heroHeading", "#contactHeading"], {
+    clipPath: "inset(0 0% 0 0)",
   });
-
-  document.addEventListener("mouseenter", () => {
-    mouse.isOverWindow = true;
-    circles.forEach((c) => (c.style.opacity = "1"));
+  gsap.set(["#contactRuleFill"], {
+    width: "100%",
   });
-
-  // Detect card hover even during scroll or static mouse
-  function checkCardHover(target) {
-    if (!mouse.isOverWindow) {
-      setHoverState(false);
-      return;
-    }
-
-    if (!target && mouse.x >= 0 && mouse.y >= 0) {
-      target = document.elementFromPoint(mouse.x, mouse.y);
-    }
-
-    const card = target ? target.closest(".h-card, .project-card") : null;
-    setHoverState(!!card);
-  }
-
-  function setHoverState(hovering) {
-    if (isHoveringCard === hovering) return;
-    isHoveringCard = hovering;
-
-    if (isHoveringCard) {
-      document.body.classList.add("card-hovered");
-      if (cardCursor) cardCursor.classList.add("visible");
-    } else {
-      document.body.classList.remove("card-hovered");
-      if (cardCursor) cardCursor.classList.remove("visible");
-    }
-  }
-
-  // Scroll listener to update hover state dynamically while scrolling
-  window.addEventListener(
-    "scroll",
-    () => {
-      checkCardHover(null);
-    },
-    { passive: true },
+  gsap.set(
+    [
+      ".hero-caption, .about-text h2, .about-text p, .info-icon, .info-text, .tech-head .eyebrow, .tech-head h2, .projects-intro .eyebrow, .projects-intro h2, .project-card, #contactEyebrow, #contactCta",
+    ],
+    { opacity: 1, y: 0, x: 0, scale: 1 },
   );
+}
 
-  if (typeof smoothScroller !== "undefined" && smoothScroller) {
-    smoothScroller.on("scroll", () => {
-      checkCardHover(null);
-    });
-  }
 
-  // Smooth Animation Loop
-  function animateCursors() {
-    if (mouse.isOverWindow) {
-      // Card cursor smooth lerp
-      cardPos.x += (mouse.x - cardPos.x) * 0.25;
-      cardPos.y += (mouse.y - cardPos.y) * 0.25;
-      if (cardCursor) {
-        cardCursor.style.left = cardPos.x.toFixed(2) + "px";
-        cardCursor.style.top = cardPos.y.toFixed(2) + "px";
-      }
 
-      // Trailing circles smooth lerp
-      let x = mouse.x;
-      let y = mouse.y;
-      circles.forEach((circle, index) => {
-        circle.style.left = (x - 12).toFixed(2) + "px";
-        circle.style.top = (y - 12).toFixed(2) + "px";
-        circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
-        circle.x = x;
-        circle.y = y;
-        const next = circles[index + 1] || circles[0];
-        x += (next.x - x) * 0.3;
-        y += (next.y - y) * 0.3;
-      });
-    }
+window.addEventListener("load", () => {
+  ScrollTrigger.refresh();
+});
 
-    requestAnimationFrame(animateCursors);
-  }
-
-  requestAnimationFrame(animateCursors);
-})();
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 150);
+});
