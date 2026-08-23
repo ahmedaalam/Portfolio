@@ -57,7 +57,9 @@ hamburger.addEventListener("click", () => {
   mobileNav.classList.contains("is-open") ? closeMobileNav() : openMobileNav();
 });
 
-document.getElementById("mobileNavClose").addEventListener("click", closeMobileNav);
+document
+  .getElementById("mobileNavClose")
+  .addEventListener("click", closeMobileNav);
 mobileOverlay.addEventListener("click", closeMobileNav);
 
 document.addEventListener("keydown", (e) => {
@@ -480,8 +482,6 @@ if (reduceMotion) {
     { opacity: 1, y: 0, x: 0, scale: 1 },
   );
 }
-
-
 
 window.addEventListener("load", () => {
   ScrollTrigger.refresh();
