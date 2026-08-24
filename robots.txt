@@ -1,0 +1,5 @@
+# robots.txt for Ahmed Alam Portfolio
+User-agent: *
+Allow: /
+
+Sitemap: https://ahmedaalam.vercel.app/sitemap.xml
